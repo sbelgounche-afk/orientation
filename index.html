@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orient'Maroc - Guide des Métiers et Orientation</title>
+    <style>
+        /* --- CSS MODERNE & RESPONSIVE --- */
+        :root {
+            --primary: #006064; /* Bleu Profond */
+            --secondary: #009688; /* Vert Émeraude */
+            --accent: #FFC107;
+            --bg: #F4F7F6;
+            --text: #333;
+            --white: #ffffff;
+            --radius: 12px;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; width: 100%; }
+        
+        /* --- NAVBAR --- */
+        header { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+        .logo { font-size: 1.4rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--secondary); }
+        .nav-links button { background: none; border: none; font-size: 1rem; cursor: pointer; color: #555; margin-left: 15px; font-weight: 500; }
+        .nav-links button:hover { color: var(--primary); }
+
+        /* --- COMPONENTS --- */
+        .card { background: var(--white); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
+        
+        .btn {
+            padding: 12px 24px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #004d40; transform: translateY(-2px); }
+        .btn-outline { border: 2px solid var(--primary); background: transparent; color: var(--primary); }
+
+        /* --- SECTIONS --- */
+        section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- FORM & INPUT --- */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: #555; }
+        input, select {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; background: #fafafa;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--secondary); background: #fff; }
+
+        /* --- FILTERS --- */
+        .filter-container { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; background: white; padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        #categoryFilter { flex: 1; }
+
+        /* --- JOB GRID --- */
+        .job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .job-card {
+            background: white; border-radius: var(--radius); overflow: hidden; border: 1px solid #eee; transition: 0.2s;
+            display: flex; flex-direction: column; cursor: pointer; height: 100%;
+        }
+        .job-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--secondary); }
+        .job-header { padding: 15px; background: linear-gradient(to right, #f0f7ff, #ffffff); border-bottom: 1px solid #eee; }
+        .job-title { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+        .job-category { font-size: 0.8rem; color: var(--secondary); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; margin-top: 5px; display: inline-block; }
+        .job-body { padding: 15px; font-size: 0.95rem; color: #555; flex-grow: 1; }
+        .job-footer { padding: 10px 15px; background: #fafafa; border-top: 1px solid #eee; font-size: 0.85rem; color: #888; }
+
+        /* --- QUIZ --- */
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; margin-bottom: 20px; }
+        .progress-fill { height: 100%; background: var(--secondary); border-radius: 3px; width: 0%; transition: width 0.3s; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        @media(min-width: 600px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .option-btn {
+            background: white; border: 2px solid #eee; padding: 15px; border-radius: 8px; text-align: left; transition: 0.2s; cursor: pointer; display: flex; align-items: center; gap: 10px;
+        }
+        .option-btn:hover { border-color: var(--secondary); background: #f0fdfa; }
+
+        /* --- MODAL --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius); padding: 30px; position: relative; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #999; }
+        
+        /* --- STATS --- */
+        .stat-box { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+        .stat-val { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: #777; text-transform: uppercase; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            .filter-container { flex-direction: column; align-items: stretch; }
+            .job-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MODAL DETAIL -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="app.closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">🇲🇦 Orient<span>Maroc</span></div>
+                <div class="nav-links" id="navLinks" style="display:none;">
+                    <button onclick="app.navigate('dashboard')">Accueil</button>
+                    <button onclick="app.navigate('jobs')">Métiers</button>
+                    <button onclick="app.logout()">Quitter</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- 1. ONBOARDING -->
+        <section id="onboarding" class="active">
+            <div class="card" style="max-width: 500px; margin: 50px auto; text-align: center;">
+                <h2 style="color: var(--primary); margin-bottom: 10px;">Bienvenue sur Orient'Maroc</h2>
+                <p style="color: #666; margin-bottom: 30px;">La plateforme d'orientation scolaire et professionnelle.</p>
+                
+                <form onsubmit="app.saveProfile(event)">
+                    <div class="form-group" style="text-align: left;">
+                        <label>Ton Prénom</label>
+                        <input type="text" id="name" required placeholder="Ex: Sara">
+                    </div>
+                    
+                    <div class="form-group" style="text-align: left;">
+                        <label>Niveau Scolaire</label>
+                        <select id="level" required onchange="app.toggleStream()">
+                            <option value="">Choisir...</option>
+                            <option value="3AC">3ème Année Collège</option>
+                            <option value="TC">Tronc Commun</option>
+                            <option value="1BAC">1ère Année Bac</option>
+                            <option value="2BAC">2ème Année Bac</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="streamGroup" style="display:none; text-align: left;">
+                        <label>Filière (Bac)</label>
+                        <select id="stream">
+                            <option value="">Aucune</option>
+                            <option value="SC_Maths">Sciences Maths</option>
+                            <option value="SC_Exp">Sciences Expérimentales</option>
+                            <option value="STEG">Sciences Techniques</option>
+                            <option value="EG">Économie & Gestion</option>
+                            <option value="SH">Sciences Humaines</option>
+                            <option value="LP">Lettres & Philo</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Commencer</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. DASHBOARD -->
+        <section id="dashboard">
+            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                <h1>Salut, <span id="uName">Élève</span> ! 👋</h1>
+                <p style="opacity: 0.9; margin-top: 5px;">Prêt à découvrir ton avenir professionnel au Maroc ?</p>
+                <div style="margin-top: 20px;">
+                    <button class="btn" style="background: white; color: var(--primary);" onclick="app.startQuiz()">Passer le Test d'Orientation</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                <div class="stat-box">
+                    <div class="stat-val" id="totalJobsCount">0</div>
+                    <div class="stat-label">Métiers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val" id="totalCatsCount">0</div>
+                    <div class="stat-label">Secteurs</div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 15px;">Suggestion du jour</h3>
+            <div class="job-grid" id="featuredJobs"></div>
+        </section>
+
+        <!-- 3. QUIZ -->
+        <section id="quiz">
+            <div class="card">
+                <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+                <h2 id="qText" style="margin-bottom: 20px;">Question...</h2>
+                <div id="qOptions" class="options-grid"></div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="app.navigate('dashboard')">Annuler</button>
+            </div>
+        </section>
+
+        <!-- 4. RESULTS -->
+        <section id="results">
+            <div class="card" style="text-align: center;">
+                <h2 style="color: var(--primary);">Analyse Terminée 🎯</h2>
+                <p>Voici des pistes basées sur ton profil : <strong id="resProfile"></strong></p>
+            </div>
+
+            <div class="card">
+                <h3>🏆 Profils détectés</h3>
+                <div id="resTags" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+            </div>
+
+            <div class="card">
+                <h3>💼 Métiers recommandés pour toi</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Basés sur tes scores et la banque de données.</p>
+                <div class="job-grid" id="resJobs"></div>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn btn-primary" onclick="app.navigate('dashboard')">Retour Accueil</button>
+            </div>
+        </section>
+
+        <!-- 5. JOBS DIRECTORY -->
+        <section id="jobs">
+            <div class="filter-container">
+                <label>🔎 Filtrer par secteur :</label>
+                <select id="categoryFilter" onchange="app.filterJobs(this.value)">
+                    <option value="all">Toutes les catégories</option>
+                    <!-- Options injectées par JS -->
+                </select>
+                <div style="color: #888; font-size: 0.9rem;"><span id="currentCount">0</span> métiers affichés</div>
+            </div>
+            <div class="job-grid" id="jobsList"></div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- DONNÉES BRUTES (Liste fournie par l'utilisateur) ---
+        const RAW_DATA = {
+            "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d´achats", "Téléopérateur"],
+            "Administratif": ["Adjoint des cadres hospitaliers", "Agent administratif", "Agent distribution courrier", "Agent services généraux", "Assistant administratif", "Assistant de direction", "Assistant polyvalent", "Assistant technique", "Chargé de mission handicap", "Collaborateur administrateur judiciaire", "Dactylo", "Directeur administratif financier", "Directeur associé", "Directeur des services techniques", "Directeur général", "Employé administratif", "Gestionnaire administratif", "Greffier", "Responsable administratif", "Responsable des services généraux", "Rédacteur des débats", "Secrétaire général", "Standardiste", "Traducteur"],
+            "Agricole": ["Agent d'élevage", "Agent viticole", "Agriculteur", "Apiculteur", "Bûcheron", "Chauffeur agricole", "Conseiller foncier", "Cueilleur", "Eleveur", "Horticulteur", "Ingénieur agricole", "Ingénieur agronome", "Magasinier agricole", "Maraîcher", "Mécanicien agricole", "Ouvrier agricole", "Palefrenier", "Pépiniériste", "Vendangeur"],
+            "Alimentation": ["Boucher", "Boulanger", "Caviste", "Charcutier", "Charcutier-traiteur", "Chef boucher", "Chocolatier", "Cuisinier traiteur", "Désosseur", "Fromager", "Glacier", "Pizzaiolo", "Pâtissier chocolatier", "Responsable qualité agroalimentaire"],
+            "Aménagement": ["Géographe", "Urbaniste"],
+            "Architecture": ["Architecte", "Architecte d'intérieur", "Assistant architecte", "BIM Manager", "Cartographe", "Collaborateur d'architecte", "Décorateur", "Paysagiste"],
+            "Artisanat": ["Bijoutier", "Carreleur", "Charpentier", "Charpentier couvreur", "Chaudronnier", "Cordonnier", "Couturier", "Ebéniste", "Ferronnier", "Fleuriste", "Forgeron", "Gemmologue", "Graveur", "Horloger", "Imprimeur", "Maroquinier", "Maréchal ferrant", "Menuisier", "Menuisier poseur aluminium", "Menuisier-agenceur", "Métallier serrurier", "Ouvrier boulanger", "Poseur cuisine", "Poseur menuiserie PVC", "Pâtissier tourier", "Pêcheur", "Relieur", "Serrurier", "Styliste", "Tailleur", "Tailleur de pierre", "Tapissier", "Technicien chaudronnier"],
+            "Assurance": ["Actuaire", "Collaborateur agence assurances", "Comptable assurance", "Conseiller commercial assurance", "Conseiller mutualiste", "Courtier", "Courtier en assurances", "Expert en assurances", "Expert en sinistres", "Gestionnaire contrats", "Gestionnaire d'assurances", "Gestionnaire frais de santé", "Gestionnaire middle office", "Souscripteur", "Tarificateur assurance"],
+            "Banque": ["Analyste crédit", "Chargé de clientèle", "Chargé de conformité", "Conseiller accueil banque", "Conseiller clientèle", "Dabiste", "Directeur d'agence", "Gestionnaire back office", "Guichetier", "Responsable recouvrement"],
+            "Btp": ["Aide-maçon", "Assistant travaux", "Bancheur", "Bardeur", "Calorifugeur", "Canalisateur", "Chargé d'affaires btp", "Chauffagiste", "Chauffeur tp", "Chef d'équipe TP", "Chef d'équipe vrd", "Chef de chantier", "Coffreur", "Coffreur bancheur", "Coffreur boiseur", "Conducteur de grue mobile", "Conducteur de nacelle", "Conducteur de pelle", "Conducteur de travaux", "Conducteur engins", "Contremaitre", "Coordinateur technique", "Cordiste", "Courtier travaux", "Couvreur", "Couvreur zingueur", "Cuisiniste", "Câbleur", "Dessinateur projeteur électricité", "Dessinateur-projeteur bâtiment", "Deviseur", "Diagnostiqueur immobilier", "Directeur travaux", "Désamianteur", "Echafaudeur", "Economiste de la construction", "Electricien", "Electricien du bâtiment", "Etancheur", "Façadier", "Ferrailleur", "Finisseur", "Foreur", "Formateur CACES", "Frigoriste", "Grutier", "Grutier mobile", "Géomètre topographe", "Ingénieur BTP", "Ingénieur construction", "Ingénieur efficacité énergétique", "Ingénieur géotechnicien", "Ingénieur structures", "Ingénieur travaux", "Ingénieur études de prix", "Manoeuvre", "Maçon", "Menuisier aluminium", "Menuisier poseur", "Miroitier", "Métreur", "Ouvrier qualifié", "Ouvrier vrd", "Peintre en bâtiment", "Pilote OPC", "Plaquiste", "Plaquiste enduiseur", "Plombier", "Plâtrier", "Polisseur", "Pontier", "Projeteur béton armé", "Ramoneur", "Responsable maintenance travaux neufs", "Responsable travaux", "Sableur", "Solier moquettiste", "Technicien acoustique", "Technicien bâtiment", "Technicien génie civil", "Technicien géomètre"],
+            "Chimie": ["Aromaticien", "Biochimiste", "Ingénieur chimiste", "Ingénieur formulation", "Ingénieur génie chimique", "Laborantin", "Responsable de laboratoire", "Responsable laboratoire chimie", "Responsable scientifique", "Technicien biochimiste", "Technicien chimiste", "Technicien de laboratoire", "Technicien de laboratoire biologie", "Technicien génie chimique"],
+            "Commerce": ["Agent commercial", "Assistant administratif commercial", "Assistant commercial", "Assistant export", "Buraliste", "Business developer", "Chargé d'affaires", "Chargé de développement commercial", "Chef de projet CRM", "Chef de projet e-commerce", "Chef de secteur commerce", "Chef de zone export", "Chef des ventes", "Client mystère", "Commercial", "Commercial B to C", "Commercial CHR", "Commercial GMS", "Commercial automobile", "Commercial b to b", "Commercial export", "Commercial sédentaire", "Commerçant", "Conseiller commercial", "Contract manager", "Directeur business unit", "Directeur commercial", "Directeur commercial export", "Directeur de comptes", "Directeur des opérations", "Directeur des ventes", "Directeur du développement", "Directeur régional", "Délégué commercial", "Délégué vétérinaire", "Employé de pharmacie", "Ingénieur avant-vente", "Ingénieur commercial", "Ingénieur d'affaires", "Ingénieur technico-commercial", "Opticien", "Poissonnier", "Promoteur des ventes", "Responsable commercial France", "Responsable commercial export", "Responsable commercial sport", "Responsable commercial sédentaire", "Responsable commercial transport", "Responsable d'affaires", "Responsable développement commercial", "Responsable e-commerce", "Responsable grands comptes", "Skiman", "Technico-commercial", "Téléconseiller", "VRP"],
+            "Communication": ["Assistant chef de projet", "Assistant de communication", "Attaché de presse", "Chargé de communication", "Chargé de communication événementielle", "Chargé de relations publiques", "Chef de projet communication", "Chef de publicité", "Conseiller en image", "Directeur de la communication", "Documentaliste ged", "Graphiste", "Infographiste", "Recruteur de donateurs", "Responsable communication", "Responsable partenariats", "Responsable éditorial"],
+            "Comptabilité": ["Agent de facturation", "Agent de recouvrement", "Assistant administratif et comptable", "Assistant comptable", "Assistant facturation", "Auditeur", "Chargé de recouvrement", "Chef de mission comptable", "Collaborateur comptable", "Commissaire aux comptes", "Comptable", "Comptable Fournisseur", "Comptable auxiliaire", "Comptable client", "Comptable clients recouvrement", "Comptable copropriété", "Comptable gestion locative", "Comptable général", "Comptable paie", "Comptable trésorerie", "Directeur comptable", "Expert-comptable", "Responsable administratif comptable", "Responsable audit", "Responsable comptabilité analytique", "Responsable comptabilité clients", "Responsable comptabilité fournisseurs", "Responsable comptable", "Responsable facturation", "Responsable trésorerie", "Secrétaire comptable", "Technicien comptable", "Trésorier"],
+            "Culture": ["Accessoiriste", "Animateur cirque", "Animateur sportif", "Archiviste", "Archiviste documentaliste", "Auteur", "Bibliothécaire", "Caméraman", "Chanteur", "Chef de projet évènementiel", "Chorégraphe", "Compositeur", "Comédien", "DJ", "Danseur", "Dessinateur", "Documentaliste", "Figurant", "Game designer", "Illustrateur", "Ingénieur du son", "Interprète", "Libraire", "Linguiste", "Machiniste", "Mannequin", "Metteur en scène", "Modéliste", "Monteur de stands", "Musicien", "Médiateur culturel", "Photographe", "Professeur de danse", "Professeur de zumba", "Professeur guitare", "Responsable événementiel", "Réalisateur", "Régisseur", "Régisseur lumière", "Sculpteur", "Tatoueur", "Technicien audiovisuel", "Technicien du spectacle", "Technicien son"],
+            "Digital": ["Chargé de communication digitale", "Chef de projet digital", "Chef de projet internet", "Community manager", "Designer 3d", "Développeur iPhone", "Développeur mobile", "Développeur web", "Graphiste 2d", "Graphiste 3d", "Graphiste web", "Responsable digital", "Rédacteur web", "Référenceur web", "Webmaster"],
+            "Droit": ["Assistant juridique", "Avocat", "Clerc de notaire", "Directeur juridique", "Huissier", "Juriste", "Juriste assurance", "Juriste construction", "Juriste contentieux", "Juriste d'entreprise", "Juriste droit de la concurrence", "Juriste droit des affaires", "Juriste en droit public", "Juriste en droit social", "Juriste immobilier", "Juriste international", "Juriste propriété intellectuelle", "Notaire", "Rédacteur juridique"],
+            "Economie": ["Statisticien", "Économiste"],
+            "Edition": ["Conducteur offset", "Iconographe"],
+            "Emploi public": ["ASVP", "Administratif de la fonction publique", "Agent d'entretien en collectivité", "Agent de service", "Agent de tri courrier", "Agent de voirie", "Animateur du patrimoine", "Chargé de recherche", "Facteur", "Ingénieur VRD", "Militaire", "Policier", "Postier", "Rédacteur territorial", "Surveillant de baignade", "Technicien de recherche", "Technicien environnement"],
+            "Enseignement": ["Animateur BAFA", "Assistant pédagogique", "Auxiliaire de vie scolaire", "Chef de projet formation", "Chef de service éducatif", "Coach sportif", "Conseiller d'orientation", "Conseiller pédagogique", "Directeur de centre de formation", "Educateur technique", "Enseignant", "Enseignant chercheur", "Formateur", "Formateur FLE", "Formateur bâtiment", "Formateur en bureautique", "Formateur gestion du stress", "Formateur insertion", "Formateur vacataire", "Ingénieur pédagogique", "Maître-nageur sauveteur", "Moniteur", "Moniteur auto-école", "Professeur allemand", "Professeur d'anglais", "Professeur de SVT", "Professeur de français", "Professeur des écoles", "Professeur histoire géographie", "Professeur mathématiques", "Professeur musique", "Professeur philosophie", "Professeur physique", "Professeur économie", "Responsable pédagogique", "Surveillant examens", "Éducateur sportif"],
+            "Environnement": ["Agent d'entretien des espaces verts", "Agent de tri", "Animateur sécurité environnement", "Assistant développement durable", "Biologiste", "Botaniste", "Chargé de mission RSE", "Coordinateur qhse", "Ecologue", "Elagueur", "Garde forestier", "Géologue", "Hydrogéologue", "Ingénieur environnement", "Ingénieur photovoltaique", "Ingénieur thermicien", "Installateur thermique", "Jardinier", "Jardinier paysagiste", "Monteur en climatisation", "Météorologue", "Naturaliste", "Océanographe", "Ouvrier paysagiste", "Releveur de compteur", "Responsable HSE", "Responsable QSE", "Responsable développement durable", "Ripeur", "Technicien HVAC", "Technicien de maintenance génie climatique", "Technicien en froid et climatisation", "Technicien en électricité", "Technicien forestier", "Technicien gaz", "Technicien génie climatique"],
+            "Finance": ["Analyste financier", "Asset manager", "Auditeur financier", "Chargé de reporting", "Chef de mission audit", "Conseiller Fiscal", "Conseiller financier", "Consolideur", "Contrôleur financier", "Credit manager", "Directeur financier", "Fiscaliste", "Gestionnaire financier", "Ingénieur financier", "Opérateur de marché", "Responsable administratif financier", "Responsable financier", "Trader"],
+            "Gestion": ["Assistant de gestion", "Assistant de gestion PME/PMI", "Business analyst", "Chargé de contentieux", "Consultant gestion", "Contrôleur de gestion", "Delivery manager", "Directeur technique", "Gestionnaire de patrimoine", "Risk manager"],
+            "Grande distribution": ["Animateur commercial", "Animateur réseau", "Attaché commercial GMS", "Chef de caisse", "Chef de rayon", "Chef de secteur", "Chef de secteur GMS", "Chef rayon bazar", "Chef rayon boucherie", "Chef rayon boulangerie pâtisserie", "Chef rayon charcuterie traiteur", "Chef rayon poissonnerie", "Conseiller de vente", "Directeur de magasin", "Employé libre-service", "Employé point chaud", "Merchandiseur", "Responsable adjoint magasin", "Responsable commercial GMS", "Responsable drive", "Responsable produits frais", "Responsable rayon", "Responsable rayon poissonnerie"],
+            "Hôtellerie": ["Chef de réception", "Directeur hôtel", "Femme de chambre", "Gouvernant", "Majordome", "Réceptionniste", "Valet de chambre", "Veilleur de nuit"],
+            "Immobilier": ["Administrateur de biens", "Agent commercial immobilier", "Agent immobilier", "Assistant gestion locative", "Chasseur immobilier", "Commercial immobilier", "Conseiller commercial immobilier", "Directeur de copropriété", "Développeur foncier", "Gestionnaire de copropriété", "Gestionnaire immobilier", "Gestionnaire locatif", "Home stager", "Mandataire immobilier", "Négociateur immobilier", "Négociateur location", "Promoteur", "Prospecteur foncier", "Responsable commercial immobilier", "Responsable contentieux locatif", "Responsable développement foncier", "Responsable immobilier", "Technicien diagnostic immobilier"],
+            "Industrie": ["Affûteur", "Agent de conditionnement", "Agent de fabrication", "Agent de finition", "Agent de production", "Agent technique", "Agent technique polyvalent", "Ajusteur", "Ajusteur aéronautique", "Ajusteur mouliste", "Assembleur monteur", "Assistant qualité", "Auditeur qualité", "Bobinier", "Calculateur", "Cariste", "Carrossier", "Chargé de mission qualité", "Chef d'atelier", "Chef d'équipe maintenance", "Chef de projet industriel", "Chef de projet production", "Conditionneur", "Conducteur de four", "Conducteur de ligne", "Conducteur de ligne industrie pharmaceutique", "Conducteur de machine", "Dessinateur industriel", "Dessinateur projeteur cao", "Dessinateur-projeteur", "Directeur R&D", "Directeur de production", "Directeur de site", "Directeur industriel", "Directeur qualité", "Directeur usine", "Drapeur", "Décolleteur", "Ebarbeur", "Electricien industriel", "Electrotechnicien", "Erodeur", "Fraiseur", "Ingénieur calcul de structures", "Ingénieur de production", "Ingénieur de projet", "Ingénieur industrialisation", "Ingénieur maintenance", "Ingénieur métallurgiste", "Ingénieur métrologue", "Ingénieur planning", "Ingénieur pétrolier", "Ingénieur qse", "Ingénieur qualité", "Ingénieur soudage", "Inspecteur qualité", "Metteur au point", "Monteur de meubles", "Monteur-câbleur", "Mouleur", "Mécanicien de maintenance", "Métallier", "Métrologue", "Opérateur de production", "Opérateur salle blanche", "Ordonnanceur", "Outilleur", "Outilleur mouliste", "Ouvrier abattoir", "Ouvrier de production", "Oxycoupeur", "Peintre automobile", "Peintre industriel", "Planificateur", "Plasturgiste", "Plieur cn", "Programmeur CFAO", "Qualiticien", "Rectifieur", "Responsable atelier", "Responsable bureau d'études", "Responsable contrôle qualité", "Responsable de maintenance", "Responsable de production", "Responsable de site", "Responsable fonderie", "Responsable méthodes", "Responsable planification", "Responsable qualité", "Responsable uap", "Régleur", "Soudeur", "Soudeur aluminium", "Stratifieur", "Superviseur de maintenance", "Technicien assurance qualité", "Technicien automaticien", "Technicien bureau d'études", "Technicien controle qualité", "Technicien d'études", "Technicien de fabrication", "Technicien de maintenance", "Technicien de maintenance industrielle", "Technicien de maintenance itinérant", "Technicien essai", "Technicien fonderie", "Technicien industrialisation", "Technicien instrumentation", "Technicien qualité", "Technicien électronicien", "Technicien électrotechnique", "Tourneur", "Usineur"],
+            "Informatique": ["Administrateur Linux", "Administrateur SAP", "Administrateur Sharepoint", "Administrateur Windows", "Administrateur base de données", "Administrateur systèmes", "Administrateur unix", "Analyste d'exploitation", "Analyste developpeur", "Analyste-programmeur", "Architecte Java", "Architecte SI", "Architecte informatique", "Architecte logiciel", "Architecte réseau", "Architecte technique", "Chef de projet .NET", "Chef de projet AMOA", "Chef de projet Java", "Chef de projet MOA", "Chef de projet MOE", "Chef de projet décisionnel", "Chef de projet erp", "Chef de projet fonctionnel", "Chef de projet informatique", "Chef de projet infrastructure", "Chef de projet mobile", "Chef de projet technique", "Chef de projet web", "Concepteur designer", "Consultant AMOA", "Consultant SAP", "Consultant SEO", "Consultant SIRH", "Consultant Sécurité", "Consultant fonctionnel", "Consultant informatique", "Coordinateur informatique", "Data Scientist", "Developpeur full stack", "Directeur informatique", "Développeur .NET", "Développeur Android", "Développeur C", "Développeur C++", "Développeur Flash", "Développeur Java", "Développeur PHP", "Développeur Python", "Développeur SQL", "Développeur VBA", "Développeur back end", "Développeur front end", "Développeur informatique", "Développeur logiciel", "Electronicien", "Expert sécurité", "Formateur informatique", "Géomaticien", "IT manager", "Informaticien", "Ingenieur devops", "Ingénieur Unix", "Ingénieur commercial informatique", "Ingénieur décisionnel", "Ingénieur développeur", "Ingénieur informatique", "Ingénieur logiciel", "Ingénieur poste de travail", "Ingénieur support", "Ingénieur système", "Ingénieur sécurité", "Ingénieur traitement du signal", "Intégrateur web", "Motion designer", "Programmeur informatique", "Pupitreur", "Scrum master", "Technicien de maintenance informatique", "Technicien de support", "Technicien exploitation informatique", "Technicien helpdesk", "Technicien support informatique", "Webdesigner"],
+            "Ingénierie": ["Acousticien", "Automaticien", "Chargé d'affaires cvc", "Chaudronnier naval", "Dessinateur cvc", "Hydraulicien", "Ingénieur Génie des procédés", "Ingénieur R&D", "Ingénieur acoustique", "Ingénieur automaticien", "Ingénieur automobile", "Ingénieur aéronautique", "Ingénieur calcul", "Ingénieur contrôle commande", "Ingénieur de recherche", "Ingénieur eau", "Ingénieur en optique", "Ingénieur génie civil", "Ingénieur laser", "Ingénieur mathématiques appliquées", "Ingénieur matériaux", "Ingénieur micro électronique", "Ingénieur modélisation", "Ingénieur mécanique des fluides", "Ingénieur mécatronique", "Ingénieur méthodes", "Ingénieur nucléaire", "Ingénieur procédés", "Ingénieur robotique", "Ingénieur simulation numérique", "Ingénieur sûreté", "Ingénieur électricité", "Ingénieur électronique", "Metteur au point climatisation", "Projeteur vrd", "Roboticien", "Technicien aéronautique", "Technicien courant faible", "Technicien cvc", "Technicien domotique"],
+            "Logistique": ["Affréteur", "Agent de logistique", "Agent de quai", "Agent de transit", "Analyste logistique", "Approvisionneur", "Assistant approvisionnement", "Assistant d'exploitation", "Assistant import export", "Assistant logistique", "Chef de dépôt", "Chef de projet logistique", "Conducteur routier", "Conducteur routier pl", "Conducteur routier spl", "Consultant supply chain", "Coordinateur logistique", "Coursier", "Directeur logistique", "Directeur supply chain", "Dispatcheur", "Gestionnaire de parc automobile", "Gestionnaire de stocks", "Ingénieur logistique", "Inventoriste", "Logisticien", "Magasinier", "Manutentionnaire", "Opérateur logistique", "Pilote de flux", "Préparateur de commande", "Responsable de quai", "Responsable exploitation", "Responsable export", "Responsable expéditions", "Responsable logistique", "Responsable magasinier", "Responsable transit", "Réceptionnaire", "Technicien logistique", "gestionnaire de flux"],
+            "Marketing": ["Analyste de données", "Assistant chef de produit marketing", "Assistant chef de projet marketing", "Assistant marketing", "Bid manager", "Brand manager", "Category manager", "Chargé d'études marketing", "Chargé d'études statistiques", "Chargé de marketing", "Chef de produit", "Chef de projet marketing", "Chef de projet web marketing", "Concepteur rédacteur", "Coordinateur Marketing", "Designer", "Directeur artistique", "Directeur de clientèle", "Directeur marketing", "Distributeur", "Enquêteur sondage", "Enquêteur terrain", "Panéliste", "Responsable marketing", "Responsable marketing opérationnel", "Responsable trade marketing", "Responsable web marketing", "Traffic manager"],
+            "Mécanique": ["Aide mécanicien", "Ascensoriste", "Chef atelier automobile", "Chef mécanicien", "Contrôleur technique automobile", "Dessinateur mécanique", "Dépanneur remorqueur", "Electricien automobile", "Electromécanicien", "Ingenieur conception mecanique", "Ingénieur en génie mécanique", "Ingénieur mécanique", "Monteur mécanique", "Mécanicien automobile", "Mécanicien monteur", "Mécanicien moto", "Mécanicien motoculture", "Mécanicien outilleur", "Mécanicien poids lourds", "Projeteur mécanique", "Préparateur automobile", "Responsable carrosserie", "Technicien automobile", "Technicien d'atelier"],
+            "Médias": ["Cadreur monteur", "Chef de rubrique", "Graphiste PAO", "Graphiste designer", "Graphiste multimédias", "Infographiste multimédias", "Journaliste", "Maquettiste", "Massicotier", "Monteur vidéo", "Relecteur-correcteur", "Reporter", "Rédacteur en chef", "Rédacteur pigiste", "Rédacteur scientifique", "Secrétaire de rédaction", "Sérigraphe"],
+            "Petite enfance": ["ATSEM", "Agent service crèche", "Aide-éducateur", "Animateur centre loisirs", "Animateur enfants", "Animateur périscolaire", "Assistante maternelle", "Auxiliaire crèche", "Auxiliaire petite enfance", "Directeur de centre de loisirs", "Directeur de crèche", "Infirmier crèche", "Puériculteur"],
+            "Physique": ["Animateur tennis", "Physicien"],
+            "Propreté": ["Agent de nettoyage", "Agent de propreté", "Agent maintenance bâtiment", "Employé de nettoyage", "Laveur de vitres", "Ouvrier d'entretien"],
+            "Ressources humaines": ["Assistant recrutement", "Assistant ressources humaines", "Chargé de mission RH", "Chargé de recrutement", "Chargé de ressources humaines", "Chef de projet Ressources Humaines", "Chef de projet SIRH", "Chef du personnel", "Chief happiness officer", "Collaborateur social", "Conseiller formation", "Consultant en recrutement", "Consultant en ressources humaines", "Consultant management", "Contrôleur de gestion sociale", "Directeur des ressources humaines", "Ergonome", "Gestionnaire RH", "Gestionnaire de paie", "Gestionnaire du personnel", "Knowledge manager", "Lean manager", "Project management officer", "Responsable Administration Du Personnel", "Responsable des ressources humaines", "Responsable formation", "Responsable paie", "Responsable relations sociales", "Team leader"],
+            "Restauration": ["Agent de restauration", "Aide-cuisinier", "Barman", "Chef cuisinier", "Chef de partie", "Chef de rang", "Chef de secteur CHR", "Chef gérant", "Chef pâtissier", "Commis de cuisine", "Commis de salle", "Crêpier", "Cuisinier", "Cuisinier de collectivité", "Directeur de restaurant", "Employé polyvalent de restauration", "Grillardin", "Livreur de pizzas", "Manager en restauration", "Maître d'hôtel", "Oenologue", "Plongeur", "Pâtissier", "Responsable de cuisine", "Responsable de salle", "Responsable en restauration", "Second de cuisine", "Serveur", "Serveur barman", "Serveur extra", "Sommelier"],
+            "Santé": ["ASH - Agent de services hospitaliers", "Agent de service maison de retraite", "Agent de stérilisation", "Aide-soignant", "Ambulancier", "Anesthésiste", "Assistant dentaire", "Assistant médical", "Assistant vétérinaire", "Attaché de recherche clinique", "Audioprothésiste", "Auxiliaire ambulancier", "Auxiliaire de puériculture", "Biostatisticien", "Brancardier", "Cadre de santé", "Cadre infirmier", "Cadre supérieur de santé", "Cardiologue", "Chef de bloc", "Chef de service", "Chirurgien", "Chirurgien orthopédiste", "Dentiste", "Dermatologue", "Directeur d'EHPAD", "Directeur d'établissement de santé", "Directeur des soins", "Directeur médico-social", "Diététicien", "Endocrinologue", "Ergothérapeute", "Gastro-entérologue", "Gynécologue", "Infirmier", "Infirmier anesthésiste", "Infirmier auxiliaire", "Infirmier bloc opératoire", "Infirmier coordinateur", "Infirmier dialyse", "Infirmier du secteur psychiatrique", "Infirmier ehpad", "Infirmier médecine du travail", "Infirmier urgences", "Infirmière en entreprise", "Infirmière libérale", "Kinésithérapeute", "Manipulateur en radiologie", "Masseur kinésithérapeute", "Médecin coordinateur", "Médecin du travail", "Médecin généraliste", "Médecin gériatre", "Médecin urgentiste", "Neurochirurgien", "Neurologue", "Neuropsychologue", "Nutritionniste", "Néphrologue", "Oncologue", "Ophtalmologue", "Optométriste", "Orthophoniste", "Ostéopathe", "Pharmacien", "Pharmacien affaires réglementaires", "Pharmacien biologiste", "Pharmacien hospitalier", "Pharmacien qualité", "Pneumologue", "Podologue", "Professeur de yoga", "Préparateur en pharmacie", "Psychiatre", "Psychologue", "Psychologue clinicien", "Psychologue du travail", "Psychomotricien", "Pédiatre", "Radiologue", "Sage-femme", "Secrétaire dentaire", "Sophrologue", "Technicien biomédical", "Urologue", "Visiteur médical", "Vétérinaire"],
+            "Secrétariat": ["Assistant secrétaire", "Secrétaire", "Secrétaire administratif", "Secrétaire bilingue", "Secrétaire commercial", "Secrétaire de direction", "Secrétaire médicale", "Télésecrétaire"],
+            "Sécurité": ["Agent cynophile sécurité", "Agent de surveillance", "Agent de sécurité", "Agent de sécurité incendie", "Animateur sécurité", "Convoyeur de fonds", "Détective", "Garde du corps", "Gardien", "Gardien de la paix", "Gendarme", "Opérateur télésurveillance", "Pilote de drones", "Responsable sécurité", "Sapeur-Pompier", "Secouriste"],
+            "Service clientèle": ["Agent d'accueil", "Assistant personnel", "Etalagiste", "Hotliner", "Père Noël", "Rédacteur technique", "Technicien SAV", "Technicien électroménager", "Toiletteur"],
+            "Services à la personne": ["Aide ménagère à domicile", "Aide à domicile", "Baby sitter", "Chef d'équipe propreté", "Coach professionnel", "Coiffeur", "Concierge", "Déménageur", "Employé familial", "Employé pressing", "Esthéticien", "Femme de ménage", "Garde d'animaux", "Gardien d'immeuble", "Maquilleur", "Repasseur", "Thanatopracteur"],
+            "Social": ["Aide médico-psychologique", "Animateur maison retraite", "Assistant de service social", "Auxiliaire de vie sociale - AVS", "Conseiller en insertion professionnelle", "Conseiller en économie sociale et familiale", "Conseiller social", "Coordinateur social", "Directeur ESAT", "Directeur adjoint ESAT", "Educateur", "Intervenant action sociale", "Moniteur d'atelier", "Moniteur éducateur", "Éducateur spécialisé"],
+            "Télécommunications": ["Administrateur réseau", "Ingénieur radio", "Ingénieur réseau", "Ingénieur télécom", "Piqueteur", "Technicien fibre optique", "Technicien réseau", "ingénieur hyperfréquences"],
+            "Tourisme": ["Accompagnateur montagne", "Accompagnateur tourisme équestre", "Agent de comptoir", "Agent de développement touristique", "Agent de réservation", "Agent de voyage", "Animateur tourisme", "Animateur village vacances", "Billettiste", "Conseiller voyages", "Directeur centre de vacances", "Forfaitiste", "Guide touristique", "Moniteur de ski", "Responsable animation", "Spa manager"],
+            "Transport": ["Agent aéroportuaire", "Agent d'escale", "Agent d'exploitation transport et logistique", "Agent de piste", "Agent de trafic aérien", "Agent sûreté aéroportuaire", "Architecte naval", "Bagagiste", "Chauffeur VTC", "Chauffeur d'autocar", "Chauffeur de bus", "Chauffeur de direction", "Chauffeur de taxi", "Chauffeur livreur", "Chauffeur privé", "Chauffeur routier", "Chef de quart", "Contrôleur aérien", "Convoyeur de véhicules", "Directeur transport", "Docker", "Déclarant en douane", "Formateur conduite", "Hôtesse de l'air", "Ingénieur aérodynamique", "Ingénieur signalisation ferroviaire", "Magasinier aéronautique", "Monteur de pneus", "Mécanicien aéronautique", "Pilote d'avion", "Pilote d'hélicoptère", "Responsable transport"],
+            "Vente": ["Assistant administration des ventes", "Caissier", "Chef des ventes régional", "Concepteur vendeur", "Conseiller beauté", "Coordinateur des ventes", "Directeur de filiale", "Délégué pharmaceutique", "Formateur vente", "Gestionnaire administration des ventes", "Manager des ventes", "Product owner", "Prévisionniste des ventes", "Responsable administration des ventes", "Responsable boutique", "Responsable commercial automobile", "Responsable de caisse", "Responsable de magasin", "Responsable de secteur", "Responsable parapharmacie", "Responsable télévente", "Télé prospecteur", "Télévendeur", "Vendeur", "Vendeur animalerie", "Vendeur automobile", "Vendeur jeux video", "Vendeur moto", "Vendeur multimédia"]
+        };
+
+        // --- MAP DES TAGS (Pour le Quiz) ---
+        const TAG_MAP = {
+            "Santé": ["bio", "social", "soin"],
+            "Btp": ["manuel", "technique", "logique"],
+            "Informatique": ["tech", "logique", "code"],
+            "Industrie": ["technique", "manuel", "usine"],
+            "Mécanique": ["technique", "manuel", "logique"],
+            "Ingénierie": ["science", "logique", "maths"],
+            "Commerce": ["vente", "contact", "eco"],
+            "Vente": ["vente", "contact", "commerce"],
+            "Banque": ["finance", "eco", "maths"],
+            "Finance": ["finance", "eco", "maths"],
+            "Comptabilité": ["admin", "maths", "eco"],
+            "Gestion": ["admin", "eco", "management"],
+            "Assurance": ["finance", "commerce", "droit"],
+            "Droit": ["lettre", "droit", "justice"],
+            "Architecture": ["arts", "logique", "design"],
+            "Artisanat": ["manuel", "arts", "creation"],
+            "Culture": ["arts", "creation", "lettre"],
+            "Enseignement": ["social", "lettre", "science"],
+            "Social": ["social", "soin", "humain"],
+            "Ressources humaines": ["social", "admin", "droit"],
+            "Transport": ["manuel", "logistique", "conducteur"],
+            "Logistique": ["manuel", "organisation", "logistique"],
+            "Hôtellerie": ["contact", "service", "social"],
+            "Restauration": ["manuel", "service", "creation"],
+            "Environnement": ["bio", "nature", "science"],
+            "Agricole": ["bio", "nature", "manuel"],
+            "Sécurité": ["manuel", "social", "ordre"],
+            "Marketing": ["creation", "commerce", "eco"],
+            "Communication": ["creation", "media", "lettre"],
+            "Médias": ["creation", "media", "lettre"],
+            "Digital": ["tech", "creation", "code"],
+            "Immobilier": ["commerce", "logique", "patrimoine"],
+            "Administration": ["admin", "secretariat", "org"],
+            "Secrétariat": ["admin", "secretariat", "org"],
+            "Services à la personne": ["social", "manuel", "service"],
+            "Propreté": ["manuel", "service", "hygiene"],
+            "Achat": ["commerce", "organisation", "négociation"],
+            "Grande distribution": ["commerce", "service", "stock"],
+            "Tourisme": ["contact", "service", "culture"],
+            "Alimentation": ["manuel", "creation", "hygiene"],
+            "Chimie": ["science", "labo", "bio"],
+            "Physique": ["science", "maths", "recherche"],
+            "Economie": ["eco", "maths", "analyse"],
+            "Aménagement": ["urbanisme", "nature", "design"],
+            "Emploi public": ["admin", "social", "service"],
+            "Petite enfance": ["social", "soin", "education"]
+        };
+
+        // --- DESCRIPTIONS SPÉCIFIQUES (Précises) ---
+        const CUSTOM_DESC = {
+            "Médecin": "Médecin généraliste ou spécialiste qui diagnostique et traite les maladies, prescrit des médicaments et assure le suivi de la santé des patients.",
+            "Infirmier": "Personnel soignant qui réalise les soins médicaux (pansements, injections) et assure le confort et l'hygiène des patients sous supervision médicale.",
+            "Avocat": "Juriste qui conseille ses clients sur leurs droits et obligations et les représente ou les défend devant les tribunaux.",
+            "Architecte": "Professionnel qui conçoit la structure et l'esthétique des bâtiments, en veillant à la faisabilité technique, la sécurité et le respect des normes.",
+            "Développeur web": "Ingénieur logiciel qui crée des sites internet et des applications web en utilisant des langages de programmation (HTML, CSS, JS, PHP...).",
+            "Ingénieur": "Professionnel hautement qualifié qui conçoit, développe et optimise des solutions techniques dans des domaines variés (BTP, Informatique, Industrie...).",
+            "Comptable": "Spécialiste de la gestion financière qui enregistre les flux financiers, établit les bilans et déclarations fiscales d'une entreprise.",
+            "Maçon": "Ouvrier du BTP spécialisé dans la construction de murs, de fondations et de structures en briques ou en parpaings.",
+            "Plombier": "Technicien qui installe, répare et entretient les réseaux de distribution d'eau et d'évacuation des eaux usées.",
+            "Électricien": "Technicien qui réalise l'installation, la maintenance et le dépannage des circuits électriques résidentiels ou industriels.",
+            "Professeur": "Enseignant qui transmet des connaissances théoriques ou pratiques à des élèves ou des étudiants dans un établissement scolaire ou universitaire.",
+            "Policier": "Agent de l'État chargé de maintenir l'ordre public, de sécuriser les biens et les personnes et de faire respecter la loi.",
+            "Pilote d'avion": "Professionnel chargé de piloter un aéronef pour transporter des passagers ou du fret, en assurant la sécurité du vol.",
+            "Chef de projet": "Responsable qui coordonne les différentes ressources (humaines, financières, techniques) d'un projet pour atteindre les objectifs dans les délais et le budget.",
+            "Journaliste": "Professionnel de l'information qui enquête, rédige et diffuse des articles ou reportages sur des événements d'actualité."
+        };
+
+        // --- APPLICATION CORE ---
+        const app = {
+            jobs: [],
+            user: null,
+            quizScores: {},
+
+            init: function() {
+                this.generateJobs();
+                this.loadUser();
+                this.renderFilters();
+                
+                if(this.user) {
+                    document.getElementById('navLinks').style.display = 'block';
+                    this.navigate('dashboard');
+                } else {
+                    this.navigate('onboarding');
+                }
+                
+                document.getElementById('totalJobsCount').textContent = this.jobs.length;
+                document.getElementById('totalCatsCount').textContent = Object.keys(RAW_DATA).length;
+            },
+
+            // --- GENERATEUR INTELLIGENT DE DONNÉES ---
+            generateJobs: function() {
+                let id = 1;
+                for (const [cat, titles] of Object.entries(RAW_DATA)) {
+                    const tags = TAG_MAP[cat] || ["autre"];
+                    
+                    titles.forEach(title => {
+                        // Générer la description
+                        let desc = CUSTOM_DESC[title]; // Cherche une description spécifique
+                        
+                        if (!desc) {
+                            // Générateur contextuel
+                            const prefix = title.split(' ')[0].toLowerCase();
+                            const context = cat.toLowerCase();
+                            
+                            if (prefix.startsWith("ingénieur")) {
+                                desc = `L'Ingénieur en ${cat} conçoit et développe des solutions techniques complexes. Il gère la R&D, l'innovation et veille à la qualité des projets dans le secteur ${cat}.`;
+                            } else if (prefix.startsWith("technicien")) {
+                                desc = `Le ${title} intervient en support technique et opérationnel. Il réalise des tests, de la maintenance et assiste les ingénieurs dans le secteur ${cat}.`;
+                            } else if (prefix.startsWith("assistant") || prefix.startsWith("adjoint")) {
+                                desc = `L'${title} apporte une assistance administrative et opérationnelle aux cadres supérieurs. Il gère la planification, les tâches de suivi et la communication interne dans le domaine ${cat}.`;
+                            } else if (prefix.startsWith("responsable")) {
+                                desc = `Le ${title} anime et coordonne une équipe au sein du secteur ${cat}. Il définit les objectifs, contrôle la qualité et assure le reporting avec la direction.`;
+                            } else if (prefix.startsWith("chef")) {
+                                desc = `Le ${title} dirige une équipe opérationnelle et assure la bonne exécution des tâches quotidiennes et des objectifs dans le secteur ${cat}.`;
+                            } else if (prefix.startsWith("agent")) {
+                                desc = `L'${title} effectue des tâches d'exécution et de surveillance opérationnelle. Il est un acteur clé sur le terrain dans le domaine ${cat}.`;
+                            } else if (prefix.startsWith("commercial") || title.includes("commercial") || title.includes("vendeur")) {
+                                desc = `Le ${title} est en charge de développer le chiffre d'affaires. Il prospecte les clients, négocie les contrats et assure le suivi de la vente dans le secteur ${cat}.`;
+                            } else if (title.includes("directeur")) {
+                                desc = `Le ${title} définit la stratégie globale de son département. Il prend les décisions stratégiques, gère le budget et pilote les équipes du secteur ${cat}.`;
+                            } else {
+                                desc = `Le ${title} exerce ses fonctions dans le secteur ${cat}. Il est chargé de réaliser des missions spécifiques liées à cette activité professionnelle.`;
+                            }
+                        }
+
+                        this.jobs.push({
+                            id: id++,
+                            title: title,
+                            category: cat,
+                            description: desc,
+                            tags: tags
+                        });
+                    });
+                }
+            },
+
+            // --- NAVIGATION & ROUTING ---
+            navigate: function(pageId) {
+                document.querySelectorAll('section').forEach(el => el.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+                window.scrollTo(0,0);
+
+                if(pageId === 'dashboard') this.renderDashboard();
+                if(pageId === 'jobs') this.filterJobs('all');
+            },
+
+            // --- USER PROFILE ---
+            toggleStream: function() {
+                const lvl = document.getElementById('level').value;
+                const grp = document.getElementById('streamGroup');
+                if(lvl === '1BAC' || lvl === '2BAC') grp.style.display = 'block';
+                else grp.style.display = 'none';
+            },
+
+            saveProfile: function(e) {
+                e.preventDefault();
+                this.user = {
+                    name: document.getElementById('name').value,
+                    level: document.getElementById('level').value,
+                    stream: document.getElementById('stream').value || ''
+                };
+                localStorage.setItem('om_user', JSON.stringify(this.user));
+                document.getElementById('navLinks').style.display = 'block';
+                this.navigate('dashboard');
+            },
+
+            loadUser: function() {
+                const stored = localStorage.getItem('om_user');
+                if(stored) {
+                    this.user = JSON.parse(stored);
+                    document.getElementById('uName').textContent = this.user.name;
+                }
+            },
+
+            logout: function() {
+                localStorage.removeItem('om_user');
+                this.user = null;
+                document.getElementById('navLinks').style.display = 'none';
+                document.getElementById('name').value = '';
+                this.navigate('onboarding');
+            },
+
+            // --- RENDERING ---
+            renderDashboard: function() {
+                document.getElementById('uName').textContent = this.user.name;
+                // 3 random jobs
+                const random = this.jobs.sort(() => 0.5 - Math.random()).slice(0, 3);
+                document.getElementById('featuredJobs').innerHTML = random.map(j => this.createJobCard(j)).join('');
+            },
+
+            renderFilters: function() {
+                const select = document.getElementById('categoryFilter');
+                const cats = Object.keys(RAW_DATA).sort();
+                cats.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c;
+                    opt.textContent = c;
+                    select.appendChild(opt);
+                });
+            },
+
+            filterJobs: function(category) {
+                const container = document.getElementById('jobsList');
+                let filtered = this.jobs;
+                if(category !== 'all') {
+                    filtered = this.jobs.filter(j => j.category === category);
+                }
+                container.innerHTML = filtered.map(j => this.createJobCard(j)).join('');
+                document.getElementById('currentCount').textContent = filtered.length;
+            },
+
+            createJobCard: function(job) {
+                return `
+                    <div class="job-card" onclick="app.showJob(${job.id})">
+                        <div class="job-header">
+                            <div class="job-title">${job.title}</div>
+                            <span class="job-category">${job.category}</span>
+                        </div>
+                        <div class="job-body">
+                            ${job.description.substring(0, 100)}...
+                        </div>
+                        <div class="job-footer">Cliquer pour voir le détail</div>
+                    </div>
+                `;
+            },
+
+            showJob: function(id) {
+                const job = this.jobs.find(j => j.id === id);
+                if(!job) return;
+                document.getElementById('modalBody').innerHTML = `
+                    <h2 style="color:var(--primary);">${job.title}</h2>
+                    <span style="background:var(--secondary); color:white; padding:2px 8px; border-radius:4px; font-size:0.8rem;">${job.category}</span>
+                    <p style="margin-top:15px; font-size:1.05rem; line-height:1.6;">${job.description}</p>
+                    <div style="margin-top:20px;">
+                        <strong>Compétences clés :</strong>
+                        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">
+                            ${job.tags.map(t => `<span style="border:1px solid #ddd; padding:2px 8px; border-radius:12px; font-size:0.8rem;">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                document.getElementById('jobModal').style.display = 'flex';
+            },
+
+            closeModal: function() {
+                document.getElementById('jobModal').style.display = 'none';
+            },
+
+            // --- QUIZ SYSTEM ---
+            startQuiz: function() {
+                this.quizScores = { "bio":0, "logique":0, "science":0, "social":0, "lettre":0, "manuel":0, "vente":0, "tech":0, "admin":0 };
+                this.currentQ = 0;
+                this.questions = [
+                    { t: "Quelle matière préfères-tu ?", o: { "Maths / Physique": ["logique","science"], "Sciences Naturelles": ["bio"], "Histoire / Français": ["lettre"], "EPS / Arts": ["manuel"] } },
+                    { t: "Quel environnement te plaît ?", o: { "Hôpital / École": ["bio","social"], "Bureau / Labo": ["logique","admin"], "Usine / Chantier": ["manuel","tech"], "Magasin / Vente": ["vente"] } },
+                    { t: "Quel est ton style ?", o: { "Rigoureux et précis": ["logique","admin"], "Créatif et artistique": ["lettre","manuel"], "En contact avec les gens": ["social","vente"], "Pratique et manuel": ["manuel","tech"] } }
+                ];
+                this.navigate('quiz');
+                this.renderQuestion();
+            },
+
+            renderQuestion: function() {
+                const q = this.questions[this.currentQ];
+                document.getElementById('qText').textContent = `${this.currentQ+1}/${this.questions.length}. ${q.t}`;
+                const p = ((this.currentQ)/this.questions.length)*100;
+                document.getElementById('quizProgress').style.width = p+'%';
+                
+                document.getElementById('qOptions').innerHTML = Object.keys(q.o).map(k => `
+                    <button class="option-btn" onclick="app.answerQuiz('${k}')">${k}</button>
+                `).join('');
+            },
+
+            answerQuiz: function(key) {
+                const scores = this.questions[this.currentQ].o[key];
+                scores.forEach(s => this.quizScores[s] = (this.quizScores[s]||0) + 1);
+                
+                this.currentQ++;
+                if(this.currentQ < this.questions.length) this.renderQuestion();
+                else this.showResults();
+            },
+
+            showResults: function() {
+                this.navigate('results');
+                const sorted = Object.entries(this.quizScores).sort((a,b) => b[1] - a[1]).slice(0,3);
+                
+                document.getElementById('resProfile').textContent = this.user.level + (this.user.stream ? " - "+this.user.stream : "");
+                
+                document.getElementById('resTags').innerHTML = sorted.map(x => `
+                    <span style="background:var(--accent); color:#333; padding:5px 10px; border-radius:15px; font-weight:bold;">${x[0]} (${x[1]})</span>
+                `).join('');
+
+                // Chercher les jobs qui correspondent aux top tags
+                const topTags = sorted.map(x => x[0]);
+                const matches = this.jobs.filter(j => j.tags.some(t => topTags.includes(t))).slice(0, 6);
+                
+                document.getElementById('resJobs').innerHTML = matches.map(j => this.createJobCard(j)).join('');
+            }
+        };
+
+        // Start App
+        document.addEventListener('DOMContentLoaded', () => app.init());
+
+    </script>
+</body>
+</html>
