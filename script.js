@@ -1,6 +1,6 @@
-       // --- 1. DONNÉES BRUTES (RAW DATA) ---
+  // --- 1. DONNÉES BRUTES (RAW DATA) ---
         const RAW_DATA = {
-            "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d´achats", "Téléopérateur"],
+            "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d'achats", "Téléopérateur"],
             "Administratif": ["Adjoint des cadres hospitaliers", "Agent administratif", "Agent distribution courrier", "Agent services généraux", "Assistant administratif", "Assistant de direction", "Assistant polyvalent", "Assistant technique", "Chargé de mission handicap", "Collaborateur administrateur judiciaire", "Dactylo", "Directeur administratif financier", "Directeur associé", "Directeur des services techniques", "Directeur général", "Employé administratif", "Gestionnaire administratif", "Greffier", "Responsable administratif", "Responsable des services généraux", "Rédacteur des débats", "Secrétaire général", "Standardiste", "Traducteur"],
             "Agricole": ["Agent d'élevage", "Agent viticole", "Agriculteur", "Apiculteur", "Bûcheron", "Chauffeur agricole", "Conseiller foncier", "Cueilleur", "Eleveur", "Horticulteur", "Ingénieur agricole", "Ingénieur agronome", "Magasinier agricole", "Maraîcher", "Mécanicien agricole", "Ouvrier agricole", "Palefrenier", "Pépiniériste", "Vendangeur"],
             "Alimentation": ["Boucher", "Boulanger", "Caviste", "Charcutier", "Charcutier-traiteur", "Chef boucher", "Chocolatier", "Cuisinier traiteur", "Désosseur", "Fromager", "Glacier", "Pizzaiolo", "Pâtissier chocolatier", "Responsable qualité agroalimentaire"],
@@ -51,7 +51,7 @@
             "Vente": ["Assistant administration des ventes", "Caissier", "Chef des ventes régional", "Concepteur vendeur", "Conseiller beauté", "Coordinateur des ventes", "Directeur de filiale", "Délégué pharmaceutique", "Formateur vente", "Gestionnaire administration des ventes", "Manager des ventes", "Product owner", "Prévisionniste des ventes", "Responsable administration des ventes", "Responsable boutique", "Responsable commercial automobile", "Responsable de caisse", "Responsable de magasin", "Responsable de secteur", "Responsable parapharmacie", "Responsable télévente", "Télé prospecteur", "Télévendeur", "Vendeur", "Vendeur animalerie", "Vendeur automobile", "Vendeur jeux video", "Vendeur moto", "Vendeur multimédia"]
         };
 
-        // --- 2. MAP DES FILIÈRES ---
+        // --- 2. MAP DES FILIÈRES (Pour recommandations intelligentes) ---
         const STREAM_MAP = {
             "SC_Maths": ["Ingénierie", "Informatique", "Physique", "Chimie", "Architecture", "Industrie", "Economie", "Mathématiques"],
             "SC_Exp": ["Santé", "Environnement", "Agricole", "Biologie", "Chimie"],
@@ -130,68 +130,76 @@
             "Journaliste": "Professionnel de l'information qui rédige des articles sur l'actualité."
         };
 
-        // --- 5. DONNÉES PARCOURS TIMELINE (Nouveau) ---
+        // --- 5. MAPPING DES NIVEAUX (Pour le badge "Tu es ici") ---
+        const LEVEL_MAP = {
+            "3AC": ["3ème Année Collège"],
+            "TC": ["Tronc Commun"],
+            "1BAC": ["1ère Bac"],
+            "2BAC": ["2ème Bac"]
+        };
+
+        // --- 6. DONNÉES PARCOURS TIMELINE (EXPERT) ---
         const PATHS_DATA = {
+            "Médecin": {
+                main: [
+                    { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Obtenir le brevet et viser une moyenne > 12." },
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Expérimentales", desc: "Spécialité SVT (Sciences de la Vie et de la Terre)." },
+                    { year: "1ère Bac", target: "2ème Bac Sciences Expérimentales", desc: "Très bonnes notes requises (>14/20 conseillé)." },
+                    { year: "Baccalauréat", target: "Pass-LAS (1ère Année Commune)", desc: "S'inscrire au Pass-LAS. 1 année universitaire commune (SVT/BCP)." },
+                    { year: "Pass-LAS", target: "CNA (Concours National d'Accès)", desc: "Réussir le CNA pour accéder à la filière Médecine/Dentaire/Pharma." },
+                    { year: "1er Cycle (3 ans)", target: "Externat ou Internat", desc: "Formation théorique et clinique à la Faculté." },
+                    { year: "2ème Cycle (3 ans)", target: "Thèse de Médecine", desc: "Soutenance de thèse pour devenir Docteur en Médecine." }
+                ],
+                alternatives: [
+                    { condition: "Si échec au CNA (Concours)", path: ["Option: Re-essayer Pass-LAS une 2ème fois (possible une fois).", "Option: Se réorienter vers Pharmacie ou Dentaire si rang suffisant."] },
+                    { condition: "Si refusé d'accès à la Faculté", path: ["Option: Licences Scientifiques (Biologie/Chimie).", "Objectif: Concours Internat des Hôpitaux ou Master Santé Publique."] }
+                ]
+            },
             "Ingénieur": {
                 main: [
                     { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Obtenir le brevet et viser une moyenne > 12." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Maths", desc: "Bonnes notes en Maths et Physique." },
-                    { year: "1ère Bac", target: "2ème Bac Sciences Maths", desc: "Se concentrer sur les exercices difficiles." },
-                    { year: "Baccalauréat", target: "CPGE (Classes Préparatoires)", desc: "Intégrer une CPGE (MPSI/PCSI) ou Prépa Intégrée." },
-                    { year: "CPGE (2 ans)", target: "Concours National Commun (CNC)", desc: "Travailler dur pendant les 2 années." },
-                    { year: "École d'Ingénieur", target: "Diplôme d'Ingénieur d'État", desc: "3 ans de spécialisation." }
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Maths", desc: "Optionnel: Sciences Maths A (Bio) ou B (PC)." },
+                    { year: "1ère Bac", target: "2ème Bac Sciences Maths", desc: "Se concentrer sur les exercices difficiles (Arithmétique, Analyse)." },
+                    { year: "Baccalauréat", target: "CPGE (Classes Préparatoires)", desc: "Intégrer une CPGE (MPSI, PTSI, TSI) dans un lycée ou prépa intégrée." },
+                    { year: "CPGE (2 ans)", target: "CNC (Concours National Commun)", desc: "Concours très sélectif vers les Grandes Écoles d'Ingénieurs (ENSA, ENSEM, ENIM...)." },
+                    { year: "École d'Ingénieur", target: "Cycle Ingénieur (3 ans)", desc: "Diplôme d'Ingénieur d'État. Formation haute et technique." }
                 ],
                 alternatives: [
-                    { condition: "Si échec au BAC", path: ["Option: Se réorienter vers Bac Professionnel ou BTS (ISET).", "Ou: Redoubler avec sérieux."] },
-                    { condition: "Si échec au Concours (CNC)", path: ["Option: Faculté des Sciences (Licence).", "Chemin alternatif: Mastère spécialisé ou Admission sur Titre."] },
-                    { condition: "Si profil technique", path: ["Option: 1ère Bac Science de l'Ingénieur -> Ecoles d'Ingénieurs (Admission parallèle)."] }
-                ]
-            },
-            "Médecin": {
-                main: [
-                    { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Fondations solides en SVT." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Expérimentales", desc: "Spécialité SVT ou PC." },
-                    { year: "1ère Bac", target: "2ème Bac Sciences Expérimentales", desc: "Très bonnes notes requises (>14/20 conseillé)." },
-                    { year: "Baccalauréat", target: "1ère Année Médecine", desc: "Passer le concours d'entrée." },
-                    { year: "Concours / Résultat", target: "1ère Cycle (3 ans)", desc: "Exercer comme externe ou internat." },
-                    { year: "1ère Cycle", target: "2ème Cycle (3 ans)", desc: "Soutenance de thèse pour devenir Docteur en Médecine." }
-                ],
-                alternatives: [
-                    { condition: "Si échec au concours Médecine", path: ["Option: Médecine Dentaire, Pharmacie ou Sage-Femme.", "Option: OFS (Offices de formation) pour infirmier/aide-soignant."] },
-                    { condition: "Si profil trop juste au BAC", path: ["Option: 1ère Année SNV (Licence Biologie) à la fac.", "Passerelle possible en 2ème année si réussite."] }
+                    { condition: "Si échec au BAC", path: ["Option: Redoubler la 2ème année Bac.", "Option: Se réorienter vers OFPPT (TS Mécanique/Électricité)."] },
+                    { condition: "Si échec au CNC", path: ["Option: EST (École Supérieure de Technologie).", "Diplôme: Ingénieur d'État après 3 ans (plus accessible).", "Option: Admission parallèle (Cycle Ingénieur) en 1ère année."] }
                 ]
             },
             "Avocat": {
                 main: [
                     { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Important de garder une bonne moyenne." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Exp / SH", desc: "Avoir l'esprit d'analyse." },
-                    { year: "1ère Bac", target: "2ème Bac", desc: "Terminer le Bac avec mention." },
-                    { year: "Baccalauréat", target: "Faculté de Droit", desc: "Inscription en Licence de Droit (L1)." },
-                    { year: "Licence (3 ans)", target: "Master (2 ans)", desc: "Spécialisation en Droit des Affaires ou Justice." },
-                    { year: "Master", target: "Stage École d'Avocature (IEA)", desc: "1 an de stage obligatoire à l'École d'Avocature." },
-                    { year: "Serment", target: "Avocat au Barreau", desc: "Prêter serment et commencer la carrière." }
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Exp / SH", desc: "Avoir l'esprit d'analyse et d'argumentation." },
+                    { year: "1ère Bac", target: "2ème Bac", desc: "Terminer le Bac avec mention (Bien ou Très Bien conseillé)." },
+                    { year: "Baccalauréat", target: "Faculté de Droit", desc: "Inscription en Licence de Droit Privé ou Public." },
+                    { year: "Licence (3 ans)", target: "Master (2 ans)", desc: "Spécialisation en Droit des Affaires, Fiscalité ou Justice." },
+                    { year: "Master", target: "IEA (Institut d'Études Judiciaires)", desc: "Stage de 18 mois obligatoire à l'Institut des Études Judiciaires (Rabat/Marrakech)." },
+                    { year: "Serment", target: "Avocat au Barreau", desc: "Prestation de serment et début de carrière." }
                 ],
                 alternatives: [
-                    { condition: "Si échec à la Faculté", path: ["Option: Préparation au concours de l'ENA (Administration).", "Option: Juriste en entreprise avec un master en Droit privé."] }
+                    { condition: "Si échec à la Faculté ou Concours", path: ["Option: Préparer le concours de l'ENA (Administration Publique).", "Option: Juriste en entreprise avec un Master Droit Privé."] }
                 ]
             },
             "Développeur web": {
                 main: [
                     { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Intérêt pour l'algorithmique." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Maths", desc: "Très bon niveau en Maths." },
-                    { year: "1ère Bac", target: "2ème Bac Sciences Maths", desc: "Apprendre l'auto-formation (HTML/JS/PHP) au lycée." },
-                    { year: "Baccalauréat", target: "École d'Ingénieur (Ex: ENSA) ou Faculté", desc: "Filière Informatique ou Génie Civil ( parfois )." },
-                    { year: "Diplôme", target: "Premier emploi Junior", desc: "Développeur front-end ou back-end." }
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Maths", desc: "Bon niveau en Maths indispensable." },
+                    { year: "1ère Bac", target: "2ème Bac Sciences Maths", desc: "Débuter l'auto-formation (HTML, CSS, JS) dès le lycée." },
+                    { year: "Baccalauréat", target: "École d'Ingénieur ou Faculté", desc: "Cursus : ENSA (Filière Info), ENIAS, INPT ou Faculté des Sciences." },
+                    { year: "Diplôme", target: "Premier emploi Junior", desc: "Développeur Full-stack ou Mobile." }
                 ],
                 alternatives: [
-                    { condition: "Si pas le BAC Scientifique", path: ["Option: OFPPT (TS Développement Web).", "Option: BTS Informatique (ISET).", "Avantage: Formation courte et très pratique."] }
+                    { condition: "Si pas le BAC Scientifique", path: ["Option: OFPPT (TS Développement Web et Communication Numérique).", "Option: BTS Informatique (ISET)." ] }
                 ]
             },
             "default": {
                 main: [
                     { year: "3ème Année Collège", target: "Tronc Commun", desc: "Obtenir le brevet." },
                     { year: "Tronc Commun", target: "1ère Bac", desc: "Choisir la filière adaptée." },
-                    { year: "Baccalauréat", target: "École ou Université", desc: "Voir détails dans la description." }
+                    { year: "Baccalauréat", target: "École ou Université", desc: "Voir les détails dans la section 'Comment y arriver ?'." }
                 ],
                 alternatives: [
                     { condition: "Si échec scolaire", path: ["Option: OFPPT (Formation professionnelle).", "Option: BTS / ISET (Bac+2)."] }
@@ -199,13 +207,13 @@
             }
         };
 
-        // --- 6. APPLICATION CORE ---
+        // --- 7. APPLICATION CORE ---
         const app = {
             jobs: [],
             user: null,
             quizScores: {},
 
-            // === 6.1 COMPARATEUR DE FILIÈRES ===
+            // === 7.1 COMPARATEUR DE FILIÈRES ===
             comparator: {
                 data: {
                     "sc_maths": {
@@ -278,13 +286,14 @@
                         const data = this.data[key];
                         if(!data) return;
                         let isMatch = false;
-                        if (app.user && app.user.stream) {
-                            if (app.user.stream === "SC_Maths" && key === "sc_maths") isMatch = true;
-                            if (app.user.stream === "SC_Exp" && key === "sc_exp") isMatch = true;
-                            if (app.user.stream === "EG" && key === "eco") isMatch = true;
-                            if (app.user.stream === "LP" && (key === "lettres" || key === "univ")) isMatch = true;
-                            if (app.user.stream === "SH" && key === "univ") isMatch = true;
-                            if (app.user.stream === "STEG" && key === "ecoles") isMatch = true;
+                        // Utilisation de l'objet 'app' global via la variable globale ou closure
+                        if (window.app.user && window.app.user.stream) {
+                            if (window.app.user.stream === "SC_Maths" && key === "sc_maths") isMatch = true;
+                            if (window.app.user.stream === "SC_Exp" && key === "sc_exp") isMatch = true;
+                            if (window.app.user.stream === "EG" && key === "eco") isMatch = true;
+                            if (window.app.user.stream === "LP" && (key === "lettres" || key === "univ")) isMatch = true;
+                            if (window.app.user.stream === "SH" && key === "univ") isMatch = true;
+                            if (window.app.user.stream === "STEG" && key === "ecoles") isMatch = true;
                         }
                         const matchBadge = isMatch ? `<div class="badge-reco">Recommandé pour toi</div>` : '';
                         const matchClass = isMatch ? 'match' : '';
@@ -304,27 +313,28 @@
                 }
             },
 
-            // === 6.2 PARCOURS TIMELINE (Comment y arriver ?) ===
+            // === 7.2 PARCOURS TIMELINE (Comment y arriver ?) ===
             pathFinder: {
                 getPathsForJob: function(jobTitle) {
-                    return PATHS_DATA[jobTitle] || PATHS_DATA["default"];
+                    if (PATHS_DATA[jobTitle]) return PATHS_DATA[jobTitle];
+                    return PATHS_DATA["default"];
                 },
 
                 renderHTML: function(job) {
                     const pathData = this.getPathsForJob(job.title);
-                    const userLevel = app.user ? app.user.level : null; 
-
+                    const user = window.app.user ? window.app.user : null; 
+                    const userLevel = user ? user.level : null;
                     let timelineHTML = `<div class="timeline">`;
-                    let currentUserStepFound = false;
-
+                    
                     pathData.main.forEach((step, index) => {
                         let isCurrent = false;
-                        if (userLevel) {
-                            if (step.year.includes(userLevel)) isCurrent = true;
-                            if (userLevel === 'TC' && index === 1) isCurrent = true;
-                            if (userLevel === '3AC' && index === 0) isCurrent = true;
+                        // LOGIQUE DU BADGE "TU ES ICI"
+                        if (userLevel && LEVEL_MAP[userLevel]) {
+                            if (LEVEL_MAP[userLevel].some(levelText => step.year.includes(levelText))) {
+                                isCurrent = true;
+                            }
                         }
-                        if (isCurrent) currentUserStepFound = true;
+                        
                         const activeClass = isCurrent ? 'is-current' : '';
                         const currentLabel = isCurrent ? `<span class="level-badge active">Tu es ici</span>` : '';
 
@@ -343,19 +353,30 @@
 
                     let altsHTML = ``;
                     if (pathData.alternatives) {
-                        altsHTML = `<div class="alternatives-box"><h4 style="color:#1565c0; margin-bottom:15px; display:flex; align-items:center; gap:8px;"><span>🛡️</span> Alternatives (Plan B / C)</h4>`;
+                        altsHTML = `<div class="alternatives-box">
+                            <h4 style="color:#1565c0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                                <span>🛡️</span> Alternatives (Plan B / C)
+                            </h4>`;
                         pathData.alternatives.forEach(alt => {
-                            altsHTML += `<div class="alt-item"><span class="alt-condition">👉 ${alt.condition}</span><div class="alt-desc">${Array.isArray(alt.path) ? alt.path.join('<br/>') : alt.path}</div></div>`;
+                            altsHTML += `
+                                <div class="alt-item">
+                                    <span class="alt-condition">👉 ${alt.condition}</span>
+                                    <div class="alt-desc">${Array.isArray(alt.path) ? alt.path.join('<br/>') : alt.path}</div>
+                                </div>
+                            `;
                         });
                         altsHTML += `</div>`;
                     }
 
                     return `
                         <div class="parcours-container" id="parcoursDetail">
-                            <div class="parcours-header"><span>🛣️</span> Ton chemin vers : ${job.title}</div>
+                            <div class="parcours-header">
+                                <span>🛣️</span> Ton chemin vers : ${job.title}
+                            </div>
+                            
                             ${timelineHTML}
                             ${altsHTML}
-                            ${!userLevel ? '<p style="text-align:center; font-size:0.8rem; color:#888; margin-top:10px;"><i>(Connecte-toi pour voir ta position actuelle sur ce chemin)</i></p>' : ''}
+                            ${!user ? '<p style="text-align:center; font-size:0.8rem; color:#888; margin-top:10px;"><i>(Connecte-toi pour voir ta position actuelle sur ce chemin)</i></p>' : ''}
                         </div>
                     `;
                 }
@@ -448,7 +469,7 @@
             // --- RENDERING ---
             renderDashboard: function() {
                 document.getElementById('uName').textContent = this.user.name;
-                const random = this.jobs.sort(() => 0.5 - Math.random()).slice(0, 3);
+                const random = this.jobs.sort(() => 0.5 - Math.random()).slice(0,3);
                 document.getElementById('featuredJobs').innerHTML = random.map(j => this.createJobCard(j)).join('');
             },
 
@@ -475,7 +496,7 @@
 
             createJobCard: function(job) {
                 return `
-                    <div class="job-card" onclick="app.showJob(${job.id})">
+                    <div class="job-card" onclick="window.app.showJob(${job.id})">
                         <div class="job-header">
                             <div class="job-title">${job.title}</div>
                             <span class="job-category">${job.category}</span>
@@ -494,26 +515,36 @@
                 const title = job.title;
                 let pathHTML = "";
                 if(title.includes("Ingénieur") || cat.includes("Ingénierie")) {
-                    pathHTML = `<ul><li><strong>1re Année :</strong> Tronc Commun ou 1ère Bac Scientifique.</li><li><strong>Classes Préparatoires (CPGE) :</strong> MPSI, PCSI, PTSI (2 ans).</li><li><strong>Concours :</strong> Concours National Commun (CNC) vers les Écoles d'Ingénieurs.</li><li><strong>Alternatives :</strong> Prépas intégrées ou Admission sur titre.</li></ul>`;
+                    pathHTML = `<ul><li><strong>1re Année :</strong> Tronc Commun ou 1ère Bac Scientifique.</li><li><strong>Classes Préparatoires (CPGE) :</strong> MPSI, PCSI, PTSI (2 ans).</li><li><strong>Concours :</strong> Concours National Commun (CNC) vers les Écoles d'Ingénieurs (ENSA, ENSET, ENSEM...).</li><li><strong>Alternatives :</strong> Prépas intégrées ou Admission sur titre en 1ère année après Bac.</li></ul>`;
                 }
                 else if(cat === "Santé" || title.includes("Médecin") || title.includes("Dentiste") || title.includes("Pharmacien")) {
-                    pathHTML = `<ul><li><strong>Bac :</strong> Scientifique.</li><li><strong>1ère Année Santé :</strong> 1 an universitaire tronc commun.</li><li><strong>Concours :</strong> Réussir le concours d'entrée en Faculté de Médecine.</li><li><strong>Durée :</strong> De 6 à 8 ans.</li></ul>`;
+                    pathHTML = `<ul><li><strong>Bac :</strong> Scientifique (Sc Maths ou Sc Exp).</li><li><strong>1ère Année Santé (PASS/Médecine) :</strong> 1 an universitaire tronc commun.</li><li><strong>Concours/Examen :</strong> Réussir le concours d'entrée en Faculté de Médecine, Pharmacie ou Dentaire.</li><li><strong>Durée :</strong> De 6 à 8 ans d'études supérieures.</li></ul>`;
                 }
-                else if(["Btp", "Mécanique", "Industrie"].some(c => cat.includes(c)) || title.includes("Technicien")) {
-                    pathHTML = `<ul><li><strong>Parcours Court :</strong> BTS / DUT (ISET).</li><li><strong>OFPPT :</strong> Formation en Technicien Spécialisé.</li><li><strong>Bac Pro :</strong> Poursuite possible vers des formations techniques supérieures.</li></ul>`;
+                else if(["Btp", "Mécanique", "Industrie", "Electricité", "Maintenance"].some(c => cat.includes(c)) || title.includes("Technicien")) {
+                    pathHTML = `<ul><li><strong>Parcours Court :</strong> BTS / DUT (ISET) en spécialité correspondante.</li><li><strong>OFPPT :</strong> Formation en Technicien Spécialisé (TS) ou Technicien dans les centres spécialisés.</li><li><strong>Bac Pro :</strong> Poursuite possible vers des formations techniques supérieures.</li><li><strong>Stage :</strong> Une grande partie de la formation est basée sur l'alternance ou le stage.</li></ul>`;
                 }
-                else if(["Commerce", "Finance", "Banque", "Marketing", "Gestion"].some(c => cat.includes(c))) {
-                    pathHTML = `<ul><li><strong>Bac :</strong> Économie & Gestion.</li><li><strong>Grandes Écoles :</strong> École de Commerce (ENCG) après prépa.</li><li><strong>Université :</strong> Faculté de Droit ou Sciences Économiques.</li></ul>`;
+                else if(["Commerce", "Vente", "Finance", "Banque", "Marketing", "Gestion"].some(c => cat.includes(c))) {
+                    pathHTML = `<ul><li><strong>Bac :</strong> Économie & Gestion ou Scientifique.</li><li><strong>Grandes Écoles :</strong> École de Commerce (ENCG) après prépa ou Admission sur Concours (ENSEM, ISCAE).</li><li><strong>Université :</strong> Faculté de Droit ou Sciences Économiques (FSJES).</li><li><strong>BTS :</strong> Options Commerce, Communication ou Comptabilité.</li></ul>`;
                 }
-                else { pathHTML = `<ul><li><strong>Bac :</strong> Choix d'un Bac compatible.</li><li><strong>Formation :</strong> Voir les écoles privées ou OFPPET adaptées.</li></ul>`; }
+                else if(cat === "Droit" || cat === "Administratif" || cat === "Comptabilité") {
+                    pathHTML = `<ul><li><strong>Faculté :</strong> Faculté de Droit (Licence en Droit Privé ou Public).</li><li><strong>Crédits :</strong> Niveau Licence (L1-L2-L3).</li><li><strong>Mastère :</strong> Spécialisation (Mastère en Fiscalité, Droit des Affaires...).</li><li><strong>Préparation :</strong> Prépa ENA ou IGA pour l'administration publique.</li></ul>`;
+                }
+                 else if(cat === "Hôtellerie" || cat === "Tourisme") {
+                    pathHTML = `<ul><li><strong>École Spécialisée :</strong> ISIT (Institut Supérieur International du Tourisme) ou Écoles hôtelières agréées.</li><li><strong>Bac :</strong> Tout type de Bac avec une appétence pour le service.</li><li><strong>Durée :</strong> Cycle Bachelor (3 ans) ou Cycle Master.</li><li><strong>Stages :</strong> Obligatoires durant toute la formation.</li></ul>`;
+                }
+                else if(cat === "Enseignement") {
+                    pathHTML = `<ul><li><strong>Faculté :</strong> Licence et Master dans la matière enseignée.</li><li><strong>CRMEF :</strong> Centre Régional des Métiers de l'Éducation et de la Formation pour le Diplôme Professeur (Cycle 1 an).</li><li><strong>ENFG :</strong> Pour le professorat en premier cycle collégial.</li></ul>`;
+                }
+                else {
+                    pathHTML = `<ul><li><strong>Bac :</strong> Choix d'un Bac compatible avec le secteur.</li><li><strong>Formation Spécialisée :</strong> Voir les écoles privées ou OFPPET adaptées à "${job.category}".</li><li><strong>Recherche :</strong> Consulter les fiches métiers de l'Anapec ou l'Université la plus proche.</li></ul>`;
+                }
                 return `<div class="path-content visible"><h4 style="color:var(--accent-path); margin-bottom:10px;">Parcours générique :</h4>${pathHTML}</div>`;
             },
 
-            // --- AFFICHAGE DU JOB (MODAL) ---
             showJob: function(id) {
                 const job = this.jobs.find(j => j.id === id);
                 if(!job) return;
-                const pathGeneric = this.getMoroccanPath(job); // Le générique (ancien)
+                const pathGeneric = this.getMoroccanPath(job);
                 
                 document.getElementById('modalBody').innerHTML = `
                     <h2 style="color:var(--primary);">${job.title}</h2>
@@ -527,12 +558,15 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-path" onclick="document.getElementById('parcoursDetail').classList.toggle('hidden')">
+                    <button class="btn btn-path" onclick="
+                        const el = document.getElementById('parcoursDetail'); 
+                        if(el.style.display === 'none' || el.style.display === '') el.style.display = 'block'; 
+                        else el.style.display = 'none';
+                    ">
                         🛣️ Comment y arriver ? (Parcours Année par Année)
                     </button>
                     
-                    ${app.pathFinder.renderHTML(job)}
-
+                    ${this.pathFinder.renderHTML(job)}
                     ${pathGeneric}
                 `;
                 document.getElementById('jobModal').style.display = 'flex';
@@ -560,7 +594,10 @@
                 document.getElementById('qText').textContent = `${this.currentQ+1}/${this.questions.length}. ${q.t}`;
                 const p = ((this.currentQ)/this.questions.length)*100;
                 document.getElementById('quizProgress').style.width = p+'%';
-                document.getElementById('qOptions').innerHTML = Object.keys(q.o).map(k => `<button class="option-btn" onclick="app.answerQuiz('${k}')">${k}</button>`).join('');
+                
+                document.getElementById('qOptions').innerHTML = Object.keys(q.o).map(k => `
+                    <button class="option-btn" onclick="window.app.answerQuiz('${k}')">${k}</button>
+                `).join('');
             },
 
             answerQuiz: function(key) {
@@ -576,8 +613,10 @@
                 const sortedScores = Object.entries(this.quizScores).sort((a,b) => b[1] - a[1]).slice(0,3);
                 document.getElementById('resProfile').textContent = this.user.level + (this.user.stream ? " - "+this.user.stream : "");
                 document.getElementById('resStream').textContent = this.user.stream || "Tronc Commun";
-                document.getElementById('resTags').innerHTML = sortedScores.map(x => `<span style="background:var(--accent); color:#333; padding:5px 10px; border-radius:15px; font-weight:bold;">${x[0]} (${x[1]})</span>`).join('');
-                
+                document.getElementById('resTags').innerHTML = sortedScores.map(x => `
+                    <span style="background:var(--accent); color:#333; padding:5px 10px; border-radius:15px; font-weight:bold;">${x[0]} (${x[1]})</span>
+                `).join('');
+
                 let candidateJobs = this.jobs;
                 if (this.user.stream && STREAM_MAP[this.user.stream]) {
                     const allowedCats = STREAM_MAP[this.user.stream];
@@ -590,5 +629,8 @@
             }
         };
 
+        // Attach app to window for global access
+        window.app = app;
+
         // Start App
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => window.app.init());

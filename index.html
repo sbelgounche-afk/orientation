@@ -92,9 +92,9 @@
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #999; }
         
         .path-content {
-            display: none; background: #fff3e0; padding: 15px; border-left: 4px solid var(--accent-path); margin-top: 15px; border-radius: 4px;
+            display: block; background: #fff3e0; padding: 15px; border-left: 4px solid var(--accent-path); margin-top: 15px; border-radius: 4px;
         }
-        .path-content.visible { display: block; animation: fadeIn 0.3s; }
+        .path-content.hidden { display: none; }
         
         /* --- STATS --- */
         .stat-box { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
@@ -167,7 +167,7 @@
             background: #fff3e0; border-left-color: var(--accent-path); font-weight: 600;
         }
         .timeline-year { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block; }
-        .timeline-title { font-size: 1rem; color: #333; display: block; }
+        .timeline-title { font-size: 1rem; color: #333; display: block; font-weight: bold; }
         
         .alternatives-box {
             background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 8px; padding: 15px; margin-top: 20px;
@@ -192,7 +192,7 @@
     <!-- MODAL DETAIL -->
     <div class="modal" id="jobModal">
         <div class="modal-content">
-            <span class="close-modal" onclick="app.closeModal()">&times;</span>
+            <span class="close-modal" onclick="window.app.closeModal()">&times;</span>
             <div id="modalBody"></div>
         </div>
     </div>
@@ -202,10 +202,10 @@
             <nav>
                 <div class="logo">🇲🇦 Orient<span>Maroc</span></div>
                 <div class="nav-links" id="navLinks" style="display:none;">
-                    <button onclick="app.navigate('dashboard')">Accueil</button>
-                    <button onclick="app.navigate('jobs')">Métiers</button>
-                    <button onclick="app.navigate('comparator')">Comparateur</button>
-                    <button onclick="app.logout()">Quitter</button>
+                    <button onclick="window.app.navigate('dashboard')">Accueil</button>
+                    <button onclick="window.app.navigate('jobs')">Métiers</button>
+                    <button onclick="window.app.navigate('comparator')">Comparateur</button>
+                    <button onclick="window.app.logout()">Quitter</button>
                 </div>
             </nav>
         </div>
@@ -219,7 +219,7 @@
                 <h2 style="color: var(--primary); margin-bottom: 10px;">Bienvenue sur Orient'Maroc</h2>
                 <p style="color: #666; margin-bottom: 30px;">La plateforme d'orientation scolaire et professionnelle.</p>
                 
-                <form onsubmit="app.saveProfile(event)">
+                <form onsubmit="window.app.saveProfile(event)">
                     <div class="form-group" style="text-align: left;">
                         <label>Ton Prénom</label>
                         <input type="text" id="name" required placeholder="Ex: Sara">
@@ -227,7 +227,7 @@
                     
                     <div class="form-group" style="text-align: left;">
                         <label>Niveau Scolaire</label>
-                        <select id="level" required onchange="app.toggleStream()">
+                        <select id="level" required onchange="window.app.toggleStream()">
                             <option value="">Choisir...</option>
                             <option value="3AC">3ème Année Collège</option>
                             <option value="TC">Tronc Commun</option>
@@ -260,7 +260,7 @@
                 <h1>Salut, <span id="uName">Élève</span> ! 👋</h1>
                 <p style="opacity: 0.9; margin-top: 5px;">Prêt à découvrir ton avenir professionnel au Maroc ?</p>
                 <div style="margin-top: 20px;">
-                    <button class="btn" style="background: white; color: var(--primary);" onclick="app.startQuiz()">Passer le Test d'Orientation</button>
+                    <button class="btn" style="background: white; color: var(--primary);" onclick="window.app.startQuiz()">Passer le Test d'Orientation</button>
                 </div>
             </div>
 
@@ -287,7 +287,7 @@
                 <div id="qOptions" class="options-grid"></div>
             </div>
             <div style="text-align: center; margin-top: 20px;">
-                <button class="btn btn-outline" onclick="app.navigate('dashboard')">Annuler</button>
+                <button class="btn btn-outline" onclick="window.app.navigate('dashboard')">Annuler</button>
             </div>
         </section>
 
@@ -310,7 +310,7 @@
             </div>
 
             <div style="text-align: center;">
-                <button class="btn btn-primary" onclick="app.navigate('dashboard')">Retour Accueil</button>
+                <button class="btn btn-primary" onclick="window.app.navigate('dashboard')">Retour Accueil</button>
             </div>
         </section>
 
@@ -318,7 +318,7 @@
         <section id="jobs">
             <div class="filter-container">
                 <label>🔎 Filtrer par secteur :</label>
-                <select id="categoryFilter" onchange="app.filterJobs(this.value)">
+                <select id="categoryFilter" onchange="window.app.filterJobs(this.value)">
                     <option value="all">Toutes les catégories</option>
                     <!-- Options injectées par JS -->
                 </select>
@@ -362,7 +362,7 @@
                         </select>
                     </div>
 
-                    <button class="btn btn-primary" onclick="app.comparator.runComparison()">Comparer</button>
+                    <button class="btn btn-primary" onclick="window.app.comparator.runComparison()">Comparer</button>
                 </div>
             </div>
 
@@ -370,7 +370,7 @@
 
             <div style="text-align: center; margin-top: 30px;">
                 <p style="margin-bottom: 10px;">Indécis ? Passez notre test personnalisé pour une analyse précise.</p>
-                <button class="btn btn-outline" onclick="app.startQuiz()">Faire le test d'orientation</button>
+                <button class="btn btn-outline" onclick="window.app.startQuiz()">Faire le test d'orientation</button>
             </div>
         </section>
 
