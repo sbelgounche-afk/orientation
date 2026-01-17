@@ -135,7 +135,7 @@
             "3AC": ["3ème Année Collège"],
             "TC": ["Tronc Commun"],
             "1BAC": ["1ère Bac"],
-            "2BAC": ["2ème Bac"]
+            "2BAC": ["2ème Bac"],
         };
 
         // --- 6. DONNÉES PARCOURS TIMELINE (EXPERT) ---
@@ -143,36 +143,37 @@
             "Médecin": {
                 main: [
                     { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Obtenir le brevet et viser une moyenne > 12." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Expérimentales", desc: "Spécialité SVT (Sciences de la Vie et de la Terre)." },
-                    { year: "1ère Bac", target: "2ème Bac Sciences Expérimentales", desc: "Très bonnes notes requises (>14/20 conseillé)." },
-                    { year: "Baccalauréat", target: "Pass-LAS (1ère Année Commune)", desc: "S'inscrire au Pass-LAS. 1 année universitaire commune (SVT/BCP)." },
-                    { year: "Pass-LAS", target: "CNA (Concours National d'Accès)", desc: "Réussir le CNA pour accéder à la filière Médecine/Dentaire/Pharma." },
-                    { year: "1er Cycle (3 ans)", target: "Externat ou Internat", desc: "Formation théorique et clinique à la Faculté." },
-                    { year: "2ème Cycle (3 ans)", target: "Thèse de Médecine", desc: "Soutenance de thèse pour devenir Docteur en Médecine." }
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Expérimentales ou science mathématiques", desc: "Spécialité SVT (Sciences de la Vie et de la Terre)." },
+                    { year: "1ère Bac", target: "2ème Bac Sciences SVT ou Sciences Mathématiques A", desc: "Une bonne maitrise de SVT  (seuil: >12/20)." },
+                    { year: "Baccalauréat", target: "FMP (1ère Année Commune)", desc: "S'inscrire au FMP. 1 année universitaire commune (SVT/BCP)." },
+                    { year: "FMP", target: "CNA (Concours National d'Accès)", desc: "Réussir le CNA pour accéder à la filière Médecine/Dentaire/Pharma." },
+                    { year: "1er Cycle (2 ans)", target: "Externat ou Internat", desc: "Formation sciences fondamentales et à l’enseignement préclinique, avec des cours comme anatomie, physiologie, biochimie et des immersions d’introduction au système de santé." },
+                    { year: "2ème Cycle (3 ans)", target: "Début travaux pratiques", desc: "combinent enseignements théoriques avancés et stages cliniques externes à mi-temps, pour apprendre les compétences médicales et travailler en milieu hospitalier." },
+                    { year: "3ème cycle (1 ans)", target: "Thèse de Médecine", desc: "consacrée à des stages cliniques à plein temps, pendant lesquels tu effectues des rotations dans différents services hospitaliers et prépares ta thèse de doctorat en médecine." },
                 ],
                 alternatives: [
-                    { condition: "Si échec au CNA (Concours)", path: ["Option: Re-essayer Pass-LAS une 2ème fois (possible une fois).", "Option: Se réorienter vers Pharmacie ou Dentaire si rang suffisant."] },
-                    { condition: "Si refusé d'accès à la Faculté", path: ["Option: Licences Scientifiques (Biologie/Chimie).", "Objectif: Concours Internat des Hôpitaux ou Master Santé Publique."] }
+                    { condition: "Si échec au CNA (Concours)", path: ["Option: Re-essayer le Concours d’accès aux Facultés de Médecine et de Pharmacie (FMP) l'année suivante.", "Option: Etudier le médecine à l'étranger.", "Option:Se réorienter vers Pharmacie ou Dentaire si rang suffisant ."] },
+                    
                 ]
             },
             "Ingénieur": {
                 main: [
-                    { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Obtenir le brevet et viser une moyenne > 12." },
+                    { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Obtenir le brevet ." },
                     { year: "Tronc Commun", target: "1ère Bac Sciences Maths", desc: "Optionnel: Sciences Maths A (Bio) ou B (PC)." },
                     { year: "1ère Bac", target: "2ème Bac Sciences Maths", desc: "Se concentrer sur les exercices difficiles (Arithmétique, Analyse)." },
                     { year: "Baccalauréat", target: "CPGE (Classes Préparatoires)", desc: "Intégrer une CPGE (MPSI, PTSI, TSI) dans un lycée ou prépa intégrée." },
                     { year: "CPGE (2 ans)", target: "CNC (Concours National Commun)", desc: "Concours très sélectif vers les Grandes Écoles d'Ingénieurs (ENSA, ENSEM, ENIM...)." },
-                    { year: "École d'Ingénieur", target: "Cycle Ingénieur (3 ans)", desc: "Diplôme d'Ingénieur d'État. Formation haute et technique." }
+                    { year: "École d'Ingénieurie", target: "Cycle Ingénieur (3 ans)", desc: "Diplôme d'Ingénieur d'État. Formation haute et technique." }
                 ],
                 alternatives: [
-                    { condition: "Si échec au BAC", path: ["Option: Redoubler la 2ème année Bac.", "Option: Se réorienter vers OFPPT (TS Mécanique/Électricité)."] },
-                    { condition: "Si échec au CNC", path: ["Option: EST (École Supérieure de Technologie).", "Diplôme: Ingénieur d'État après 3 ans (plus accessible).", "Option: Admission parallèle (Cycle Ingénieur) en 1ère année."] }
+                    { condition: "Si échec au BAC", path: ["Option: Redoubler la 2ème année Bac.","Option: Passer bac libre", "Option: Se réorienter vers OFPPT (TS Mécanique/Électricité)."] },
+                    { condition: "Si échec au CNC", path: ["Option: EST (École Supérieure de Technologie).", "Diplôme: Ingénieur d'État après 3 ans (plus accessible).", "Option: Admission parallèle (Cycle Ingénieur) en 1ère année.","Option: Redoubler la 2ème année prépa."] }
                 ]
             },
             "Avocat": {
                 main: [
-                    { year: "3ème Année Collège", target: "Tronc Commun Scientifique", desc: "Important de garder une bonne moyenne." },
-                    { year: "Tronc Commun", target: "1ère Bac Sciences Exp / SH", desc: "Avoir l'esprit d'analyse et d'argumentation." },
+                    { year: "3ème Année Collège", target: "Recommender: Tronc commun lettre. Possible avec Tronc Commun Scientifique", desc: "Réussire le brevet." },
+                    { year: "Tronc Commun", target: "1ère Bac Sciences Exp / LSH", desc: "Avoir l'esprit d'analyse et d'argumentation." },
                     { year: "1ère Bac", target: "2ème Bac", desc: "Terminer le Bac avec mention (Bien ou Très Bien conseillé)." },
                     { year: "Baccalauréat", target: "Faculté de Droit", desc: "Inscription en Licence de Droit Privé ou Public." },
                     { year: "Licence (3 ans)", target: "Master (2 ans)", desc: "Spécialisation en Droit des Affaires, Fiscalité ou Justice." },
@@ -222,11 +223,12 @@
                         duration: "5 à 7 ans (Supérieur)",
                         jobs: ["Ingénieur", "Architecte", "Chercheur", "Data Scientist", "Professeur Universitaire"],
                         market: "Secteurs très porteurs (Informatique, Énergie, Aérospatial)",
-                        profile: "Logique très développée, excellence en maths, rigueur scientifique."
+                        profile: "Logique très développée, excellence en maths, rigueur scientifique, bosseur.",
+                        Commentaire: "Recommandé pour les élèves aimant les défis intellectuels et la résolution de problèmes complexes."
                     },
                     "sc_exp": {
                         label: "Sciences Expérimentales",
-                        difficulty: 4, math: 4, load: 4,
+                        difficulty: 3, math: 3, load: 4,
                         duration: "6 à 8 ans (Santé) ou 5 ans (Supérieur)",
                         jobs: ["Médecin", "Pharmacien", "Vétérinaire", "Biologiste", "Ingénieur Environnement"],
                         market: "Secteur Santé (stable) et Environnement en croissance",
@@ -264,7 +266,7 @@
                         market: "Haut niveau de rémunération et opportunités à l'international.",
                         profile: "Bon niveau général, capacité de travail intense, ambition."
                     },
-                    "ofppt": {
+                    "OFPPT": {
                         label: "OFPPT (Formation Professionnelle)",
                         difficulty: 2, math: 2, load: 4,
                         duration: "2 ans (Technicien) à 3 ans (Spécialisé)",

@@ -123,7 +123,7 @@
         }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        .comp-stat-row { margin-bottom: 12px; }
+        .comp-stat-row { margin-bottom: 22px; }
         .comp-stat-label { font-size: 0.8rem; color: #666; display: flex; justify-content: space-between; margin-bottom: 3px; }
         .progress-bg { background: #e0e0e0; height: 6px; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 3px; background: var(--secondary); width: 0%; transition: width 0.5s ease; }
