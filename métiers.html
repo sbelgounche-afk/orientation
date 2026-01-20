@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientation Scolaire Maroc - Module IA</title>
+    <style>
+        :root {
+            --primary: #006233; /* Vert Maroc */
+            --secondary: #c1272d; /* Rouge Maroc */
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Conteneur principal */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Section Formulaire (Simulation de l'existant) */
+        .form-section {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box; /* Fix padding issue */
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #004d28;
+        }
+
+        /* Section Résultats (Le module ajouté) */
+        #results-section {
+            display: none; /* Caché par défaut */
+            margin-top: 30px;
+            border-top: 2px dashed #ddd;
+            padding-top: 20px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .result-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--secondary);
+        }
+
+        .badge {
+            background: #eee;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        /* Grille des métiers */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background: #fff;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .job-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .job-path {
+            font-size: 0.9em;
+            color: #555;
+            background: #f0f8f0;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .job-path strong {
+            color: var(--primary);
+        }
+
+        /* Message d'erreur ou info */
+        .info-message {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffeeba;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mon Orientation Avenir</h1>
+        <p class="subtitle">Système d'orientation intelligent - Édition Maroc</p>
+    </header>
+
+    <main>
+        <!-- SECTION 1 : FORMULAIRE EXISTANT (SIMULÉ) -->
+        <section class="form-section">
+            <h3>Vos Informations Scolaires</h3>
+            <form id="orientationForm">
+                <div class="form-group">
+                    <label for="niveau">Année Scolaire Actuelle</label>
+                    <select id="niveau" required>
+                        <option value="" disabled selected>-- Choisir l'année --</option>
+                        <option value="college">Collège (3ème Année)</option>
+                        <option value="tc">Tronc Commun</option>
+                        <option value="1ere">1ère Année Baccalauréat</option>
+                        <option value="term">2ème Année Baccalauréat (Terminal)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="filiere-group">
+                    <label for="filiere">Filière</label>
+                    <select id="filiere" required disabled>
+                        <option value="" disabled selected>-- D'abord choisir l'année --</option>
+                        <!-- Les options seront remplies dynamiquement -->
+                    </select>
+                </div>
+
+                <button type="submit">Obtenir mes suggestions</button>
+            </form>
+        </section>
+
+        <!-- SECTION 2 : AJOUT DU MODULE DE SUGGESTION -->
+        <section id="results-section">
+            <div class="result-header">
+                <h2 id="result-title">Résultats</h2>
+                <span class="badge" id="result-context"></span>
+            </div>
+            <div id="results-container">
+                <!-- Les cartes de métiers s'afficheront ici -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2023 Orientation Maroc - Module IA V1.0
+    </footer>
+
+    <!-- ================================================================= -->
+    <!--                DÉBUT DU CODE À AJOUTER (LOGIQUE & DATA)           -->
+    <!-- ================================================================= -->
+    <script>
+        /**
+         * 1. STRUCTURE DE DONNÉES (MÉTIER PAR FILIÈRE - SYSTÈME MAROCAIN)
+         * Cette base de données contient uniquement des métiers réalistes et accessibles.
+         */
+        const baseMetiersMaroc = {
+            "Sciences Mathématiques": [
+                {
+                    titre: "Ingénieur d'État",
+                    path: "Bac SM → CPGE (MPSI/PTSI) → Concours CNC → Grande École (ENSA, ENSEM, INPT)",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Médecin",
+                    path: "Bac SM → Faculté de Médecine (FMP) → 7 ans → Résidanat",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Architecte",
+                    path: "Bac SM → ENA (École Nationale d'Architecture) ou Concours d'architecture",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Data Scientist / Actuaire",
+                    path: "Bac SM → Cycle Prépa Intégré ou FST Informatique/Maths → École Spécialisée",
+                    niveau: "lycee"
+                }
+            ],
+            "Sciences Expérimentales": [
+                {
+                    titre: "Médecin / Dentiste",
+                    path: "Bac SE → Faculté de Médecine/Pharmacie → Résidanat",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Ingénieur Agronome",
+                    path: "Bac SE → IAV Hassan II ou Écoles privées d'agronomie",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Biologiste / Chercheur",
+                    path: "Bac SE → Faculté des Sciences (FST) → Master/Doctorat",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Infirmier / Sage-femme",
+                    path: "Bac SE → ISTA (Institut Spécialisé) ou Concours d'entrée",
+                    niveau: "lycee"
+                }
+            ],
+            "Sciences Économiques": [
+                {
+                    titre: "Manager / Chef d'Entreprise",
+                    path: "Bac SEG → ENCG (École Nationale de Commerce et Gestion) ou ISCAE",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Expert-Comptable",
+                    path: "Bac SEG → École Supérieure de Commerce (ESC) ou Université (option Audit)",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Marketing / Commercial",
+                    path: "Bac SEG → Écoles de Commerce (ESG, IGA, etc.) ou Université",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Agent de Banque / Assurances",
+                    path: "Bac SEG → OFPPT (Technicien Spécialisé) ou Université",
+                    niveau: "lycee"
+                }
+            ],
+            "Lettres et Sciences Humaines": [
+                {
+                    titre: "Professeur (Enseignement Secondaire)",
+                    path: "Bac LSH → CRMEF (Centre Régional des Métiers de l'Éducation et de la Formation)",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Journaliste / Communicant",
+                    path: "Bac LSH → École de Journalisme (ESJ) ou Institut de Communication",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Psychologue / Sociologue",
+                    path: "Bac LSH → Faculté des Lettres (FSLH) → Licence/Master",
+                    niveau: "lycee"
+                },
+                {
+                    titre: "Avocat / Juriste",
+                    path: "Bac LSH → Faculté de Droit (Souvent accessible ou nécessite une mise à niveau selon les universités)",
+                    niveau: "lycee"
+                }
+            ]
+        };
+
+        /**
+         * 2. LOGIQUE DE FILTRAGE ET DE SUGGESTION
+         * Fonction principale qui analyse l'entrée utilisateur et renvoie les métiers adéquats.
+         */
+        function obtenirSuggestions(niveau, filiere) {
+            // Normalisation des entrées pour éviter les erreurs de casse
+            const filiereClean = filiere.trim();
+            
+            // Récupération des métiers bruts depuis la base
+            const metiersPossibles = baseMetiersMaroc[filiereClean];
+
+            // Gestion du cas : Aucune filière trouvée (Erreur système)
+            if (!metiersPossibles) {
+                return [];
+            }
+
+            // Filtrage adaptatif selon le niveau scolaire
+            return metiersPossibles.map(metier => {
+                let suggestion = { ...metier }; // Copie de l'objet
+                
+                if (niveau === "college") {
+                    // COLLÈGE : Sensibilisation, on cache le chemin technique complexe
+                    suggestion.path = "À découvrir : Plusieurs débouchés possibles après le Bac scientifique.";
+                    suggestion.titre = `Découverte : ${metier.titre}`;
+                } 
+                else if (niveau === "tc") {
+                    // TRONC COMMUN : Insister sur l'importance du choix de la filière en 1ère bac
+                    if (!suggestion.path.includes("Bac")) {
+                         suggestion.path = `Indispensable : Choisir la filière ${filiereClean} en 1ère Bac.`;
+                    }
+                }
+                // Pour 1ère et Terminale, on garde le chemin détaillé réel (lycee case)
+                
+                return suggestion;
+            });
+        }
+
+        // ----------------------------------------------------------------
+        // 3. INTÉGRATION AVEC L'INTERFACE (DOM MANIPULATION)
+        // ----------------------------------------------------------------
+
+        // Mapping initial des niveaux vers les filières
+        const filieresParNiveau = {
+            "college": [],
+            "tc": [], // Pas de spécialité en TC
+            "1ere": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"],
+            "term": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"]
+        };
+
+        const niveauSelect = document.getElementById('niveau');
+        const filiereSelect = document.getElementById('filiere');
+        const form = document.getElementById('orientationForm');
+        const resultsSection = document.getElementById('results-section');
+        const resultsContainer = document.getElementById('results-container');
+        const resultContext = document.getElementById('result-context');
+
+        // Activation/Désactivation de la liste des filières selon le niveau
+        niveauSelect.addEventListener('change', function() {
+            const niveau = this.value;
+            filiereSelect.innerHTML = '<option value="" disabled selected>-- Choisir la filière --</option>';
+            
+            if (filieresParNiveau[niveau]) {
+                if (niveau === "college" || niveau === "tc") {
+                    // Si pas de filière spécifique, on simule une option "Général" pour le code
+                    const opt = document.createElement('option');
+                    opt.value = "General"; 
+                    opt.textContent = niveau === "college" ? "Cycle Collégial" : "Tronc Commun (Tous)";
+                    filiereSelect.appendChild(opt);
+                } else {
+                    // Remplir avec les vraies filières
+                    filieresParNiveau[niveau].forEach(f => {
+                        const opt = document.createElement('option');
+                        opt.value = f;
+                        opt.textContent = f;
+                        filiereSelect.appendChild(opt);
+                    });
+                }
+                filiereSelect.disabled = false;
+            } else {
+                filiereSelect.disabled = true;
+            }
+        });
+
+        // Gestion de la soumission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const niveau = niveauSelect.value;
+            const filiere = filiereSelect.value;
+            
+            // Animation de chargement (simulée)
+            resultsSection.style.display = 'block';
+            resultsContainer.innerHTML = '<p style="text-align:center;">Analyse du profil en cours...</p>';
+            resultContext.textContent = `${niveau.toUpperCase()} - ${filiere.toUpperCase()}`;
+
+            setTimeout(() => {
+                afficherResultats(niveau, filiere);
+            }, 600);
+        });
+
+        // Fonction d'affichage finale
+        function afficherResultats(niveau, filiere) {
+            resultsContainer.innerHTML = '';
+
+            // Cas particuliers : Collège et TC (Pas de filière précise)
+            if (niveau === "college") {
+                afficherMessage("Au collège, l'important est de garder le cap en sciences et en français. Vous n'avez pas encore de filière, mais voici des métiers potentiels pour l'avenir.");
+                // On montre tout pour inspirer
+                afficherCartes(baseMetiersMaroc["Sciences Mathématiques"].slice(0,2));
+                afficherCartes(baseMetiersMaroc["Sciences Économiques"].slice(0,2));
+                return;
+            }
+
+            if (niveau === "tc") {
+                afficherMessage("En Tronc Commun, vous allez bientôt choisir votre voie. Chaque filière ouvre des portes spécifiques. Voici un aperçu par filière :");
+                // Afficher un exemple de chaque
+                afficherCartes(baseMetiersMaroc["Sciences Expérimentales"].slice(0,1));
+                afficherCartes(baseMetiersMaroc["Sciences Économiques"].slice(0,1));
+                return;
+            }
+
+            // 1ère Bac / Terminale : Logique stricte de filière
+            const suggestions = obtenirSuggestions(niveau, filiere);
+
+            if (suggestions.length === 0) {
+                afficherMessage("Aucun métier ne correspond à cette combinaison dans notre base. Veuillez contacter un conseiller d'orientation.", "error");
+            } else {
+                afficherCartes(suggestions);
+                
+                // Avertissement spécifique si Lettres (ex: pas de médecine)
+                if (filiere === "Lettres et Sciences Humaines") {
+                    const note = document.createElement('div');
+                    note.className = "info-message";
+                    note.innerHTML = "<strong>Note :</strong> Avec une filière littéraire, les accès aux écoles d'ingénieurs ou de médecine ne sont pas directs. Privilégiez les concours de journalisme, CRMEF (enseignement) ou les facultés de droit/lettres.";
+                    resultsContainer.appendChild(note);
+                }
+            }
+        }
+
+        function afficherMessage(msg, type) {
+            const div = document.createElement('div');
+            div.className = "info-message";
+            div.textContent = msg;
+            if (type === "error") div.style.backgroundColor = "#f8d7da";
+            resultsContainer.appendChild(div);
+        }
+
+        function afficherCartes(liste) {
+            liste.forEach(job => {
+                const card = document.createElement('div');
+                card.className = "job-card";
+                
+                card.innerHTML = `
+                    <div class="job-title">${job.titre}</div>
+                    <div class="job-path">
+                        <strong>Parcours :</strong> ${job.path}
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            });
+        }
+    </script>
+    <!-- ================================================================= -->
+    <!--                     FIN DU CODE AJOUTÉ                             -->
+    <!-- ================================================================= -->
+
+</body>
+</html>

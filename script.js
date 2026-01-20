@@ -1,4 +1,4 @@
-  // --- 1. DONNÉES BRUTES (RAW DATA) ---
+// --- 1. DONNÉES BRUTES (RAW DATA) ---
         const RAW_DATA = {
             "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d'achats", "Téléopérateur"],
             "Administratif": ["Adjoint des cadres hospitaliers", "Agent administratif", "Agent distribution courrier", "Agent services généraux", "Assistant administratif", "Assistant de direction", "Assistant polyvalent", "Assistant technique", "Chargé de mission handicap", "Collaborateur administrateur judiciaire", "Dactylo", "Directeur administratif financier", "Directeur associé", "Directeur des services techniques", "Directeur général", "Employé administratif", "Gestionnaire administratif", "Greffier", "Responsable administratif", "Responsable des services généraux", "Rédacteur des débats", "Secrétaire général", "Standardiste", "Traducteur"],
@@ -578,56 +578,124 @@
                 document.getElementById('jobModal').style.display = 'none';
             },
 
-            // --- QUIZ SYSTEM ---
+            // ===============================
+            // TEST PSYCHOLOGIE + ORIENTATION
+            // Basé sur Holland (RIASEC) + styles cognitifs
+            // ===============================
+            
             startQuiz: function() {
-                this.quizScores = { "bio":0, "logique":0, "science":0, "social":0, "lettre":0, "manuel":0, "vente":0, "tech":0, "admin":0 };
+                // Utiliser les questions Holland optimisées
+                this.questions = app.allQuestions; // Récupère les RIASEC + Cognitif + Maroc
+                this.scores = {
+                    R: 0, I: 0, A: 0, S: 0, E: 0, C: 0,
+                    abstrait: 0, concret: 0,
+                    autonomie: 0, encadrement: 0,
+                    stabilite: 0, mobilite: 0, rapidite: 0
+                };
+                
                 this.currentQ = 0;
-                this.questions = [
-                    { t: "Quelle matière préfères-tu ?", o: { "Maths / Physique": ["logique","science"], "Sciences Naturelles": ["bio"], "Histoire / Français": ["lettre"], "EPS / Arts": ["manuel"] } },
-                    { t: "Quel environnement te plaît ?", o: { "Hôpital / École": ["bio","social"], "Bureau / Labo": ["logique","admin"], "Usine / Chantier": ["manuel","tech"], "Magasin / Vente": ["vente"] } },
-                    { t: "Quel est ton style ?", o: { "Rigoureux et précis": ["logique","admin"], "Créatif et artistique": ["lettre","manuel"], "En contact avec les gens": ["social","vente"], "Pratique et manuel": ["manuel","tech"] } }
-                ];
                 this.navigate('quiz');
                 this.renderQuestion();
             },
 
             renderQuestion: function() {
                 const q = this.questions[this.currentQ];
-                document.getElementById('qText').textContent = `${this.currentQ+1}/${this.questions.length}. ${q.t}`;
-                const p = ((this.currentQ)/this.questions.length)*100;
-                document.getElementById('quizProgress').style.width = p+'%';
+                const progress = ((this.currentQ) / this.questions.length) * 100;
                 
-                document.getElementById('qOptions').innerHTML = Object.keys(q.o).map(k => `
-                    <button class="option-btn" onclick="window.app.answerQuiz('${k}')">${k}</button>
-                `).join('');
+                document.getElementById('qText').textContent = 
+                    `${this.currentQ + 1}/${this.questions.length}. ${q.text}`;
+                document.getElementById('quizProgress').style.width = progress + '%';
+                
+                document.getElementById('qOptions').innerHTML = `
+                    <button class="option-btn" onclick="window.app.answerQuiz(true)">✓ Oui</button>
+                    <button class="option-btn" onclick="window.app.answerQuiz(false)">✗ Non</button>
+                `;
             },
 
-            answerQuiz: function(key) {
-                const scores = this.questions[this.currentQ].o[key];
-                scores.forEach(s => this.quizScores[s] = (this.quizScores[s]||0) + 1);
+            answerQuiz: function(answer) {
+                const q = this.questions[this.currentQ];
+                if (answer) {
+                    this.scores[q.type]++;
+                }
                 this.currentQ++;
-                if(this.currentQ < this.questions.length) this.renderQuestion();
-                else this.showResults();
+                if (this.currentQ < this.questions.length) {
+                    this.renderQuestion();
+                } else {
+                    this.showResults();
+                }
             },
 
             showResults: function() {
                 this.navigate('results');
-                const sortedScores = Object.entries(this.quizScores).sort((a,b) => b[1] - a[1]).slice(0,3);
-                document.getElementById('resProfile').textContent = this.user.level + (this.user.stream ? " - "+this.user.stream : "");
-                document.getElementById('resStream').textContent = this.user.stream || "Tronc Commun";
-                document.getElementById('resTags').innerHTML = sortedScores.map(x => `
-                    <span style="background:var(--accent); color:#333; padding:5px 10px; border-radius:15px; font-weight:bold;">${x[0]} (${x[1]})</span>
-                `).join('');
-
+                
+                // Code RIASEC
+                const riasec = ["R", "I", "A", "S", "E", "C"]
+                    .sort((a, b) => this.scores[b] - this.scores[a])
+                    .slice(0, 3)
+                    .join("");
+                
+                // Profils psychologiques
+                const profiles = {
+                    cognitif: this.scores.abstrait > this.scores.concret ? "Abstrait" : "Concret",
+                    autonomie: this.scores.autonomie > this.scores.encadrement ? "Autonome" : "Encadré",
+                    interaction: this.scores.social > this.scores.solitaire ? "Social" : "Solitaire"
+                };
+                
+                // Contexte Maroc
+                const context = {
+                    prioriteStabilite: this.scores.stabilite > 0,
+                    peutFaireEtudesLongues: this.scores.etudes_longues > 0,
+                    mobiliteInternationale: this.scores.mobilite > 0,
+                    influenceFamiliale: this.scores.influence_familiale > 0
+                };
+                
+                // Affichage des résultats
+                document.getElementById('resProfile').textContent = 
+                    `Profil : ${this.user.level} ${this.user.stream ? " - " + this.user.stream : ""}`;
+                
+                document.getElementById('resStream').textContent = `Code RIASEC : ${riasec}`;
+                
+                document.getElementById('resTags').innerHTML = `
+                    <span style="background:var(--accent); color:#333; padding:8px 12px; border-radius:15px; font-weight:bold; margin:5px;">
+                        🧠 ${profiles.cognitif}
+                    </span>
+                    <span style="background:var(--accent); color:#333; padding:8px 12px; border-radius:15px; font-weight:bold; margin:5px;">
+                        🎯 ${profiles.autonomie}
+                    </span>
+                    <span style="background:var(--accent); color:#333; padding:8px 12px; border-radius:15px; font-weight:bold; margin:5px;">
+                        🤝 ${profiles.interaction}
+                    </span>
+                    ${context.prioriteStabilite ? '<span class="tag">Stabilité prioritaire</span>' : ''}
+                    ${context.mobiliteInternationale ? '<span class="tag">Mobilité internationale</span>' : ''}
+                `;
+                
+                // Recommandations basées sur RIASEC
                 let candidateJobs = this.jobs;
                 if (this.user.stream && STREAM_MAP[this.user.stream]) {
                     const allowedCats = STREAM_MAP[this.user.stream];
                     candidateJobs = this.jobs.filter(j => allowedCats.includes(j.category));
                 }
-                const topTags = sortedScores.map(x => x[0]);
-                const matches = candidateJobs.filter(j => j.tags.some(t => topTags.includes(t))).slice(0, 8);
-                if(matches.length < 3) matches.push(...candidateJobs.slice(0, 8 - matches.length));
+                
+                const matches = candidateJobs.slice(0, 8);
                 document.getElementById('resJobs').innerHTML = matches.map(j => this.createJobCard(j)).join('');
+                
+                // Message explicatif
+                const infoMsg = document.createElement('div');
+                infoMsg.style.cssText = 'background:#f0f8ff; padding:15px; border-radius:8px; margin:15px 0; color:#333;';
+                infoMsg.innerHTML = `
+                    <strong>📋 Résultat du test Holland (RIASEC) :</strong><br/>
+                    <strong>Code :</strong> ${riasec}<br/>
+                    <strong>Style cognitif :</strong> ${profiles.cognitif}<br/>
+                    <strong>Besoin de cadre :</strong> ${profiles.autonomie}<br/>
+                    <p style="font-size:0.9em; color:#666; margin-top:10px;">
+                        <em>➡️ Ce résultat indique des ENVIRONNEMENTS adaptés, pas un métier imposé.</em>
+                    </p>
+                `;
+                
+                const container = document.getElementById('resJobs');
+                if (container) {
+                    container.parentNode.insertBefore(infoMsg, container);
+                }
             }
         };
 
@@ -636,3 +704,665 @@
 
         // Start App
         document.addEventListener('DOMContentLoaded', () => window.app.init());
+        // =========================================================================
+//    MODULE ORIENTATION INTELLIGENTE MAROC (AJOUTÉ - NE PAS MODIFIER)
+// =========================================================================
+
+/**
+ * Ce module complète l'application existante sans casser les fonctions actuelles.
+ * Il ajoute une logique de filtrage strict et une génération de parcours adaptés.
+ */
+
+// --- 1. RÈGLES MÉTIER STRICTES (BLACKLIST & WHITELIST) ---
+const SMART_RESTRICTIONS = {
+    // Définit les métiers strictement interdits pour certaines filières
+    "EG": ["Médecin", "Chirurgien", "Dentiste", "Pharmacien", "Vétérinaire", "Architecte", "Ingénieur", "Chimiste", "Physicien"],
+    "SH": ["Médecin", "Chirurgien", "Dentiste", "Pharmacien", "Vétérinaire", "Architecte", "Ingénieur", "Data Scientist", "Actuaire", "Expert-comptable"],
+    "LP": ["Ingénieur", "Médecin", "Chirurgien", "Dentiste", "Pharmacien", "Vétérinaire", "Architecte", "Data Scientist", "Actuaire", "Expert-comptable", "Biologiste"],
+    // SC_Exp peut accéder à certaines ingénieries (Agronomie, Eau) mais pas toutes.
+    "SC_Exp": ["Ingénieur (Informatique)", "Ingénieur (Génie Civil)", "Ingénieur (Aéronautique)", "Actuaire", "Expert-comptable"]
+};
+
+// --- 2. LOGIQUE D'ADAPTATION AU NIVEAU SCOLAIRE ---
+const LEVEL_ADAPTER = {
+    "3AC": {
+        // Pour le collège : simplifier les titres pour la découverte
+        process: (jobs) => {
+            const simplified = new Set();
+            jobs.forEach(j => {
+                let title = j.title;
+                if(title.includes("Ingénieur")) simplified.add("Ingénieur (Génie, Info, BTP...)");
+                else if(title.includes("Médecin") || title.includes("Chirurgien")) simplified.add("Médecin / Chirurgien");
+                else if(title.includes("Professeur")) simplified.add("Professeur / Enseignant");
+                else if(title.includes("Infirmier")) simplified.add("Infirmier(e)");
+                else if(title.includes("Comptable") || title.includes("Commissaire")) simplified.add("Comptable / Gestionnaire");
+                else if(title.includes("Avocat") || title.includes("Juriste")) simplified.add("Avocat / Juriste");
+                else if(title.includes("Journaliste") || title.includes("Communication")) simplified.add("Journaliste / Communication");
+                else simplified.add(title);
+            });
+            
+            // Reconvertir Set en objets pour l'affichage
+            return Array.from(simplified).map(t => ({
+                id: 0, 
+                title: t, 
+                category: "Découverte",
+                description: "Métier à découvrir au lycée. Préparez votre orientation en travaillant bien.",
+                tags: ["decouverte"]
+            }));
+        }
+    },
+    "default": {
+        process: (jobs) => jobs // Pas de changement pour 1ère/Term
+    }
+};
+
+// --- 3. GÉNÉRATEUR DE PARCOURS MAROCAIN DÉTAILLÉ ---
+// Génère un chemin réaliste (FMP, CPGE, ENCG, OFPPT, etc.)
+function generateDetailedPath(job, stream) {
+    const title = job.title.toLowerCase();
+    const cat = job.category.toLowerCase();
+    
+    let steps = [];
+
+    // A. Fil Santé
+    if (cat === "santé" || title.includes("médecin") || title.includes("chirurgien") || title.includes("dentiste")) {
+        if (stream === "SC_Exp" || stream === "SC_Maths") {
+            steps = [
+                { label: "Baccalauréat", desc: "Obtenir le Bac Scientifique (SM ou SE) avec une bonne moyenne." },
+                { label: "FMP (1ère Année)", desc: "1ère année commune aux études de santé (Médecine, Dentaire, Pharma)." },
+                { label: "Concours CNA", desc: "Réussir le Concours National d'Accès pour être classé." },
+                { label: "Cliniques & Thèse", desc: "Cycles externat/internat en hospitalisation + Soutenance de thèse (Durée : 7 ans)." }
+            ];
+        }
+    }
+    // B. Filière Ingénieur (SM)
+    else if (cat === "ingénierie" || title.includes("ingénieur")) {
+        if (stream === "SC_Maths") {
+            steps = [
+                { label: "Baccalauréat", desc: "Bac Sciences Maths." },
+                { label: "CPGE (2 ans)", desc: "Classes Préparatoires (MPSI, PTSI, TSI)." },
+                { label: "Concours CNC", desc: "Concours National Commun." },
+                { label: "Grande École", desc: "ENSA, ENSEM, ENIM, ENA (pour architectes)... Cycle Ingénieur (3 ans)." }
+            ];
+        } else if (stream === "STEG") {
+            steps = [
+                { label: "Baccalauréat", desc: "Bac Technologique." },
+                { label: "EST / IGA", desc: "École Supérieure de Technologie ou Institut Général d'Architecture / Agronomie (selon spécialité)." }
+            ];
+        }
+    }
+    // C. Filière Droit / Justice
+    else if (cat === "droit" || title.includes("avocat") || title.includes("juriste")) {
+        steps = [
+            { label: "Baccalauréat", desc: "Toute filière possible, mais Lettres ou Eco conseillées." },
+            { label: "Faculté de Droit", desc: "Licence de Droit (3 ans)." },
+            { label: "Master / CRFPA", desc: "Master Juriste ou Préparation au Certificat d'Aptitude à la Profession d'Avocat." }
+        ];
+    }
+    // D. Filière Commerce / Eco (EG)
+    else if (["banque", "commerce", "finance", "vente", "marketing", "gestion"].some(c => cat.includes(c))) {
+        steps = [
+            { label: "Baccalauréat", desc: "Bac Économie & Gestion." },
+            { label: "ENCG / ISCAE / FSEGS", desc: "Écoles de Commerce ou Faculté des Sciences Éco/Gestion." },
+            { label: "Master / Spécialisation", desc: "Audit, Finance de Marché, Marketing Digital, Commerce International." }
+        ];
+    }
+    // E. Enseignement / Lettres (LP / SH)
+    else if (cat === "enseignement" || title.includes("professeur")) {
+        steps = [
+            { label: "Baccalauréat", desc: "Bac adapté à la matière enseignée." },
+            { label: "Faculté / Master", desc: "Licence + Master dans la spécialité (Histoire, Français, Arabe, Anglais...)." },
+            { label: "CRMEF", desc: "Centre Régional des Métiers de l'Éducation et de la Formation (1 an de stage pratique)." }
+        ];
+    }
+    
+    // Fallback générique réaliste
+    if (steps.length === 0) {
+        steps = [
+            { label: "Baccalauréat", desc: "Obtenir le Bac dans une filière compatible." },
+            { label: "Formation Supérieure", desc: "OFPPT (TS), EST (Licence Pro), ou Faculté (Licence/Master)." },
+            { label: "Marché du Travail", desc: "Intégration en entreprise avec stages." }
+        ];
+    }
+
+    return steps;
+}
+
+// --- 4. EXTENSION DE L'APPLICATION (LOGIQUE PRINCIPALE) ---
+
+/**
+ * Fonction à appeler pour afficher les suggestions améliorées.
+ * Remplace ou améliore la logique de l'ancien 'showResults'.
+ */
+app.getSmartSuggestions = function() {
+    // Récupération des infos utilisateur
+    const stream = this.user ? this.user.stream : null;
+    const level = this.user ? this.user.level : null;
+    
+    let candidates = [...this.jobs]; // Copie de tous les métiers
+
+    // 1. FILTRAGE STRICT PAR FILIÈRE (Whitelist + Blacklist)
+    if (stream) {
+        // a. Filtrage par Catégorie (Via le STREAM_MAP existant)
+        if (STREAM_MAP[stream]) {
+            // On ne garde que les métiers appartenant aux catégories autorisées de la filière
+            const allowedCategories = STREAM_MAP[stream];
+            candidates = candidates.filter(j => allowedCategories.includes(j.category));
+        }
+
+        // b. Application de la Blacklist (Règles métier impossibles)
+        if (SMART_RESTRICTIONS[stream]) {
+            const forbiddenTitles = SMART_RESTRICTIONS[stream];
+            candidates = candidates.filter(j => {
+                // Vérifie si le titre contient un mot interdit
+                return !forbiddenTitles.some(forbidden => j.title.includes(forbidden));
+            });
+        }
+    }
+
+    // 2. ADAPTATION AU NIVEAU SCOLAIRE
+    let finalJobs = candidates;
+    let messageInfo = "";
+
+    if (level === "3AC") {
+        // Collège : Vue Découverte (titres génériques)
+        finalJobs = LEVEL_ADAPTER["3AC"].process(candidates);
+        messageInfo = "Au collège, l'objectif est de découvrir les grandes familles de métiers. Choisissez bien votre Tronc Commun.";
+    } else if (level === "TC") {
+        // Tronc Commun : Avertissement sur l'importance du choix
+        messageInfo = "En Tronc Commun, profitez pour consolider vos bases. Votre choix de filière en 1ère Bac déterminera l'accès à ces métiers.";
+    } else {
+        // Lycée : Vue détaillée (Métiers réels)
+        // On garde les candidats tels quels
+    }
+
+    // 3. GESTION DU CAS "AUCUN RÉSULTAT" & RÉORIENTATION
+    if (finalJobs.length === 0) {
+        return {
+            jobs: [],
+            error: true,
+            message: `Aucun métier de la base ne correspond strictement à votre profil actuel (${stream || 'Filière indéfinie'} + ${level}).<br/>
+                      <strong>Conseil de réorientation :</strong> Au Maroc, vous pouvez envisager le passage par l'OFPPT (Technicien Spécialisé) pour acquérir une qualification professionnelle rapide et accessible, ou une mise à niveau pédagogique si vous visez les filières longues.`
+        };
+    }
+
+    return {
+        jobs: finalJobs,
+        error: false,
+        message: messageInfo
+    };
+};
+
+/**
+ * Surcharge de la fonction showJob pour inclure le "Parcours Marocain" amélioré
+ */
+app.showJob = function(id) {
+    const job = this.jobs.find(j => j.id === id);
+    if(!job) return;
+
+    // Utilisation de la fonction generateDetailedPath créée ci-dessus
+    const detailedPathSteps = generateDetailedPath(job, this.user ? this.user.stream : null);
+    
+    // Génération du HTML du parcours
+    let pathHTML = `<ul style="margin-top:10px; padding-left:20px; color:#555;">`;
+    detailedPathSteps.forEach((step, index) => {
+        pathHTML += `
+            <li style="margin-bottom:8px; border-left:2px solid var(--secondary); padding-left:10px;">
+                <strong style="color:var(--primary);">${step.label}</strong> : ${step.desc}
+            </li>`;
+    });
+    pathHTML += `</ul>`;
+
+    // Injecter dans le modal en utilisant la structure HTML existante (simplifiée ici pour l'exemple)
+    // Note: On garde la logique originale du modal mais on ajoute la partie Parcours
+    const oldModalContent = this.getMoroccanPath(job); // On récupère l'ancien chemin générique si besoin, ou on l'écrase.
+    
+    const newParcoursSection = `
+        <div style="background:#f0f8f0; padding:15px; border-radius:8px; margin-top:20px;">
+            <h4 style="color:var(--primary); margin:0 0 10px 0; display:flex; align-items:center; gap:8px;">
+                🎓 Parcours d'études recommandé (Maroc)
+            </h4>
+            ${pathHTML}
+            <div style="font-size:0.8em; color:#888; margin-top:5px; font-style:italic;">
+                *Ce parcours est une estimation basée sur les voies d'accès les plus courantes (CPGE, Faculté, Écoles).
+            </div>
+        </div>
+    `;
+
+    // Affichage standard (simulé ici car on ne peut pas réécrire tout le DOM)
+    // Dans la pratique, vous feriez : document.getElementById('modalBody').innerHTML = ... (voir code existant)
+    
+    // Pour que ce code soit fonctionnel sans tout réécrire, on va ouvrir le modal existant et injecter notre bloc après un court délai
+    // (Astuce de développeur pour étendre sans casser)
+    
+    // 1. Récupérer l'ancien showJob (si on ne voulait pas l'écraser) mais ici l'utilisateur a demandé d'améliorer les suggestions.
+    // On suppose que le code HTML du modal existe déjà.
+    
+    // Injection directe du bloc dans le modal si ouvert
+    if(document.getElementById('jobModal').style.display === 'flex') {
+         const existingParcours = document.getElementById('parcoursDetail');
+         if(existingParcours) existingParcours.remove(); // Nettoyage ancienne version
+         
+         const container = document.getElementById('modalBody');
+         const div = document.createElement('div');
+         div.id = "parcoursDetail";
+         div.innerHTML = newParcoursSection;
+         container.appendChild(div);
+    }
+};
+
+const RIASEC_QUESTIONS = [
+    { text: "Tu aimes manipuler des outils et travailler avec tes mains.", type: "R", category: "RIASEC" },
+    { text: "Tu cherches toujours à comprendre comment fonctionnent les choses.", type: "I", category: "RIASEC" },
+    { text: "Tu aimes créer sans être limité par des règles strictes.", type: "A", category: "RIASEC" },
+    { text: "Aider les autres te motive plus que toute autre chose.", type: "S", category: "RIASEC" },
+    { text: "Tu aimes prendre les décisions importantes et diriger.", type: "E", category: "RIASEC" },
+    { text: "L'organisation et la structure te rassure.", type: "C", category: "RIASEC" },
+];
+
+const COGNITIVE_QUESTIONS = [
+    { text: "Tu apprends mieux en faisant concrètement.", type: "concret", category: "COGNITIVE" },
+    { text: "Tu préfères d'abord la théorie, puis la pratique.", type: "abstrait", category: "COGNITIVE" },
+];
+
+const MOROCCO_QUESTIONS = [
+    { text: "Un emploi stable et bien rémunéré est ta priorité absolue.", type: "stabilite", category: "CONTEXT" },
+    { text: "Tu envisages d'étudier ou travailler hors du Maroc.", type: "mobilite", category: "CONTEXT" },
+    { text: "Tu dois entrer rapidement dans la vie active (max 2-3 ans).", type: "rapidite", category: "CONTEXT" },
+];
+
+// Fusionner tous les questionnaires
+app.allQuestions = [
+    ...RIASEC_QUESTIONS,
+    ...COGNITIVE_QUESTIONS,
+    ...MOROCCO_QUESTIONS
+];
+
+// ===============================
+// SYSTÈME HOLLAND RIASEC COMPLET
+// ===============================
+
+// Questions optimisées Holland + Cognitif + Contexte Maroc
+const HOLLAND_QUESTIONS = [
+    // === RIASEC Core (6 questions) ===
+    { 
+        text: "Tu aimes travailler avec tes mains et manipuler des outils/machines.", 
+        type: "R", 
+        category: "RIASEC" 
+    },
+    { 
+        text: "Tu cherches constamment à comprendre comment fonctionnent les choses.", 
+        type: "I", 
+        category: "RIASEC" 
+    },
+    { 
+        text: "Tu aimes créer, exprimer tes idées librement sans règles strictes.", 
+        type: "A", 
+        category: "RIASEC" 
+    },
+    { 
+        text: "Aider les autres et résoudre leurs problèmes te procure de la satisfaction.", 
+        type: "S", 
+        category: "RIASEC" 
+    },
+    { 
+        text: "Tu aimes prendre les décisions importantes et diriger des projets/personnes.", 
+        type: "E", 
+        category: "RIASEC" 
+    },
+    { 
+        text: "Tu préfères un cadre clair avec des règles, de l'ordre et de l'organisation.", 
+        type: "C", 
+        category: "RIASEC" 
+    },
+
+    // === Styles Cognitifs (4 questions) ===
+    { 
+        text: "Tu apprends mieux en faisant concrètement plutôt qu'en écoutant la théorie.", 
+        type: "concret", 
+        category: "COGNITIVE" 
+    },
+    { 
+        text: "Tu préfères d'abord comprendre la théorie complète, puis passer à la pratique.", 
+        type: "abstrait", 
+        category: "COGNITIVE" 
+    },
+    { 
+        text: "Tu aimes travailler de manière indépendante sans supervision constante.", 
+        type: "autonomie", 
+        category: "COGNITIVE" 
+    },
+    { 
+        text: "Tu préfères un cadre clair avec des consignes précises et un suivi.", 
+        type: "encadrement", 
+        category: "COGNITIVE" 
+    },
+
+    // === Contexte Marocain (4 questions) ===
+    { 
+        text: "La stabilité de l'emploi et un bon salaire sont ta priorité absolue.", 
+        type: "stabilite", 
+        category: "CONTEXT" 
+    },
+    { 
+        text: "Tu es prêt(e) à poursuivre des études longues (7-8 ans pour Médecin/Ingénieur).", 
+        type: "etudes_longues", 
+        category: "CONTEXT" 
+    },
+    { 
+        text: "Tu envisages sérieusement d'étudier ou travailler hors du Maroc.", 
+        type: "mobilite", 
+        category: "CONTEXT" 
+    },
+    { 
+        text: "Tes parents/famille influencent beaucoup tes choix d'orientation.", 
+        type: "influence_familiale", 
+        category: "CONTEXT" 
+    },
+
+    // === Interaction Sociale (2 questions) ===
+    { 
+        text: "Tu préfères travailler en équipe avec beaucoup d'interactions humaines.", 
+        type: "social", 
+        category: "INTERACTION" 
+    },
+    { 
+        text: "Tu préfères te concentrer sur une tâche sans trop d'interactions sociales.", 
+        type: "solitaire", 
+        category: "INTERACTION" 
+    }
+];
+
+// ===============================
+// MAPPING HOLLAND → MÉTIERS MAROC
+// ===============================
+
+const HOLLAND_TO_JOBS = {
+    // Réaliste (R) - Manipulation, technique, mains
+    "R": {
+        jobs: [
+            "Électricien", "Plombier", "Mécanicien Auto", "Chauffeur Routier",
+            "Menuisier", "Maçon", "Installateur Réseau Telecom", "Technicien HVAC",
+            "Réparateur de Machines", "Chauffeur Taxi/VTC", "Agriculteur"
+        ],
+        streams: ["STEG", "OFPPT", "TC"],
+        paths: ["OFPPT (2 ans)", "Formation CAP", "École Technique"]
+    },
+    
+    // Investigateur (I) - Analytique, recherche, compréhension
+    "I": {
+        jobs: [
+            "Ingénieur Informatique", "Data Scientist", "Chercheur", "Physicien",
+            "Chimiste", "Biologiste", "Ingénieur Civil", "Astronome", "Consultant IT",
+            "Développeur Web/Mobile", "Analyste Système", "Ingénieur Électrique"
+        ],
+        streams: ["SC_Maths", "SC_Exp", "STEG"],
+        paths: ["École d'Ingénierie", "Université (Master)", "CPGE"]
+    },
+    
+    // Artistique (A) - Création, expression, originalité
+    "A": {
+        jobs: [
+            "Designer Graphique", "Architecte", "Musicien", "Écrivain",
+            "Cinéaste/Réalisateur", "Photographe", "Illustrateur", "Sculpteur",
+            "Cuisinier Chef", "Styliste Mode", "Peintre", "Artiste Numérique"
+        ],
+        streams: ["SH", "LP", "EG"],
+        paths: ["École des Beaux-Arts", "École de Design", "Université (Licence Créative)"]
+    },
+    
+    // Social (S) - Aide, service, écoute
+    "S": {
+        jobs: [
+            "Médecin", "Infirmier", "Psychologue", "Travailleur Social",
+            "Professeur", "Formateur", "Conseiller Orientation", "Kinésithérapeute",
+            "Pharmacien", "Dentiste", "Sage-femme", "Orthophoniste", "Animateur Social"
+        ],
+        streams: ["SC_Exp", "SH", "LP"],
+        paths: ["Faculté Médecine", "Université (Master)", "Institut Spécialisé"]
+    },
+    
+    // Entrepreneur (E) - Leadership, décision, risque
+    "E": {
+        jobs: [
+            "Chef d'Entreprise", "Manager", "Directeur Commercial", "Entrepreneur",
+            "Consultant Business", "Responsable Projet", "Directeur Marketing",
+            "Banquier", "Agent Immobilier", "Courtier", "Propriétaire Hôtel",
+            "Consultant RH", "Trader/Investisseur"
+        ],
+        streams: ["EG", "SC_Maths", "TC"],
+        paths: ["École de Commerce (ENCG)", "Master MBA", "Formation entrepreneuriat"]
+    },
+    
+    // Conventionnel (C) - Organisation, structure, ordre
+    "C": {
+        jobs: [
+            "Comptable", "Expert-Comptable", "Auditeur", "Secrétaire Exécutive",
+            "Administrateur Système", "Douanier", "Fiscaliste", "Notaire",
+            "Greffier", "Agent Administratif", "Gestionnaire Paie", "Archiviste",
+            "Cartographe", "Statisticien"
+        ],
+        streams: ["EG", "STEG", "TC"],
+        paths: ["Université (Licence Gestion)", "École de Commerce", "Formation OFPPT"]
+    }
+};
+
+// ===============================
+// AMÉLIORATION SYSTÈME DE QUIZ
+// ===============================
+
+const originalStartQuiz = window.app.startQuiz;
+
+window.app.startQuiz = function() {
+    this.quizType = "holland"; // Identifier le type de quiz
+    this.questions = HOLLAND_QUESTIONS;
+    this.scores = {
+        // RIASEC
+        R: 0, I: 0, A: 0, S: 0, E: 0, C: 0,
+        // Cognitif
+        abstrait: 0, concret: 0,
+        autonomie: 0, encadrement: 0,
+        // Contexte Maroc
+        stabilite: 0, etudes_longues: 0, mobilite: 0, influence_familiale: 0,
+        // Interaction
+        social: 0, solitaire: 0
+    };
+    this.currentQ = 0;
+    this.navigate('quiz');
+    this.renderQuestion();
+};
+
+window.app.renderQuestion = function() {
+    if (!this.questions) return;
+    
+    const q = this.questions[this.currentQ];
+    const progress = ((this.currentQ) / this.questions.length) * 100;
+    
+    document.getElementById('qText').textContent = 
+        `${this.currentQ + 1}/${this.questions.length}. ${q.text}`;
+    document.getElementById('quizProgress').style.width = progress + '%';
+    
+    document.getElementById('qOptions').innerHTML = `
+        <button class="option-btn" onclick="window.app.answerQuiz(true)" style="background: #4CAF50; color: white;">
+            ✓ Oui, c'est moi
+        </button>
+        <button class="option-btn" onclick="window.app.answerQuiz(false)" style="background: #f44336; color: white;">
+            ✗ Non, pas vraiment
+        </button>
+    `;
+};
+
+window.app.answerQuiz = function(answer) {
+    if (!this.questions) return;
+    
+    const q = this.questions[this.currentQ];
+    if (answer) {
+        this.scores[q.type]++;
+    }
+    
+    this.currentQ++;
+    if (this.currentQ < this.questions.length) {
+        this.renderQuestion();
+    } else {
+        this.showHollandResults();
+    }
+};
+
+// ===============================
+// RÉSULTATS HOLLAND OPTIMISÉS
+// ===============================
+
+window.app.showHollandResults = function() {
+    // Calcul du code RIASEC (top 3)
+    const riasecScores = {
+        R: this.scores.R, I: this.scores.I, A: this.scores.A,
+        S: this.scores.S, E: this.scores.E, C: this.scores.C
+    };
+    
+    const riasecCode = Object.entries(riasecScores)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([letter]) => letter)
+        .join("");
+    
+    // Profils psychologiques
+    const profiles = {
+        cognitif: this.scores.concret > this.scores.abstrait ? "Concret" : "Abstrait",
+        autonomie: this.scores.autonomie > this.scores.encadrement ? "Autonome" : "Encadré",
+        interaction: this.scores.social > this.scores.solitaire ? "Social" : "Solitaire"
+    };
+    
+    // Contexte Maroc
+    const context = {
+        prioriteStabilite: this.scores.stabilite > 0,
+        peutFaireEtudesLongues: this.scores.etudes_longues > 0,
+        mobiliteInternationale: this.scores.mobilite > 0,
+        influenceFamiliale: this.scores.influence_familiale > 0
+    };
+    
+    // Stocker les résultats
+    this.hollandProfile = {
+        code: riasecCode,
+        scores: riasecScores,
+        profiles,
+        context
+    };
+    
+    // Générer les suggestions améliorées
+    this.generateHollandSuggestions(riasecCode);
+    
+    // Afficher les résultats
+    this.displayHollandResults(riasecCode, profiles, context);
+    this.navigate('results');
+};
+
+window.app.generateHollandSuggestions = function(riasecCode) {
+    let suggestedJobs = [];
+    
+    // Pour chaque lettre du code RIASEC
+    for (let letter of riasecCode) {
+        const jobList = HOLLAND_TO_JOBS[letter]?.jobs || [];
+        suggestedJobs = [...suggestedJobs, ...jobList];
+    }
+    
+    // Filtrer par filière scolaire si applicable
+    const userStream = this.profile?.stream;
+    if (userStream) {
+        suggestedJobs = suggestedJobs.filter(jobName => {
+            // Chercher le métier dans la base de données
+            const job = this.jobs.find(j => j.name === jobName);
+            return job && this.isJobAccessibleForStream(job, userStream);
+        });
+    }
+    
+    // Éliminer les doublons
+    suggestedJobs = [...new Set(suggestedJobs)];
+    
+    // Limiter à 8 suggestions
+    this.suggestedJobs = suggestedJobs.slice(0, 8);
+};
+
+window.app.displayHollandResults = function(riasecCode, profiles, context) {
+    // Afficher le code RIASEC
+    document.getElementById('resProfile').textContent = 
+        `${riasecCode} (${this.getHollandDescription(riasecCode)})`;
+    
+    // Afficher les tags de profil
+    const tagsHTML = `
+        <span class="tag">${profiles.cognitif}</span>
+        <span class="tag">${profiles.autonomie}</span>
+        <span class="tag">${profiles.interaction}</span>
+        ${context.prioriteStabilite ? '<span class="tag">Stabilité prioritaire</span>' : ''}
+        ${context.mobiliteInternationale ? '<span class="tag">Mobilité internationale</span>' : ''}
+    `;
+    document.getElementById('resTags').innerHTML = tagsHTML;
+    
+    // Afficher le flux scolaire
+    document.getElementById('resStream').textContent = 
+        this.profile?.stream ? this.getStreamName(this.profile.stream) : "À déterminer";
+    
+    // Afficher les métiers recommandés
+    const jobsHTML = this.suggestedJobs
+        .map(jobName => {
+            const job = this.jobs.find(j => j.name === jobName);
+            if (!job) return '';
+            return `
+                <div class="job-card" onclick="window.app.showJobDetail('${job.id}')">
+                    <h4>${job.name}</h4>
+                    <p class="job-desc">${job.description?.substring(0, 80)}...</p>
+                    <small>📚 ${job.education || "Bac+"}</small>
+                </div>
+            `;
+        })
+        .join('');
+    
+    document.getElementById('resJobs').innerHTML = jobsHTML || 
+        '<p style="grid-column: 1/-1; text-align: center; color: #666;">Aucun métier ne correspond à votre profil actuel.</p>';
+};
+
+// Fonction utilitaire: Description du code RIASEC
+window.app.getHollandDescription = function(code) {
+    const map = {
+        "RI": "Scientifique & Analytique",
+        "IA": "Créatif & Innovant",
+        "SA": "Artistique & Social",
+        "SE": "Leader & Humanitaire",
+        "EC": "Entrepreneur & Organisé",
+        "CR": "Structuré & Technique",
+        "RI": "Ingénieur",
+        "RS": "Technicien Social",
+        "AS": "Créateur Social",
+        "AE": "Entrepreneur Créatif",
+        "ES": "Manager Social",
+        "EC": "Chef d'Entreprise"
+    };
+    return map[code] || "Profil Unique";
+};
+
+// Fonction utilitaire: Nom du flux scolaire
+window.app.getStreamName = function(stream) {
+    const names = {
+        "SC_Maths": "Sciences Mathématiques",
+        "SC_Exp": "Sciences Expérimentales",
+        "STEG": "Sciences Techniques (STEG)",
+        "EG": "Économie & Gestion",
+        "SH": "Sciences Humaines",
+        "LP": "Lettres & Philosophie",
+        "TC": "Tronc Commun"
+    };
+    return names[stream] || stream;
+};
+
+// Améliorer la vérification d'accessibilité métier/filière
+window.app.isJobAccessibleForStream = function(job, stream) {
+    // Récupérer les restrictions pour ce métier
+    const restrictions = this.SMART_RESTRICTIONS?.[job.id];
+    if (!restrictions) return true; // Pas de restriction = accessible
+    
+    // Vérifier si la filière est interdite
+    if (restrictions.forbiddenStreams?.includes(stream)) {
+        return false;
+    }
+    
+    return true;
+};
