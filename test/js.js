@@ -1,4 +1,6 @@
- // --- DONNÉES (COURTE POUR L'EXEMPLE - A INSÉRER ICI TOUTE LA BASE RAW_DATA DU MESSAGE PRÉCÉDENT) ---
+ // --- 
+ // script de test.html  
+ // DONNÉES (COURTE POUR L'EXEMPLE - A INSÉRER ICI TOUTE LA BASE RAW_DATA DU MESSAGE PRÉCÉDENT) ---
         // Note: Pour que ce code fonctionne, tu dois coller l'objet RAW_DATA complet fourni précédemment ici.
         // Ci-dessous une version raccourcie pour l'exécution immédiate.
         const RAW_DATA = {
