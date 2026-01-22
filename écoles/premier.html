@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport optimisé pour empêcher le zoom accidentel et s'adapter à l'écran -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Guide des Universités Marocaines</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,12 +18,18 @@
             --text-secondary: #666666;
         }
 
+        * {
+            -webkit-tap-highlight-color: transparent; /* Supprime le bleu au clic sur mobile */
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
+            /* Centrage pour desktop, mais sera plein écran sur mobile */
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -35,9 +42,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
             position: relative;
-            min-height: 960px;
+            min-height: 100vh; /* Prend au moins la hauteur de l'écran */
         }
 
         /* Header Section */
@@ -46,7 +52,10 @@
             color: white;
             padding: 40px 30px 30px;
             text-align: center;
-            position: relative;
+            position: sticky; /* Reste en haut au scroll */
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
@@ -64,14 +73,14 @@
         .header h1 {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             letter-spacing: 1px;
         }
 
         .header p {
             margin: 10px 0 0;
-            font-size: 16px;
+            font-size: 15px;
             opacity: 0.9;
             font-weight: 300;
         }
@@ -93,25 +102,26 @@
             background: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s;
             border-left: 5px solid var(--primary-color);
             display: flex;
             align-items: center;
             gap: 20px;
+            user-select: none; /* Empêche la sélection de texte au toucher */
         }
 
-        .domain-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 96, 100, 0.15);
+        .domain-card:active {
+            transform: scale(0.98); /* Effet d'appui tactile */
+            background-color: #f9f9f9;
         }
 
         .domain-icon {
             background-color: #e0f2f1;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -119,7 +129,7 @@
         }
 
         .domain-icon i {
-            font-size: 30px;
+            font-size: 28px;
             color: var(--primary-color);
         }
 
@@ -130,13 +140,13 @@
         .domain-title {
             font-family: 'Segoe UI', sans-serif;
             font-weight: 600;
-            font-size: 18px;
-            margin: 0 0 5px;
+            font-size: 16px;
+            margin: 0 0 4px;
             color: var(--text-primary);
         }
 
         .domain-count {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
@@ -150,32 +160,39 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 25px;
+            /* Pour que le header de la vue suive le header principal si besoin, 
+               mais ici on garde le header principal fixe */
         }
 
         .back-btn {
-            background-color: #f5f5f5;
+            background-color: #f0f0f0;
             border: none;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .back-btn:hover {
+        .back-btn:active {
             background-color: var(--secondary-color);
             color: white;
         }
 
         .view-title {
             font-family: 'Segoe UI', sans-serif;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--primary-color);
             margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .uni-list {
@@ -186,52 +203,67 @@
 
         .uni-btn {
             background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px; /* Plus de padding pour le tactile */
             text-align: left;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background-color 0.2s, border-color 0.2s;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            min-height: 60px; /* Hauteur minimale pour le tactile */
+            user-select: none;
         }
 
-        .uni-btn:hover {
-            border-color: var(--secondary-color);
+        .uni-btn:active {
             background-color: #f0fdfa;
+            border-color: var(--secondary-color);
         }
 
         .uni-name {
             font-weight: 500;
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-primary);
+            line-height: 1.4;
         }
 
         .uni-arrow {
             color: var(--secondary-color);
+            margin-left: 10px;
         }
 
         .public-tag {
             display: inline-block;
             background-color: #e0f2f1;
             color: var(--primary-color);
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-right: 8px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+            margin-right: 6px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .private-tag {
             display: inline-block;
             background-color: #fff3e0;
             color: #E65100;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-right: 8px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+            margin-right: 6px;
             font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Sub-headers inside lists */
+        .uni-list h3 {
+            font-size: 16px;
+            margin: 20px 0 10px 5px;
+            color: var(--secondary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
         }
 
         /* Footer */
@@ -239,25 +271,80 @@
             background-color: var(--primary-color);
             color: white;
             text-align: center;
-            padding: 20px;
-            font-size: 14px;
+            padding: 15px;
+            font-size: 12px;
             margin-top: auto;
         }
 
         /* Animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .fade-in {
-            animation: fadeIn 0.4s ease-out;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        /* Responsive Design */
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 480px) {
+            .poster-container {
+                box-shadow: none; /* Plein écran sans ombre */
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 25px 15px 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 20px 15px; /* Moins de marge sur les côtés */
+            }
+
+            .domain-grid {
+                gap: 15px;
+            }
+
+            .domain-card {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .domain-title {
+                font-size: 15px;
+            }
+
+            .uni-btn {
+                padding: 12px 10px;
+            }
+            
+            .uni-name {
+                font-size: 14px;
+            }
+            
+            .back-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .view-title {
+                font-size: 18px;
+            }
+        }
+
+        /* --- DESKTOP STYLES (kept from original) --- */
         @media (min-width: 768px) {
             .poster-container {
                 max-width: 960px;
+                margin: 20px 0;
+                min-height: auto;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             }
             
             .domain-grid {
@@ -304,7 +391,7 @@
                         <i class="material-icons">school</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Universités publiques (généralistes)</h3>
+                        <h3 class="domain-title">Universités publiques</h3>
                         <p class="domain-count">13 établissements</p>
                     </div>
                 </div>
@@ -315,7 +402,7 @@
                         <i class="material-icons">account_balance</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Universités à statut particulier</h3>
+                        <h3 class="domain-title">Statut particulier</h3>
                         <p class="domain-count">5 établissements</p>
                     </div>
                 </div>
@@ -326,7 +413,7 @@
                         <i class="material-icons">engineering</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Ingénierie, sciences et technologies</h3>
+                        <h3 class="domain-title">Ingénierie & Tech</h3>
                         <p class="domain-count">Public & Privé</p>
                     </div>
                 </div>
@@ -337,7 +424,7 @@
                         <i class="material-icons">local_hospital</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Médecine, pharmacie, santé</h3>
+                        <h3 class="domain-title">Médecine & Santé</h3>
                         <p class="domain-count">Public & Privé</p>
                     </div>
                 </div>
@@ -348,7 +435,7 @@
                         <i class="material-icons">business_center</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Commerce, gestion, économie</h3>
+                        <h3 class="domain-title">Commerce & Gestion</h3>
                         <p class="domain-count">Public & Privé</p>
                     </div>
                 </div>
@@ -359,7 +446,7 @@
                         <i class="material-icons">gavel</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Droit, sciences politiques</h3>
+                        <h3 class="domain-title">Droit & Sciences Pol.</h3>
                         <p class="domain-count">Public & Privé</p>
                     </div>
                 </div>
@@ -370,7 +457,7 @@
                         <i class="material-icons">architecture</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Architecture, urbanisme, design</h3>
+                        <h3 class="domain-title">Architecture & Design</h3>
                         <p class="domain-count">Public & Privé</p>
                     </div>
                 </div>
@@ -381,7 +468,7 @@
                         <i class="material-icons">menu_book</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Enseignement et formation</h3>
+                        <h3 class="domain-title">Enseignement</h3>
                         <p class="domain-count">Public</p>
                     </div>
                 </div>
@@ -392,7 +479,7 @@
                         <i class="material-icons">theater_comedy</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Arts, lettres, sciences humaines</h3>
+                        <h3 class="domain-title">Arts & Lettres</h3>
                         <p class="domain-count">Public</p>
                     </div>
                 </div>
@@ -403,14 +490,14 @@
                         <i class="material-icons">shield</i>
                     </div>
                     <div class="domain-info">
-                        <h3 class="domain-title">Formation militaire et sécurité</h3>
+                        <h3 class="domain-title">Militaire & Sécurité</h3>
                         <p class="domain-count">Public</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- University List Views -->
+        <!-- University List Views (Hidden by default) -->
         <div class="content university-view" id="uni-view-1">
             <div class="view-header">
                 <button class="back-btn" onclick="showMainContent()">
@@ -878,7 +965,7 @@
             // Remove animation class after it completes
             setTimeout(() => {
                 selectedView.classList.remove('fade-in');
-            }, 400);
+            }, 300); // Réduit légèrement pour mobile
             
             // Scroll to top
             window.scrollTo(0, 0);
@@ -899,7 +986,7 @@
             // Remove animation class after it completes
             setTimeout(() => {
                 mainContent.classList.remove('fade-in');
-            }, 400);
+            }, 300);
             
             // Scroll to top
             window.scrollTo(0, 0);
