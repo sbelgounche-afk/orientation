@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- Lien vers le fichier CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- MODAL DETAIL -->
@@ -39,19 +41,82 @@
     </header>
 
     <main class="container">
-        
-        <!-- 1. ONBOARDING -->
-        <section id="onboarding" class="active">
+
+        <!-- 1. AUTHENTIFICATION -->
+        <section id="auth" class="active">
             <div class="card" style="max-width: 500px; margin: 50px auto; text-align: center;">
                 <h2 style="color: var(--primary); margin-bottom: 10px;">Bienvenue sur Orient'Maroc</h2>
-                <p style="color: #666; margin-bottom: 30px;">La plateforme d'orientation scolaire et professionnelle.</p>
-                
+                <p style="color: #666; margin-bottom: 30px;">La plateforme d'orientation scolaire et professionnelle.
+                </p>
+
+                <div id="authTabs"
+                    style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee;">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')"
+                        style="flex: 1; padding: 10px; border: none; background: none; font-weight: bold; color: var(--primary); border-bottom: 3px solid var(--primary);">Connexion</button>
+                    <button class="auth-tab" onclick="switchAuthTab('register')"
+                        style="flex: 1; padding: 10px; border: none; background: none; font-weight: bold; color: #999;">Inscription</button>
+                </div>
+
+                <!-- TAB LOGIN -->
+                <div id="loginForm" style="display: block;">
+                    <form onsubmit="window.login(event)" style="text-align: left;">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="loginEmail" required placeholder="exemple@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe</label>
+                            <input type="password" id="loginPassword" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Se
+                            Connecter</button>
+                    </form>
+                </div>
+
+                <!-- TAB REGISTER -->
+                <div id="registerForm" style="display: none;">
+                    <form onsubmit="window.register(event)" style="text-align: left;">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="registerEmail" required placeholder="exemple@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe</label>
+                            <input type="password" id="registerPassword" required placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmer le mot de passe</label>
+                            <input type="password" id="confirmPassword" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary"
+                            style="width: 100%; justify-content: center;">S'Inscrire</button>
+                    </form>
+                </div>
+
+                <!-- DIVIDER -->
+                <div style="margin: 20px 0; color: #999; font-size: 0.9rem;">Ou</div>
+
+                <!-- GOOGLE LOGIN -->
+                <button class="btn btn-outline" onclick="window.googleLogin()"
+                    style="width: 100%; justify-content: center;">
+                    🔐 Connexion avec Google
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. ONBOARDING -->
+        <section id="onboarding">
+            <div class="card" style="max-width: 500px; margin: 50px auto; text-align: center;">
+                <h2 style="color: var(--primary); margin-bottom: 10px;">Bienvenue sur Orient'Maroc</h2>
+                <p style="color: #666; margin-bottom: 30px;">La plateforme d'orientation scolaire et professionnelle.
+                </p>
+
                 <form onsubmit="window.app.saveProfile(event)">
                     <div class="form-group" style="text-align: left;">
                         <label>Ton Prénom</label>
                         <input type="text" id="name" required placeholder="Ex: Sara">
                     </div>
-                    
+
                     <div class="form-group" style="text-align: left;">
                         <label>Niveau Scolaire</label>
                         <select id="level" required onchange="window.app.toggleStream()">
@@ -76,22 +141,26 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Commencer</button>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; justify-content: center;">Commencer</button>
                 </form>
             </div>
         </section>
 
         <!-- 2. DASHBOARD -->
         <section id="dashboard">
-            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+            <div class="card"
+                style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
                 <h1>Salut, <span id="uName">Élève</span> ! 👋</h1>
                 <p style="opacity: 0.9; margin-top: 5px;">Prêt à découvrir ton avenir professionnel au Maroc ?</p>
                 <div style="margin-top: 20px;">
-                    <button class="btn" style="background: white; color: var(--primary);" onclick="window.location.href='test/test.html'">Passer le Test d'Orientation</button>
+                    <button class="btn" style="background: white; color: var(--primary);"
+                        onclick="window.location.href='test/test.html'">Passer le Test d'Orientation</button>
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
                 <div class="stat-box">
                     <div class="stat-val" id="totalJobsCount">0</div>
                     <div class="stat-label">Métiers</div>
@@ -109,7 +178,9 @@
         <!-- 3. QUIZ -->
         <section id="quiz">
             <div class="card">
-                <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="quizProgress"></div>
+                </div>
                 <h2 id="qText" style="margin-bottom: 20px;">Question...</h2>
                 <div id="qOptions" class="options-grid"></div>
             </div>
@@ -132,7 +203,8 @@
 
             <div class="card">
                 <h3>💼 Métiers recommandés pour toi</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Basés sur ta filière scolaire (<span id="resStream"></span>) et tes réponses au quiz.</p>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Basés sur ta filière scolaire (<span
+                        id="resStream"></span>) et tes réponses au quiz.</p>
                 <div class="job-grid" id="resJobs"></div>
             </div>
 
@@ -158,7 +230,8 @@
         <section id="comparator">
             <div class="card">
                 <h2 style="color: var(--primary); margin-bottom: 10px;">⚖️ Comparateur de Filières</h2>
-                <p style="margin-bottom: 20px; color: #666;">Comparez différentes voies pour prendre la meilleure décision avant de choisir ton orientation.</p>
+                <p style="margin-bottom: 20px; color: #666;">Comparez différentes voies pour prendre la meilleure
+                    décision avant de choisir ton orientation.</p>
 
                 <div class="compare-controls">
                     <div class="select-group">
@@ -174,7 +247,7 @@
                             <option value="ofppt">OFPPT (Formation Pro)</option>
                         </select>
                     </div>
-                    
+
                     <div class="select-group">
                         <label>Choisir 2e voie :</label>
                         <select id="streamSelect2" class="form-control">
@@ -202,8 +275,18 @@
         </section>
 
     </main>
-<!-- Script de js -->
+
+    <!-- Script de js -->
+
+    <!-- Firebase SDK (v9 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- Config and Main logic -->
+    <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 
 </body>
+
 </html>
