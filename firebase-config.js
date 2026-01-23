@@ -1,4 +1,8 @@
-// Firebase Configuration and Initialization
+// Firebase Configuration and Initialization (Modular SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyBVxtTtimjK6DIrzGbpEv_YRmFoYeW-1Fw",
     authDomain: "orientation-bba46.firebaseapp.com",
@@ -10,14 +14,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // Create references to services
-const auth = firebase.auth();
-const db = firebase.firestore();
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
-// Export references to window to make them globally accessible (since we aren't using modules)
+// Export references to window for legacy support and internal use
 window.auth = auth;
 window.db = db;
 window.googleProvider = googleProvider;
+
+export { auth, db, googleProvider };

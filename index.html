@@ -57,6 +57,9 @@
                         style="flex: 1; padding: 10px; border: none; background: none; font-weight: bold; color: #999;">Inscription</button>
                 </div>
 
+                <!-- ALERT MESSAGE -->
+                <div id="authAlert" class="alert alert-error"></div>
+
                 <!-- TAB LOGIN -->
                 <div id="loginForm" style="display: block;">
                     <form onsubmit="window.login(event)" style="text-align: left;">
@@ -278,14 +281,9 @@
 
     <!-- Script de js -->
 
-    <!-- Firebase SDK (v9 Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-    <!-- Config and Main logic -->
-    <script src="firebase-config.js"></script>
-    <script src="script.js"></script>
+    <!-- Config and Main logic (Modular) -->
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="script.js"></script>
 
 </body>
 
