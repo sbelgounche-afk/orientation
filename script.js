@@ -661,8 +661,8 @@ window.login = function (e) {
         auth.signInWithEmailAndPassword(email, pass)
             .catch(error => {
                 console.error("Erreur Login:", error);
-                if (error.code === 'auth/wrong-password') {
-                    alert("Mot de passe incorrect.");
+                if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    alert("Email ou mot de passe incorrect.");
                 } else if (error.code === 'auth/user-not-found') {
                     alert("Utilisateur non trouvé.");
                 } else {
