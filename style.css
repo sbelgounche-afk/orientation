@@ -7,8 +7,6 @@
     --accent: #FFC107;
     --accent-path: #E65100;
     /* Orange pour le bouton parcours */
-    --error: #d32f2f;
-    --success: #388e3c;
     --bg: #F4F7F6;
     --text: #333;
     --white: #ffffff;
@@ -182,28 +180,6 @@ select:focus {
     outline: none;
     border-color: var(--secondary);
     background: #fff;
-}
-
-/* --- ALERTS --- */
-.alert {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    display: none;
-    animation: fadeIn 0.3s ease;
-}
-
-.alert-error {
-    background: #ffebee;
-    color: var(--error);
-    border: 1px solid #ffcdd2;
-}
-
-.alert-success {
-    background: #e8f5e9;
-    color: var(--success);
-    border: 1px solid #c8e6c9;
 }
 
 /* --- FILTERS --- */

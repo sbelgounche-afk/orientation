@@ -3,21 +3,6 @@
 // Version corrigée et optimisée
 // =========================================================================
 
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-    signInWithPopup
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import {
-    doc,
-    getDoc,
-    setDoc,
-    collection
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { auth, db, googleProvider } from "./firebase-config.js";
-
 // --- 1. DONNÉES BRUTES (RAW DATA) ---
 const RAW_DATA = {
     "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d'achats", "Téléopérateur"],
@@ -338,7 +323,7 @@ const app = {
     },
 
     listenToAuth: function () {
-        onAuthStateChanged(auth, async (firebaseUser) => {
+        auth.onAuthStateChanged(async (firebaseUser) => {
             if (firebaseUser) {
                 console.log("Utilisateur connecté:", firebaseUser.email);
                 document.getElementById('navLinks').style.display = 'block';
@@ -348,6 +333,7 @@ const app = {
                     document.getElementById('uName').textContent = this.user.name;
                     this.navigate('dashboard');
                 } else {
+                    // Si connecté mais pas de profil, on force l'onboarding
                     this.navigate('onboarding');
                 }
             } else {
@@ -355,6 +341,7 @@ const app = {
                 this.user = null;
                 document.getElementById('navLinks').style.display = 'none';
                 this.navigate('auth');
+                // Réinitialiser les champs de saisie
                 document.getElementById('loginEmail').value = '';
                 document.getElementById('loginPassword').value = '';
             }
@@ -407,23 +394,21 @@ const app = {
         const profileData = { name, level, stream, email: firebaseUser.email };
 
         try {
-            const userRef = doc(db, "users", firebaseUser.uid);
-            await setDoc(userRef, profileData, { merge: true });
+            await db.collection('users').doc(firebaseUser.uid).set(profileData, { merge: true });
             this.user = profileData;
             document.getElementById('uName').textContent = name;
             this.navigate('dashboard');
         } catch (error) {
             console.error("Erreur sauvegarde Firestore:", error);
-            alert("Erreur lors de la sauvegarde du profil.");
+            alert("Erreur lors de la sauvegarde du profil (Vérifiez que Firestore est activé en mode test).");
         }
     },
 
     loadUser: async function (uid) {
         try {
-            const userRef = doc(db, "users", uid);
-            const userSnap = await getDoc(userRef);
-            if (userSnap.exists()) {
-                this.user = userSnap.data();
+            const doc = await db.collection('users').doc(uid).get();
+            if (doc.exists) {
+                this.user = doc.data();
             } else {
                 this.user = null;
             }
@@ -433,19 +418,13 @@ const app = {
     },
 
     logout: function () {
-        signOut(auth).then(() => {
+        auth.signOut().then(() => {
+            // Le listener onAuthStateChanged s'occupera du reste
+            // ✅ Réinitialiser aussi le form onboarding
             document.getElementById('name').value = '';
             document.getElementById('level').value = '';
             document.getElementById('stream').value = '';
         });
-    },
-
-    // AFFICHER ERREUR AUTH
-    displayAuthError: function (message) {
-        const alertEl = document.getElementById('authAlert');
-        alertEl.textContent = message;
-        alertEl.style.display = 'block';
-        setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
     },
 
     renderDashboard: function () {
@@ -679,24 +658,19 @@ window.login = function (e) {
     const pass = document.getElementById('loginPassword').value;
 
     if (email && pass) {
-        signInWithEmailAndPassword(auth, email, pass)
-            .then(() => {
-                console.log("Utilisateur connecté");
-            })
+        auth.signInWithEmailAndPassword(email, pass)
             .catch(error => {
-                console.error("Erreur Login:", error.code);
-                const errorCode = error.code;
-
-                if (errorCode === "auth/wrong-password" || errorCode === "auth/invalid-credential") {
-                    window.app.displayAuthError("Mot de passe incorrect ou identifiants invalides");
-                } else if (errorCode === "auth/user-not-found") {
-                    window.app.displayAuthError("Aucun compte associé à cet email");
+                console.error("Erreur Login:", error);
+                if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    alert("Email ou mot de passe incorrect.");
+                } else if (error.code === 'auth/user-not-found') {
+                    alert("Utilisateur non trouvé.");
                 } else {
-                    window.app.displayAuthError("Erreur de connexion : " + error.message);
+                    alert("Erreur de connexion : " + error.message);
                 }
             });
     } else {
-        window.app.displayAuthError("Veuillez remplir tous les champs");
+        alert("Veuillez remplir tous les champs");
     }
 };
 
@@ -707,30 +681,30 @@ window.register = function (e) {
     const confirm = document.getElementById('confirmPassword').value;
 
     if (pass !== confirm) {
-        window.app.displayAuthError("Les mots de passe ne correspondent pas !");
+        alert("Les mots de passe ne correspondent pas !");
         return;
     }
 
     if (email && pass) {
-        createUserWithEmailAndPassword(auth, email, pass)
+        auth.createUserWithEmailAndPassword(email, pass)
             .catch(error => {
                 console.error("Erreur Register:", error);
-                window.app.displayAuthError("Erreur d'inscription : " + error.message);
+                alert("Erreur d'inscription : " + error.message);
             });
     } else {
-        window.app.displayAuthError("Veuillez remplir tous les champs");
+        alert("Veuillez remplir tous les champs");
     }
 };
 
 window.googleLogin = function () {
-    signInWithPopup(auth, googleProvider)
+    auth.signInWithPopup(googleProvider)
         .then((result) => {
             console.log("Connecté avec Google:", result.user.email);
         })
         .catch((error) => {
             console.error("Erreur Google Login:", error);
             if (error.code !== 'auth/popup-closed-by-user') {
-                window.app.displayAuthError("Erreur lors de la connexion Google : " + error.message);
+                alert("Erreur lors de la connexion Google : " + error.message);
             }
         });
 };
