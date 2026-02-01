@@ -1,0 +1,65 @@
+    // === QUESTIONS HOLLAND ---
+    getHollandQuestions: function () {
+        return [
+            { text: "Tu aimes travailler avec tes mains et manipuler des outils.", type: "R", category: "RIASEC" },
+            { text: "Tu cherches constamment à comprendre comment fonctionnent les choses.", type: "I", category: "RIASEC" },
+            { text: "Tu aimes créer et exprimer tes idées librement.", type: "A", category: "RIASEC" },
+            { text: "Aider les autres et résoudre leurs problèmes te procure de la satisfaction.", type: "S", category: "RIASEC" },
+            { text: "Tu aimes prendre les décisions et diriger des projets.", type: "E", category: "RIASEC" },
+            { text: "Tu préfères un cadre clair avec des règles et de l'ordre.", type: "C", category: "RIASEC" },
+            { text: "Tu apprends mieux en faisant concrètement.", type: "concret", category: "COGNITIVE" },
+            { text: "Tu préfères d'abord la théorie, puis la pratique.", type: "abstrait", category: "COGNITIVE" },
+            { text: "Tu aimes travailler de manière indépendante.", type: "autonomie", category: "COGNITIVE" },
+            { text: "Tu préfères un cadre avec des consignes précises et un suivi.", type: "encadrement", category: "COGNITIVE" }
+        ];
+    },
+
+    // === INITIALISATION ---
+    init: function () {
+        this.generateJobs();
+        this.renderFilters();
+
+        document.getElementById('totalJobsCount').textContent = this.jobs.length;
+        document.getElementById('totalCatsCount').textContent = Object.keys(RAW_DATA).length;
+
+        // Check LocalStorage for session
+        this.checkSession();
+    },
+
+    checkSession: function () {
+        const session = localStorage.getItem('user_session');
+        if (session) {
+            console.log("Utilisateur connecté:", session);
+            document.getElementById('navLinks').style.display = 'block';
+            this.loadUser();
+
+            if (this.user && this.user.name) {
+                document.getElementById('uName').textContent = this.user.name;
+                this.navigate('dashboard');
+            } else {
+                // Si connecté mais pas de profil, on force l'onboarding
+                this.navigate('onboarding');
+            }
+        } else {
+            console.log("Utilisateur déconnecté");
+            this.user = null;
+            document.getElementById('navLinks').style.display = 'none';
+            this.navigate('auth');
+            // Réinitialiser les champs de saisie
+            const emailInput = document.getElementById('loginEmail');
+            const passInput = document.getElementById('loginPassword');
+            if (emailInput) emailInput.value = '';
+            if (passInput) passInput.value = '';
+        }
+    },
+
+    generateJobs: function () {
+        let id = 1;
+        for (const [cat, titles] of Object.entries(RAW_DATA)) {
+            const tags = TAG_MAP[cat] || ["autre"];
+            titles.forEach(title => {
+                let desc = CUSTOM_DESC[title] || `Le ${title} exerce dans le secteur ${cat}.`;
+                this.jobs.push({ id: id++, title: title, category: cat, description: desc, tags: tags });
+            });
+        }
+    },

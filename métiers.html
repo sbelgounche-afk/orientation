@@ -3,193 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orientation Scolaire Maroc - Module IA</title>
+    <title>Orientation Scolaire Maroc - Module IA Pro</title>
+    <!-- Police Moderne -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- 1. VARIABLES CSS (PALETTE BLEU & BLANC PRO) --- */
         :root {
-            --primary: #006233; /* Vert Maroc */
-            --secondary: #c1272d; /* Rouge Maroc */
-            --bg-color: #f4f7f6;
-            --text-color: #333;
-            --card-bg: #ffffff;
+            /* Bleu Action (Boutons, Liens) */
+            --primary: #0284c7;       /* Azure Blue - Tech & Trust */
+            --primary-hover: #0369a1; /* Darker Azure */
+            --primary-light: #f0f9ff; /* Very light blue for backgrounds */
+            
+            /* Textes */
+            --text-main: #0f172a;     /* Dark Navy - For readability but still blue tinted */
+            --text-muted: #64748b;    /* Slate Grey - For subtext */
+            --text-highlight: #0ea5e9; /* Sky Blue - For accents */
+
+            /* Surfaces */
+            --bg-body: #f8fafc;       /* Very pale grey-blue background */
+            --bg-surface: #ffffff;    /* Pure white cards */
+            --bg-input: #f1f5f9;      /* Input background */
+
+            /* Bordures */
+            --border-color: #e2e8f0;
+            --border-focus: #0284c7;
+
+            /* États */
+            --success: #10b981;
+            --danger: #ef4444;
+
+            /* Forme & Ombres */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
+
+        /* --- DARK MODE (BLEU PROFOND) --- */
+        [data-theme="dark"] {
+            --primary: #38bdf8;       /* Bright Sky Blue for dark mode contrast */
+            --primary-hover: #0ea5e9;
+            --primary-light: #1e293b;
+
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-highlight: #7dd3fc;
+
+            --bg-body: #0f172a;       /* Dark Navy Background */
+            --bg-surface: #1e293b;   /* Lighter Navy Cards */
+            --bg-input: #334155;
+
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+        }
+
+        /* --- 2. BASE & RESET --- */
+        * { box-sizing: border-box; outline: none; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+        /* --- 3. HEADER (Dégradé Bleu Pro) --- */
         header {
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            padding: 60px 40px;
+            /* Dégradé Bleu Marine vers Bleu Royal */
+            background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+            border-radius: var(--radius-lg);
+            color: white;
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #ddd;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.1);
         }
+
+        /* Texture subtile Header */
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: rotateBg 30s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes rotateBg { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         h1 {
-            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 800; /* Extra bold pour le titre pro */
             margin: 0;
+            letter-spacing: -0.03em;
+            position: relative;
+            z-index: 1;
         }
 
         p.subtitle {
-            color: #666;
-            font-size: 0.9em;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 12px;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Conteneur principal */
+        /* --- 4. BOUTON THEME --- */
+        #theme-toggle {
+            position: absolute;
+            top: 24px; right: 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        #theme-toggle:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        #theme-toggle svg { width: 18px; height: 18px; }
+
+        /* --- 5. MAIN & FORM --- */
         main {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--bg-surface);
+            padding: 48px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
         }
 
-        /* Section Formulaire (Simulation de l'existant) */
         .form-section {
-            background: #fafafa;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            margin-bottom: 30px;
+            background: var(--primary-light); /* Fond bleu très clair */
+            padding: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        .form-section h3 {
+            margin-top: 0; margin-bottom: 24px;
+            font-size: 1.25rem;
+            color: var(--primary); /* Titre en bleu */
+            font-weight: 700;
         }
+
+        .form-group { margin-bottom: 24px; }
 
         label {
             display: block;
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 8px;
-            color: var(--primary);
+            color: var(--text-main); /* Label en bleu foncé */
+            font-size: 0.9rem;
         }
 
-        select, button {
+        select, input[type="text"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box; /* Fix padding issue */
+            padding: 14px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
 
-        button {
-            background-color: var(--primary);
+        select:focus, input[type="text"]:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); /* Halo bleu */
+        }
+
+        button[type="submit"], .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
             color: white;
             border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-top: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2); /* Ombre bleu */
         }
 
-        button:hover {
-            background-color: #004d28;
+        button[type="submit"]:hover, .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
         }
 
-        /* Section Résultats (Le module ajouté) */
-        #results-section {
-            display: none; /* Caché par défaut */
-            margin-top: 30px;
-            border-top: 2px dashed #ddd;
-            padding-top: 20px;
+        /* --- 6. CARTES & RÉSULTATS --- */
+        #results-section, #searchResults {
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .result-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .result-header h2 {
-            margin: 0;
-            font-size: 1.5em;
-            color: var(--secondary);
-        }
-
+        .result-header h2 { margin: 0; font-size: 1.5rem; color: var(--text-main); }
         .badge {
-            background: #eee;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            color: #555;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: 1px solid rgba(2, 132, 199, 0.1);
         }
 
-        /* Grille des métiers */
         .jobs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 24px;
         }
 
         .job-card {
-            background: #fff;
-            border-left: 4px solid var(--primary);
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-radius: 4px;
-            transition: transform 0.2s;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            animation: slideUp 0.5s forwards;
         }
 
         .job-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary); /* Bordure devient bleue au survol */
         }
 
+        /* Trait bleu en haut au survol */
+        .job-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--primary); opacity: 0; transition: opacity 0.3s ease;
+        }
+        .job-card:hover::after { opacity: 1; }
+
         .job-title {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-            color: #222;
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            padding-right: 30px;
         }
 
         .job-path {
-            font-size: 0.9em;
-            color: #555;
-            background: #f0f8f0;
-            padding: 8px;
-            border-radius: 4px;
-            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--primary-light);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            border: 1px solid rgba(2, 132, 199, 0.1);
         }
+        .job-path strong { color: var(--primary-hover); }
 
-        .job-path strong {
+        /* Tags */
+        .job-tag {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .job-tag:hover {
+            border-color: var(--primary);
             color: var(--primary);
         }
 
-        /* Message d'erreur ou info */
-        .info-message {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
+        /* Salaire en Vert */
+        .salary-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--success);
+            font-size: 0.9rem;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
             border-radius: 6px;
-            border-left: 4px solid #ffeeba;
-            margin-bottom: 20px;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 0.8em;
-            color: #888;
+        /* Fav Button */
+        .fav-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .fav-btn:hover { transform: scale(1.2); color: var(--primary); }
+        .fav-btn.active { color: var(--danger); }
+
+        /* --- 7. FOOTER & TOAST --- */
+        footer { text-align: center; margin-top: 50px; color: var(--text-muted); font-size: 0.9rem; }
+        
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: var(--bg-surface);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--primary);
+            z-index: 1000;
+            font-weight: 500;
+            animation: slideInRight 0.3s forwards;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            body { padding: 20px 10px; }
+            header { padding: 40px 20px; }
+            h1 { font-size: 1.8rem; }
+            main { padding: 24px; border-radius: 16px; }
+            .jobs-grid { grid-template-columns: 1fr; }
+            #theme-toggle { top: 16px; right: 16px; font-size: 0.8rem; padding: 8px 12px; }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <button id="theme-toggle" aria-label="Changer le thème"></button>
         <h1>Mon Orientation Avenir</h1>
         <p class="subtitle">Système d'orientation intelligent - Édition Maroc</p>
     </header>
 
     <main>
-        <!-- SECTION 1 : FORMULAIRE EXISTANT (SIMULÉ) -->
+        <!-- SECTION 1 : FORMULAIRE -->
         <section class="form-section">
             <h3>Vos Informations Scolaires</h3>
             <form id="orientationForm">
@@ -208,7 +397,6 @@
                     <label for="filiere">Filière</label>
                     <select id="filiere" required disabled>
                         <option value="" disabled selected>-- D'abord choisir l'année --</option>
-                        <!-- Les options seront remplies dynamiquement -->
                     </select>
                 </div>
 
@@ -216,191 +404,95 @@
             </form>
         </section>
 
-        <!-- SECTION 2 : AJOUT DU MODULE DE SUGGESTION -->
+        <!-- BARRE DE RECHERCHE -->
+        <div style="margin-bottom: 40px;">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher un métier (ex: Ingénieur, Médecin)...">
+            <div id="searchResults"></div>
+        </div>
+
+        <!-- SECTION 2 : RÉSULTATS -->
         <section id="results-section">
             <div class="result-header">
                 <h2 id="result-title">Résultats</h2>
                 <span class="badge" id="result-context"></span>
             </div>
-            <div id="results-container">
-                <!-- Les cartes de métiers s'afficheront ici -->
-            </div>
+            <div id="results-container"></div>
         </section>
+
+        <!-- SECTION FAVORIS -->
+        <section id="favorites-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; color:var(--text-main);">❤️ Mes Favoris</h3>
+                <button id="clearFav" style="background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">Tout effacer</button>
+            </div>
+            <div style="clear:both;"></div>
+            <div id="favorites-container" class="jobs-grid"></div>
+        </section>
+
     </main>
 
     <footer>
-        &copy; 2023 Orientation Maroc - Module IA V1.0
+        &copy; 2023 Orientation Maroc - Module IA V3.0 (Design Bleu Pro)
     </footer>
 
-    <!-- ================================================================= -->
-    <!--                DÉBUT DU CODE À AJOUTER (LOGIQUE & DATA)           -->
-    <!-- ================================================================= -->
+    <!-- LOGIQUE JAVASCRIPT -->
     <script>
-        /**
-         * 1. STRUCTURE DE DONNÉES (MÉTIER PAR FILIÈRE - SYSTÈME MAROCAIN)
-         * Cette base de données contient uniquement des métiers réalistes et accessibles.
-         */
+        const icons = {
+            sun: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`,
+            moon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
+        };
+
         const baseMetiersMaroc = {
             "Sciences Mathématiques": [
-                {
-                    titre: "Ingénieur d'État",
-                    path: "Bac SM → CPGE (MPSI/PTSI) → Concours CNC → Grande École (ENSA, ENSEM, INPT)",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Médecin",
-                    path: "Bac SM → Faculté de Médecine (FMP) → 7 ans → Résidanat",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Architecte",
-                    path: "Bac SM → ENA (École Nationale d'Architecture) ou Concours d'architecture",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Data Scientist / Actuaire",
-                    path: "Bac SM → Cycle Prépa Intégré ou FST Informatique/Maths → École Spécialisée",
-                    niveau: "lycee"
-                }
+                { titre: "Ingénieur d'État", path: "Bac SM → CPGE (MPSI/PTSI) → Concours CNC → Grande École", niveau: "lycee", salaire: "8k - 25k MAD", competences: ["Maths", "Physique", "Code"], secteur: "Industrie" },
+                { titre: "Médecin", path: "Bac SM → Faculté de Médecine → 7 ans → Résidanat", niveau: "lycee", salaire: "Variable + Gardes", competences: ["Biologie", "Empathie", "Rigueur"], secteur: "Santé" },
+                { titre: "Architecte", path: "Bac SM → ENA (École Nationale d'Architecture)", niveau: "lycee", salaire: "7k - 20k MAD", competences: ["Dessin", "3D", "Créativité"], secteur: "BTP" },
+                { titre: "Data Scientist", path: "Bac SM → FST Informatique/Maths → Master Data", niveau: "lycee", salaire: "10k - 30k MAD", competences: ["Stats", "Python", "ML"], secteur: "Tech" }
             ],
             "Sciences Expérimentales": [
-                {
-                    titre: "Médecin / Dentiste",
-                    path: "Bac SE → Faculté de Médecine/Pharmacie → Résidanat",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Ingénieur Agronome",
-                    path: "Bac SE → IAV Hassan II ou Écoles privées d'agronomie",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Biologiste / Chercheur",
-                    path: "Bac SE → Faculté des Sciences (FST) → Master/Doctorat",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Infirmier / Sage-femme",
-                    path: "Bac SE → ISTA (Institut Spécialisé) ou Concours d'entrée",
-                    niveau: "lycee"
-                }
+                { titre: "Médecin / Dentiste", path: "Bac SE → Faculté de Médecine/Pharmacie", niveau: "lycee", salaire: "Variable", competences: ["Biologie", "Chimie"], secteur: "Santé" },
+                { titre: "Ingénieur Agronome", path: "Bac SE → IAV Hassan II", niveau: "lycee", salaire: "7k - 18k MAD", competences: ["Agronomie", "Écologie"], secteur: "Agro" },
+                { titre: "Biologiste", path: "Bac SE → FST → Master Recherche", niveau: "lycee", salaire: "6k - 15k MAD", competences: ["Labo", "Analyse"], secteur: "Recherche" },
+                { titre: "Infirmier", path: "Bac SE → ISTA Spécialisé", niveau: "lycee", salaire: "4k - 8k MAD", competences: ["Soins", "Patience"], secteur: "Santé" }
             ],
             "Sciences Économiques": [
-                {
-                    titre: "Manager / Chef d'Entreprise",
-                    path: "Bac SEG → ENCG (École Nationale de Commerce et Gestion) ou ISCAE",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Expert-Comptable",
-                    path: "Bac SEG → École Supérieure de Commerce (ESC) ou Université (option Audit)",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Marketing / Commercial",
-                    path: "Bac SEG → Écoles de Commerce (ESG, IGA, etc.) ou Université",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Agent de Banque / Assurances",
-                    path: "Bac SEG → OFPPT (Technicien Spécialisé) ou Université",
-                    niveau: "lycee"
-                }
+                { titre: "Manager / Chef d'Entreprise", path: "Bac SEG → ENCG ou ISCAE", niveau: "lycee", salaire: "8k - 40k+ MAD", competences: ["Leadership", "Gestion"], secteur: "Business" },
+                { titre: "Expert-Comptable", path: "Bac SEG → ESC ou Université", niveau: "lycee", salaire: "6k - Illimité", competences: ["Comptabilité", "Audit"], secteur: "Finance" },
+                { titre: "Marketing / Commercial", path: "Bac SEG -> École Commerce", niveau: "lycee", salaire: "5k - 20k MAD", competences: ["Vente", "Digital"], secteur: "Commerce" },
+                { titre: "Agent Bancaire", path: "Bac SEG → OFPPT / Université", niveau: "lycee", salaire: "4k - 9k MAD", competences: ["Finance", "Service"], secteur: "Banque" }
             ],
             "Lettres et Sciences Humaines": [
-                {
-                    titre: "Professeur (Enseignement Secondaire)",
-                    path: "Bac LSH → CRMEF (Centre Régional des Métiers de l'Éducation et de la Formation)",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Journaliste / Communicant",
-                    path: "Bac LSH → École de Journalisme (ESJ) ou Institut de Communication",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Psychologue / Sociologue",
-                    path: "Bac LSH → Faculté des Lettres (FSLH) → Licence/Master",
-                    niveau: "lycee"
-                },
-                {
-                    titre: "Avocat / Juriste",
-                    path: "Bac LSH → Faculté de Droit (Souvent accessible ou nécessite une mise à niveau selon les universités)",
-                    niveau: "lycee"
-                }
+                { titre: "Professeur Secondaire", path: "Bac LSH → CRMEF", niveau: "lycee", salaire: "5k - 9k MAD", competences: ["Pédagogie", "Com. Orale"], secteur: "Éducation" },
+                { titre: "Journaliste", path: "Bac LSH → ESJ ou Inst. Com.", niveau: "lycee", salaire: "5k - 15k MAD", competences: ["Rédaction", "Investigation"], secteur: "Média" },
+                { titre: "Psychologue", path: "Bac LSH → Faculté Lettres → Master", niveau: "lycee", salaire: "5k - 12k MAD", competences: ["Écoute", "Analyse"], secteur: "Social" },
+                { titre: "Avocat", path: "Bac LSH → Faculté de Droit", niveau: "lycee", salaire: "Illimité", competences: ["Droit", "Plaidoirie"], secteur: "Justice" }
             ]
         };
 
-        /**
-         * 2. LOGIQUE DE FILTRAGE ET DE SUGGESTION
-         * Fonction principale qui analyse l'entrée utilisateur et renvoie les métiers adéquats.
-         */
-        function obtenirSuggestions(niveau, filiere) {
-            // Normalisation des entrées pour éviter les erreurs de casse
-            const filiereClean = filiere.trim();
-            
-            // Récupération des métiers bruts depuis la base
-            const metiersPossibles = baseMetiersMaroc[filiereClean];
-
-            // Gestion du cas : Aucune filière trouvée (Erreur système)
-            if (!metiersPossibles) {
-                return [];
-            }
-
-            // Filtrage adaptatif selon le niveau scolaire
-            return metiersPossibles.map(metier => {
-                let suggestion = { ...metier }; // Copie de l'objet
-                
-                if (niveau === "college") {
-                    // COLLÈGE : Sensibilisation, on cache le chemin technique complexe
-                    suggestion.path = "À découvrir : Plusieurs débouchés possibles après le Bac scientifique.";
-                    suggestion.titre = `Découverte : ${metier.titre}`;
-                } 
-                else if (niveau === "tc") {
-                    // TRONC COMMUN : Insister sur l'importance du choix de la filière en 1ère bac
-                    if (!suggestion.path.includes("Bac")) {
-                         suggestion.path = `Indispensable : Choisir la filière ${filiereClean} en 1ère Bac.`;
-                    }
-                }
-                // Pour 1ère et Terminale, on garde le chemin détaillé réel (lycee case)
-                
-                return suggestion;
-            });
-        }
-
-        // ----------------------------------------------------------------
-        // 3. INTÉGRATION AVEC L'INTERFACE (DOM MANIPULATION)
-        // ----------------------------------------------------------------
-
-        // Mapping initial des niveaux vers les filières
-        const filieresParNiveau = {
-            "college": [],
-            "tc": [], // Pas de spécialité en TC
-            "1ere": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"],
-            "term": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"]
-        };
-
+        // DOM Elements
         const niveauSelect = document.getElementById('niveau');
         const filiereSelect = document.getElementById('filiere');
         const form = document.getElementById('orientationForm');
         const resultsSection = document.getElementById('results-section');
         const resultsContainer = document.getElementById('results-container');
-        const resultContext = document.getElementById('result-context');
+        const searchResults = document.getElementById('searchResults');
+        const searchInput = document.getElementById('searchInput');
 
-        // Activation/Désactivation de la liste des filières selon le niveau
+        const filieresParNiveau = {
+            "college": [], "tc": [], "1ere": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"],
+            "term": ["Sciences Mathématiques", "Sciences Expérimentales", "Sciences Économiques", "Lettres et Sciences Humaines"]
+        };
+
         niveauSelect.addEventListener('change', function() {
             const niveau = this.value;
             filiereSelect.innerHTML = '<option value="" disabled selected>-- Choisir la filière --</option>';
-            
             if (filieresParNiveau[niveau]) {
                 if (niveau === "college" || niveau === "tc") {
-                    // Si pas de filière spécifique, on simule une option "Général" pour le code
                     const opt = document.createElement('option');
                     opt.value = "General"; 
                     opt.textContent = niveau === "college" ? "Cycle Collégial" : "Tronc Commun (Tous)";
                     filiereSelect.appendChild(opt);
                 } else {
-                    // Remplir avec les vraies filières
                     filieresParNiveau[niveau].forEach(f => {
                         const opt = document.createElement('option');
                         opt.value = f;
@@ -414,88 +506,134 @@
             }
         });
 
-        // Gestion de la soumission
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const niveau = niveauSelect.value;
             const filiere = filiereSelect.value;
+            searchResults.style.display = 'none';
+            searchInput.value = '';
             
-            // Animation de chargement (simulée)
             resultsSection.style.display = 'block';
-            resultsContainer.innerHTML = '<p style="text-align:center;">Analyse du profil en cours...</p>';
-            resultContext.textContent = `${niveau.toUpperCase()} - ${filiere.toUpperCase()}`;
+            resultsContainer.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">Analyse en cours...</div>';
+            document.getElementById('result-context').textContent = `${niveau.toUpperCase()} - ${filiere.toUpperCase()}`;
 
             setTimeout(() => {
                 afficherResultats(niveau, filiere);
-            }, 600);
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
         });
 
-        // Fonction d'affichage finale
         function afficherResultats(niveau, filiere) {
             resultsContainer.innerHTML = '';
-
-            // Cas particuliers : Collège et TC (Pas de filière précise)
-            if (niveau === "college") {
-                afficherMessage("Au collège, l'important est de garder le cap en sciences et en français. Vous n'avez pas encore de filière, mais voici des métiers potentiels pour l'avenir.");
-                // On montre tout pour inspirer
-                afficherCartes(baseMetiersMaroc["Sciences Mathématiques"].slice(0,2));
-                afficherCartes(baseMetiersMaroc["Sciences Économiques"].slice(0,2));
-                return;
-            }
-
-            if (niveau === "tc") {
-                afficherMessage("En Tronc Commun, vous allez bientôt choisir votre voie. Chaque filière ouvre des portes spécifiques. Voici un aperçu par filière :");
-                // Afficher un exemple de chaque
-                afficherCartes(baseMetiersMaroc["Sciences Expérimentales"].slice(0,1));
+            if (niveau === "college" || niveau === "tc") {
+                afficherMessage(niveau === "college" ? "Concentrez-vous sur les sciences pour ouvrir le maximum de portes." : "C'est le moment de choisir votre voie selon vos aptitudes.");
+                afficherCartes(baseMetiersMaroc["Sciences Mathématiques"].slice(0,1));
                 afficherCartes(baseMetiersMaroc["Sciences Économiques"].slice(0,1));
                 return;
             }
-
-            // 1ère Bac / Terminale : Logique stricte de filière
-            const suggestions = obtenirSuggestions(niveau, filiere);
-
-            if (suggestions.length === 0) {
-                afficherMessage("Aucun métier ne correspond à cette combinaison dans notre base. Veuillez contacter un conseiller d'orientation.", "error");
-            } else {
-                afficherCartes(suggestions);
-                
-                // Avertissement spécifique si Lettres (ex: pas de médecine)
-                if (filiere === "Lettres et Sciences Humaines") {
-                    const note = document.createElement('div');
-                    note.className = "info-message";
-                    note.innerHTML = "<strong>Note :</strong> Avec une filière littéraire, les accès aux écoles d'ingénieurs ou de médecine ne sont pas directs. Privilégiez les concours de journalisme, CRMEF (enseignement) ou les facultés de droit/lettres.";
-                    resultsContainer.appendChild(note);
-                }
-            }
+            const suggestions = baseMetiersMaroc[filiere] || [];
+            afficherCartes(suggestions);
         }
 
-        function afficherMessage(msg, type) {
+        function afficherMessage(msg) {
             const div = document.createElement('div');
-            div.className = "info-message";
+            div.style.cssText = "background:var(--primary-light); color:var(--primary); padding:16px; border-radius:8px; margin-bottom:20px; text-align:center; font-weight:500;";
             div.textContent = msg;
-            if (type === "error") div.style.backgroundColor = "#f8d7da";
             resultsContainer.appendChild(div);
         }
 
-        function afficherCartes(liste) {
-            liste.forEach(job => {
+        function afficherCartes(liste, targetContainer = resultsContainer, isFavList = false) {
+            liste.forEach((job, i) => {
                 const card = document.createElement('div');
                 card.className = "job-card";
+                card.style.animationDelay = `${i * 0.05}s`;
                 
+                const jobId = job.titre.replace(/\s+/g, '-');
+                const isFav = localStorage.getItem('fav_' + jobId) === 'true';
+                
+                let tags = job.competences ? job.competences.map(c => `<span class="job-tag">${c}</span>`).join('') : '';
+
                 card.innerHTML = `
+                    <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${jobId}', this)">♥</button>
                     <div class="job-title">${job.titre}</div>
-                    <div class="job-path">
-                        <strong>Parcours :</strong> ${job.path}
-                    </div>
+                    ${job.salaire ? `<div class="salary-box">💰 ${job.salaire}</div>` : ''}
+                    <div class="job-path"><strong>Parcours :</strong> ${job.path}</div>
+                    <div style="margin-top:12px;">${tags}</div>
+                    ${job.secteur ? `<div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">🏢 ${job.secteur}</div>` : ''}
                 `;
-                resultsContainer.appendChild(card);
+                targetContainer.appendChild(card);
             });
         }
-    </script>
-    <!-- ================================================================= -->
-    <!--                     FIN DU CODE AJOUTÉ                             -->
-    <!-- ================================================================= -->
 
+        function toggleFav(id, btn) {
+            const status = !(localStorage.getItem('fav_' + id) === 'true');
+            localStorage.setItem('fav_' + id, status);
+            btn.classList.toggle('active');
+            showToast(status ? "Ajouté aux favoris" : "Retiré des favoris");
+            renderFavorites();
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favorites-container');
+            const section = document.getElementById('favorites-section');
+            container.innerHTML = '';
+            let favs = [];
+            Object.values(baseMetiersMaroc).forEach(arr => arr.forEach(j => {
+                if(localStorage.getItem('fav_' + j.titre.replace(/\s+/g, '-')) === 'true') favs.push(j);
+            }));
+            if(favs.length) {
+                section.style.display = 'block';
+                afficherCartes(favs, container, true);
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        function showToast(msg) {
+            const t = document.createElement('div');
+            t.className = 'toast'; t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2000);
+        }
+
+        document.getElementById('clearFav').onclick = () => {
+            if(confirm("Effacer tout ?")) {
+                localStorage.clear();
+                document.querySelectorAll('.fav-btn').forEach(b => b.classList.remove('active'));
+                renderFavorites();
+            }
+        };
+
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            if(q.length < 2) { searchResults.style.display = 'none'; return; }
+            resultsSection.style.display = 'none'; searchResults.style.display = 'block';
+            searchResults.innerHTML = '<h3 style="color:var(--text-main); margin-bottom:20px;">Recherche</h3>';
+            const grid = document.createElement('div'); grid.className = 'jobs-grid';
+            let found = [];
+            Object.values(baseMetiersMaroc).forEach(arr => arr.forEach(j => {
+                if(j.titre.toLowerCase().includes(q)) found.push(j);
+            }));
+            if(found.length) afficherCartes(found, grid);
+            else searchResults.innerHTML += '<p style="color:var(--text-muted)">Aucun résultat.</p>';
+            searchResults.appendChild(grid);
+        });
+
+        // Theme Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        function setTheme(t) {
+            document.documentElement.setAttribute('data-theme', t);
+            themeBtn.innerHTML = (t === 'dark' ? icons.sun + ' Mode Jour' : icons.moon + ' Mode Nuit');
+            localStorage.setItem('theme', t);
+        }
+        themeBtn.onclick = () => setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        
+        const saved = localStorage.getItem('theme');
+        if(saved) setTheme(saved);
+        else if(window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+        else setTheme('light');
+        
+        window.addEventListener('DOMContentLoaded', renderFavorites);
+    </script>
 </body>
 </html>
