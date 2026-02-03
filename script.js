@@ -1,4 +1,4 @@
- // =========================================================================
+        // =========================================================================
         // ORIENT'MAROC - SYSTÈME D'ORIENTATION INTELLIGENT (Refactorisé & Optimisé)
         // =========================================================================
 
@@ -314,6 +314,14 @@
             },
 
             navigate: function (pageId) {
+                // Gestion de l'affichage du header
+                const header = document.querySelector('header');
+                if (pageId === 'onboarding') {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+
                 document.querySelectorAll('section').forEach(el => el.classList.remove('active'));
                 const page = document.getElementById(pageId);
                 if (page) {
@@ -365,9 +373,25 @@
             },
 
             renderDashboard: function () {
-                const random = [...this.jobs].sort(() => 0.5 - Math.random()).slice(0, 3);
+                let suggestions = [];
+
+                // Si l'utilisateur a une filière, on filtre les métiers par catégories liées à cette filière
+                if (this.user && this.user.stream && STREAM_MAP[this.user.stream]) {
+                    const allowedCats = STREAM_MAP[this.user.stream];
+                    // On récupère tous les métiers qui correspondent aux catégories autorisées
+                    suggestions = this.jobs.filter(j => allowedCats.includes(j.category));
+                }
+
+                // Si aucune suggestion n'a été trouvée (ou pas de filière), on montre un mélange aléatoire
+                if (suggestions.length === 0) {
+                    suggestions = [...this.jobs];
+                }
+
+                // Mélange (shuffle) pour avoir de nouvelles suggestions à chaque fois
+                suggestions.sort(() => 0.5 - Math.random());
+
                 const container = document.getElementById('featuredJobs');
-                if (container) container.innerHTML = random.map(j => this.createJobCard(j)).join('');
+                if (container) container.innerHTML = suggestions.slice(0, 3).map(j => this.createJobCard(j)).join('');
             },
 
             renderFilters: function () {
