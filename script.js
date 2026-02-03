@@ -235,6 +235,12 @@
                 this.renderFilters();
                 if(this.user && this.user.name) this.navigate('dashboard');
                 else this.navigate('onboarding');
+                
+                // Attach AJAX handler for Formspree
+                const form = document.getElementById("fs-form");
+                if(form) {
+                    form.addEventListener("submit", this.handleFormSubmit);
+                }
             },
 
             processData: function() {
@@ -251,6 +257,47 @@
                 const totalCatsEl = document.getElementById('totalCatsCount');
                 if(totalJobsEl) totalJobsEl.textContent = this.jobs.length;
                 if(totalCatsEl) totalCatsEl.textContent = Object.keys(RAW_DATA).length;
+            },
+
+            // === FORMSPREE AJAX HANDLER ===
+            handleFormSubmit: async function(event) {
+                event.preventDefault();
+                const form = event.target;
+                const data = new FormData(form);
+                const btn = document.getElementById("submit-btn");
+                const originalBtnText = btn.textContent;
+
+                // UI Feedback: Loading
+                btn.textContent = "Envoi en cours...";
+                btn.disabled = true;
+
+                fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        showToast("✅ Message envoyé avec succès !", "success");
+                        form.reset();
+                        window.app.navigate('dashboard'); // Redirect to dashboard after success
+                    } else {
+                        response.json().then(data => {
+                            if (Object.hasOwn(data, 'errors')) {
+                                showToast(data["errors"].map(error => error["message"]).join(", "), "error");
+                            } else {
+                                showToast("❌ Oups ! Il y a eu un problème.", "error");
+                            }
+                        })
+                    }
+                }).catch(error => {
+                    showToast("❌ Erreur de connexion.", "error");
+                }).finally(() => {
+                    // Reset Button
+                    btn.textContent = originalBtnText;
+                    btn.disabled = false;
+                });
             },
 
             getHollandQuestions: function() {
