@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Université Ibn Zohr Agadir - Guide de l'Étudiant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --fg: #0f172a;
+            --fg-muted: #64748b;
+            --accent: #1e40af;
+            --accent-light: #3b82f6;
+            --accent-pale: #dbeafe;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --shadow: rgba(30, 64, 175, 0.08);
+            --success: #059669;
+            --success-bg: #d1fae5;
+            --warning: #d97706;
+            --warning-bg: #fef3c7;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .headline { font-family: 'Playfair Display', serif; }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(ellipse 1000px 800px at 10% 0%, rgba(30, 64, 175, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse 600px 400px at 90% 90%, rgba(59, 130, 246, 0.04) 0%, transparent 50%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle at center, rgba(30, 64, 175, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+        .hero-title { animation: fadeUp 1s ease-out forwards; }
+        .hero-subtitle { animation: fadeUp 1s ease-out 0.2s forwards; opacity: 0; }
+        .hero-cta { animation: fadeUp 1s ease-out 0.4s forwards; opacity: 0; }
+
+        .info-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent-light);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.12);
+        }
+        .info-card:hover::before { opacity: 1; }
+
+        .faculty-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .faculty-card:hover {
+            background: var(--accent-pale);
+            border-color: var(--accent-light);
+            transform: scale(1.02);
+        }
+        .faculty-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.25);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(30, 64, 175, 0.35); }
+        .btn-primary:focus-visible { outline: 3px solid var(--accent-light); outline-offset: 3px; }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid var(--accent);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-secondary:hover { background: var(--accent); color: #ffffff; }
+
+        .nav-link {
+            position: relative;
+            color: var(--fg-muted);
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover { color: var(--accent); }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+        .stat-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid var(--accent-pale);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px; top: 0;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 3px var(--accent-pale);
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--fg-muted);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .tab-btn:hover { color: var(--accent); background: var(--bg-alt); }
+        .tab-btn.active { background: var(--accent); color: #ffffff; border-color: var(--accent); }
+        .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        .ranking-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-pale);
+            border: 1px solid var(--accent-light);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .floating { animation: float 6s ease-in-out infinite; }
+        .floating-delayed { animation: float 6s ease-in-out 2s infinite; }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 100;
+            padding: 2rem;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .mobile-menu.open { display: flex; }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .section-divider {
+            width: 80px; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
+        }
+
+        .section-alt { background: var(--bg-alt); }
+        .section-dark {
+            background: linear-gradient(135deg, var(--accent) 0%, #1e3a8a 100%);
+            color: #ffffff;
+        }
+        .section-dark .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .section-dark .info-card:hover { background: rgba(255, 255, 255, 0.15); }
+        .section-dark h2, .section-dark h3 { color: #ffffff; }
+        .section-dark p { color: rgba(255, 255, 255, 0.8); }
+
+        .testimonial-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover { box-shadow: 0 10px 30px var(--shadow); transform: translateY(-4px); }
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px; left: 20px;
+            font-size: 4rem;
+            color: var(--accent-pale);
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+        }
+
+        .advantage-card {
+            background: var(--success-bg);
+            border: 1px solid rgba(5, 150, 105, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .advantage-card:hover { box-shadow: 0 8px 20px rgba(5, 150, 105, 0.15); transform: translateY(-2px); }
+
+        .disadvantage-card {
+            background: var(--warning-bg);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .disadvantage-card:hover { box-shadow: 0 8px 20px rgba(217, 119, 6, 0.15); transform: translateY(-2px); }
+
+        .star-filled { color: #fbbf24; }
+        .star-empty { color: #e2e8f0; }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .rating-row:last-child { border-bottom: none; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-alt); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-800 to-blue-500 flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">U</span>
+                    </div>
+                    <span class="font-bold text-lg hidden sm:block text-gray-900">UIZ Agadir</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#presentation" class="nav-link">Présentation</a>
+                    <a href="#classements" class="nav-link">Classements</a>
+                    <a href="#formations" class="nav-link">Formations</a>
+                    <a href="#avis" class="nav-link">Avis</a>
+                    <a href="#vie-etudiante" class="nav-link">Vie étudiante</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+
+                <button id="menuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="flex justify-end">
+            <button id="closeMenuBtn" class="p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Fermer le menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col gap-6 text-2xl">
+            <a href="#presentation" class="nav-link">Présentation</a>
+            <a href="#classements" class="nav-link">Classements</a>
+            <a href="#formations" class="nav-link">Formations</a>
+            <a href="#avis" class="nav-link">Avis</a>
+            <a href="#vie-etudiante" class="nav-link">Vie étudiante</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-16 px-4">
+        <div class="absolute top-1/4 right-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl floating"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl floating-delayed"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <div class="hero-title mb-6">
+                <span class="inline-block px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-6">
+                    Université Publique Marocaine - Fondée en 1989
+                </span>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-gray-900">
+                    Université Ibn Zohr<br>
+                    <span class="bg-gradient-to-r from-blue-800 to-blue-500 bg-clip-text text-transparent">Agadir</span>
+                </h1>
+            </div>
+            
+            <p class="hero-subtitle text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    L'une des plus grandes universités du Maroc. Découvrez si l'UIZ est faite pour vous 
+                    à travers ce guide complet pour les futurs étudiants.
+            </p>
+
+            <div class="hero-cta flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#presentation" class="btn-primary">
+                    Découvrir l'université
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#avis" class="btn-secondary">Voir les avis</a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-400">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="relative py-12 border-y border-gray-200 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center animate-on-scroll">
+                    <div class="stat-number">120K+</div>
+                    <p class="text-gray-600">Étudiants</p>
+                </div>
+                <div class="text-center animate-on-scroll stagger-1">
+                    <div class="stat-number">20+</div>
+                    <p class="text-gray-600">Établissements</p>
+                </div>
+                <div class="text-center animate-on-scroll stagger-2">
+                    <div class="stat-number">241</div>
+                    <p class="text-gray-600">Filières</p>
+                </div>
+                <div class="text-center animate-on-scroll stagger-3">
+                    <div class="stat-number">3e</div>
+                    <p class="text-gray-600">Classement National</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Presentation Section -->
+    <section id="presentation" class="relative py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Présentation</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                        Une université majeure au sud du Maroc
+                    </h2>
+                    <div class="section-divider mb-8"></div>
+                    
+                    <div class="space-y-6 text-gray-600 leading-relaxed">
+                        <p>
+                            L'Université Ibn Zohr (UIZ) est une université publique située à <strong class="text-gray-900">Agadir</strong>, 
+                            dans la région Souss-Massa. Fondée en 1989, elle est devenue l'une des plus grandes universités 
+                            du Maroc en nombre d'étudiants.
+                        </p>
+                        <p>
+                            Elle couvre <strong class="text-gray-900">5 régions du sud du Maroc</strong> avec des campus dans 
+                            les villes d'Agadir, Aït Melloul, Taroudant, Ouarzazate, Laâyoune, Guelmim, Dakhla et Smara.
+                        </p>
+                        <p>
+                            L'université compte plus de <strong class="text-gray-900">20 facultés et écoles</strong>, 
+                            environ 1 500 enseignants-chercheurs et propose une grande diversité de formations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="animate-on-scroll stagger-2">
+                    <div class="info-card p-8">
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                            </svg>
+                            Diplômes proposés
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-3 rounded-lg bg-blue-50">
+                                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                                <span class="text-gray-700">Licence</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg bg-blue-50">
+                                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                <span class="text-gray-700">Master</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg bg-blue-50">
+                                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                                <span class="text-gray-700">Doctorat</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg bg-blue-50">
+                                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                <span class="text-gray-700">Diplômes d'Ingénieur</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg bg-blue-50">
+                                <div class="w-2 h-2 rounded-full bg-blue-400"></div>
+                                <span class="text-gray-700">Formations professionnelles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rankings Section -->
+    <section id="classements" class="relative py-24 px-4 section-alt">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Classements et réputation</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Une reconnaissance nationale
+                </h2>
+                <div class="section-divider mx-auto mb-8"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="info-card p-8 animate-on-scroll">
+                    <div class="ranking-badge mb-6">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        THE 2026
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2 text-gray-900">3e au Maroc</h3>
+                    <p class="text-gray-600">Classée 3ème université marocaine par Times Higher Education</p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-1">
+                    <div class="flex items-center gap-2 mb-6 text-blue-600">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                        <span class="font-medium">Recherche</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2 text-gray-900">92 structures</h3>
+                    <p class="text-gray-600">Laboratoires de recherche en ingénierie, chimie, sciences de la vie</p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-2">
+                    <div class="flex items-center gap-2 mb-6 text-amber-500">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="8" r="7"/>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                        </svg>
+                        <span class="font-medium">Webometrics</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2 text-gray-900">ENCG #1</h3>
+                    <p class="text-gray-600">1ère business school au Maroc (ENCG Agadir)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formations Section -->
+    <section id="formations" class="relative py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Structures académiques</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Facultés et Écoles
+                </h2>
+                <div class="section-divider mx-auto mb-8"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    L'université dispose de plus de 20 établissements répartis sur plusieurs villes du sud du Maroc.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Faculties -->
+                <div class="animate-on-scroll">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                        </div>
+                        Facultés principales
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">Faculté des Sciences</h4>
+                        </div>
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">Faculté des Lettres et Sciences Humaines</h4>
+                        </div>
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">FSJES (Sciences Juridiques, Économiques et Sociales)</h4>
+                        </div>
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">Faculté de Médecine et Pharmacie</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schools -->
+                <div class="animate-on-scroll stagger-1">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                        </div>
+                        Écoles
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">ENCG Agadir</h4>
+                            <p class="text-sm text-gray-500">Commerce et Gestion</p>
+                        </div>
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">ENSA Agadir</h4>
+                            <p class="text-sm text-gray-500">Sciences Appliquées</p>
+                        </div>
+                        <div class="faculty-card" tabindex="0">
+                            <h4 class="font-semibold text-gray-900">EST</h4>
+                            <p class="text-sm text-gray-500">École Supérieure de Technologie</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domains -->
+            <div class="animate-on-scroll stagger-2">
+                <div class="info-card p-8">
+                    <h3 class="text-xl font-bold mb-6 text-center text-gray-900">Domaines de formation (241 filières)</h3>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium">Informatique</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Sciences</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium">Droit</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Économie</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium">Commerce</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Ingénierie</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium">Médecine</span>
+                        <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-800 font-medium">Sciences humaines</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Reviews Section -->
+    <section id="avis" class="relative py-24 px-4 section-alt">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Avis des étudiants</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Témoignages réels
+                </h2>
+                <div class="section-divider mx-auto mb-8"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Découvrez les expériences partagées par des étudiants sur des forums et discussions en ligne.
+                </p>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="pt-6">
+                        <p class="text-gray-700 italic mb-4">
+                            "I would advise you to leave Agadir… people suffer there."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Étudiant critique</p>
+                                <p class="text-sm text-gray-500">Opportunités limitées</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card animate-on-scroll stagger-1">
+                    <div class="pt-6">
+                        <p class="text-gray-700 italic mb-4">
+                            "EST depends on grades… it's very competitive."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Étudiant EST</p>
+                                <p class="text-sm text-gray-500">Filière sélective</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card animate-on-scroll stagger-2">
+                    <div class="pt-6">
+                        <p class="text-gray-700 italic mb-4">
+                            "I'm a student at Ibn Zohr and looking for a job."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-600">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Étudiant actuel</p>
+                                <p class="text-sm text-gray-500">Recherche d'emploi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning notice -->
+            <div class="info-card p-6 max-w-3xl mx-auto animate-on-scroll stagger-3" style="background: var(--warning-bg); border-color: rgba(217, 119, 6, 0.3);">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-amber-200 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-700">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-amber-800 mb-1">Important</h4>
+                        <p class="text-amber-700">
+                            Ces témoignages représentent des expériences personnelles et ne constituent pas l'avis officiel de l'université. 
+                            Chaque expérience est unique et dépend de nombreux facteurs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pros and Cons Section -->
+    <section class="relative py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Analyse</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Avantages et Inconvénients
+                </h2>
+                <div class="section-divider mx-auto"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Advantages -->
+                <div class="animate-on-scroll">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Avantages</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="advantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-green-700 text-sm">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 mb-1">Très grande université</h4>
+                                    <p class="text-green-700 text-sm">Grande diversité de filières, nombreuses facultés et choix d'études varié.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="advantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-green-700 text-sm">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 mb-1">Bonne recherche scientifique</h4>
+                                    <p class="text-green-700 text-sm">Nombreux laboratoires et forte production scientifique.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="advantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-green-700 text-sm">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 mb-1">Université publique (frais faibles)</h4>
+                                    <p class="text-green-700 text-sm">Frais d'inscription très bas pour les étudiants marocains.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="advantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-green-700 text-sm">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 mb-1">Plusieurs écoles réputées</h4>
+                                    <p class="text-green-700 text-sm">ENCG Agadir (commerce), ENSA Agadir (ingénieurs), Faculté de médecine.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="advantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-green-700 text-sm">5</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 mb-1">Ville agréable pour vivre</h4>
+                                    <p class="text-green-700 text-sm">Agadir offre un climat doux, une ville moderne et la proximité de la mer.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disadvantages -->
+                <div class="animate-on-scroll stagger-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Inconvénients</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="disadvantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-amber-700 text-sm">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-amber-800 mb-1">Université très grande → classes chargées</h4>
+                                    <p class="text-amber-700 text-sm">Amphithéâtres très remplis, suivi individuel limité.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="disadvantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-amber-700 text-sm">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-amber-800 mb-1">Différences de qualité selon les facultés</h4>
+                                    <p class="text-amber-700 text-sm">Certaines écoles sont excellentes, d'autres ont moins de ressources.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="disadvantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-amber-700 text-sm">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-amber-800 mb-1">Opportunités de stage parfois limitées</h4>
+                                    <p class="text-amber-700 text-sm">Moins d'opportunités locales qu'à Casablanca ou Rabat.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="disadvantage-card">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="font-bold text-amber-700 text-sm">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-amber-800 mb-1">Sélectivité forte dans certaines filières</h4>
+                                    <p class="text-amber-700 text-sm">EST, ENSA et certaines licences informatiques sont très compétitives.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rating Summary Section -->
+    <section class="relative py-24 px-4 section-alt">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Synthèse</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Notes moyennes
+                </h2>
+                <div class="section-divider mx-auto"></div>
+            </div>
+
+            <div class="info-card p-8 animate-on-scroll stagger-1">
+                <div class="grid gap-2">
+                    <div class="rating-row">
+                        <span class="font-medium text-gray-700">Qualité académique</span>
+                        <div class="flex gap-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="rating-row">
+                        <span class="font-medium text-gray-700">Réputation</span>
+                        <div class="flex gap-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="rating-row">
+                        <span class="font-medium text-gray-700">Vie étudiante</span>
+                        <div class="flex gap-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="rating-row">
+                        <span class="font-medium text-gray-700">Opportunités professionnelles</span>
+                        <div class="flex gap-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="rating-row">
+                        <span class="font-medium text-gray-700">Infrastructure</span>
+                        <div class="flex gap-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">Note globale</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex gap-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <span class="text-2xl font-bold text-blue-600">3.4/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Life Section -->
+    <section id="vie-etudiante" class="relative py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Vie étudiante</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Services et infrastructures
+                </h2>
+                <div class="section-divider mx-auto mb-8"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="info-card p-8 animate-on-scroll">
+                    <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Logement</h3>
+                    <p class="text-gray-600">
+                        Environ <strong>8 432 places</strong> en résidence universitaire disponibles pour les étudiants.
+                    </p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-1">
+                    <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Santé</h3>
+                    <p class="text-gray-600">
+                        Centres de santé pour étudiants et programmes d'assurance maladie.
+                    </p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-2">
+                    <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Bibliothèques</h3>
+                    <p class="text-gray-600">
+                        Bibliothèques universitaires et espaces de travail disponibles sur les campus.
+                    </p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-3">
+                    <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Sports</h3>
+                    <p class="text-gray-600">
+                        Complexes sportifs et activités sportives variées pour les étudiants.
+                    </p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-4">
+                    <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Clubs étudiants</h3>
+                    <p class="text-gray-600">
+                        Divers clubs et associations pour s'impliquer dans la vie universitaire.
+                    </p>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-5">
+                    <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Ville d'Agadir</h3>
+                    <p class="text-gray-600">
+                        Climat doux, ville moderne et proximité de la mer pour une qualité de vie agréable.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practical Info Section -->
+    <section class="relative py-24 px-4 section-alt">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Informations pratiques</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Ce qu'il faut savoir
+                </h2>
+                <div class="section-divider mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="info-card p-8 animate-on-scroll">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                        Langues d'enseignement
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 rounded-full bg-blue-600"></div>
+                            <span class="text-gray-700">Arabe</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span class="text-gray-700">Français</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 rounded-full bg-blue-400"></div>
+                            <span class="text-gray-700">Amazighe</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 rounded-full bg-gray-400"></div>
+                            <span class="text-gray-700">Anglais</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 rounded-full bg-gray-400"></div>
+                            <span class="text-gray-700">Espagnol (selon programmes)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card p-8 animate-on-scroll stagger-1">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        Zones couvertes
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Agadir</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Aït Melloul</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Taroudant</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Ouarzazate</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Laâyoune</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Guelmim</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Dakhla</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">Smara</span>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm">
+                        5 régions du sud du Maroc couvertes par l'université.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-blue-600 font-medium tracking-wider uppercase text-sm">Contact</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900">
+                    Pour en savoir plus
+                </h2>
+                <div class="section-divider mx-auto mb-8"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <a href="https://www.uiz.ac.ma" target="_blank" rel="noopener noreferrer" class="info-card p-8 text-center animate-on-scroll group" aria-label="Visiter le site officiel">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-500 transition-colors">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500 group-hover:text-white transition-colors">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-900">Site officiel</h3>
+                    <p class="text-blue-500">www.uiz.ac.ma</p>
+                </a>
+
+                <div class="info-card p-8 text-center animate-on-scroll stagger-1">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-900">Localisation</h3>
+                    <p class="text-blue-600">Agadir, Souss-Massa, Maroc</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative py-12 px-4 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
+                        <span class="text-blue-800 font-bold text-lg">U</span>
+                    </div>
+                    <span class="font-bold">UIZ Agadir - Guide Étudiant</span>
+                </div>
+                <p class="text-blue-200 text-sm text-center">
+                    Guide non-officiel pour les futurs étudiants - 2025
+                </p>
+                <div class="flex gap-4">
+                    <a href="https://www.uiz.ac.ma" target="_blank" rel="noopener noreferrer" class="text-blue-200 hover:text-white transition-colors" aria-label="Site officiel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize variables first
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
+
+        // Mobile menu functionality
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        if (closeMenuBtn && mobileMenu) {
+            closeMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Scroll animations with IntersectionObserver
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!prefersReducedMotion) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        } else {
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                el.classList.add('visible');
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Keyboard navigation for faculty cards
+        document.querySelectorAll('.faculty-card').forEach(card => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
