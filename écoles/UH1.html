@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Université Ibn Tofaïl - Guide Complet</title>
+    <title>Université Hassan Ier Settat - Guide Complet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,33 +23,21 @@
     <style>
         :root {
             --bg: #f8fafc;
-            --bg-dark: #0f172a;
             --fg: #0f172a;
-            --fg-light: #f8fafc;
             --muted: #64748b;
             --accent: #0369a1;
             --accent-light: #0ea5e9;
             --card: #ffffff;
-            --card-dark: #1e293b;
             --border: #e2e8f0;
-            --border-dark: #334155;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
+            html { scroll-behavior: auto; }
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
         }
@@ -61,11 +49,8 @@
             overflow-x: hidden;
         }
 
-        .font-display {
-            font-family: 'Playfair Display', serif;
-        }
+        .font-display { font-family: 'Playfair Display', serif; }
 
-        /* Background Pattern */
         .hero-bg {
             background: 
                 radial-gradient(ellipse 80% 50% at 50% -20%, rgba(3, 105, 161, 0.15), transparent),
@@ -77,38 +62,14 @@
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230369a1' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        /* Animations */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes float {
@@ -116,17 +77,8 @@
             50% { transform: translateY(-10px); }
         }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .animate-scale-in {
-            animation: scaleIn 0.6s ease-out forwards;
-        }
-
-        .animate-slide-in-left {
-            animation: slideInLeft 0.6s ease-out forwards;
-        }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
 
         .reveal {
             opacity: 0;
@@ -134,12 +86,8 @@
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Card Styles */
         .card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -153,9 +101,7 @@
             border-color: var(--accent);
         }
 
-        /* Tab Styles */
         .tab-btn {
-            position: relative;
             padding: 12px 24px;
             font-weight: 600;
             color: var(--muted);
@@ -163,32 +109,18 @@
             border-radius: 8px;
         }
 
-        .tab-btn:hover {
-            color: var(--accent);
-            background: rgba(3, 105, 161, 0.05);
-        }
+        .tab-btn:hover { color: var(--accent); background: rgba(3, 105, 161, 0.05); }
+        .tab-btn.active { color: white; background: var(--accent); }
 
-        .tab-btn.active {
-            color: white;
-            background: var(--accent);
-        }
-
-        .tab-btn:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        /* Accordion */
         .accordion-item {
             border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s ease;
+            margin-bottom: 8px;
         }
 
-        .accordion-item:hover {
-            border-color: var(--accent);
-        }
+        .accordion-item:hover { border-color: var(--accent); }
 
         .accordion-header {
             width: 100%;
@@ -202,22 +134,9 @@
             transition: all 0.3s ease;
         }
 
-        .accordion-header:hover {
-            background: rgba(3, 105, 161, 0.03);
-        }
-
-        .accordion-header:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: -2px;
-        }
-
-        .accordion-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .accordion-item.open .accordion-icon {
-            transform: rotate(180deg);
-        }
+        .accordion-header:hover { background: rgba(3, 105, 161, 0.03); }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-item.open .accordion-icon { transform: rotate(180deg); }
 
         .accordion-content {
             max-height: 0;
@@ -225,15 +144,12 @@
             transition: max-height 0.4s ease;
         }
 
-        .accordion-item.open .accordion-content {
-            max-height: 500px;
-        }
+        .accordion-item.open .accordion-content { max-height: 500px; }
 
-        /* Stats Counter */
         .stat-number {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 3rem;
+            font-size: 2.75rem;
             line-height: 1;
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
             -webkit-background-clip: text;
@@ -241,9 +157,7 @@
             background-clip: text;
         }
 
-        /* Review Cards */
         .review-card {
-            position: relative;
             padding: 24px;
             border-radius: 16px;
             transition: all 0.3s ease;
@@ -259,7 +173,6 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Navigation */
         .nav-link {
             position: relative;
             padding: 8px 16px;
@@ -280,34 +193,12 @@
             transform: translateX(-50%);
         }
 
-        .nav-link:hover {
-            color: var(--accent);
-        }
+        .nav-link:hover { color: var(--accent); }
+        .nav-link:hover::after { width: 60%; }
 
-        .nav-link:hover::after {
-            width: 60%;
-        }
+        .float-element { animation: float 6s ease-in-out infinite; }
+        .float-element:nth-child(2) { animation-delay: -2s; }
 
-        .nav-link:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-
-        /* Floating Elements */
-        .float-element {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .float-element:nth-child(2) {
-            animation-delay: -2s;
-        }
-
-        .float-element:nth-child(3) {
-            animation-delay: -4s;
-        }
-
-        /* Scroll Progress */
         .scroll-progress {
             position: fixed;
             top: 0;
@@ -318,7 +209,6 @@
             transform-origin: left;
         }
 
-        /* Section Divider */
         .section-divider {
             width: 60px;
             height: 4px;
@@ -326,30 +216,19 @@
             border-radius: 2px;
         }
 
-        /* Pros/Cons Icons */
-        .icon-pro {
+        .icon-pro, .icon-con {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: rgba(16, 185, 129, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .icon-con {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: rgba(239, 68, 68, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
+        .icon-pro { background: rgba(16, 185, 129, 0.1); }
+        .icon-con { background: rgba(239, 68, 68, 0.1); }
 
-        /* Contact Card Hover */
         .contact-card {
             background: white;
             border: 1px solid var(--border);
@@ -374,53 +253,31 @@
             word-break: break-all;
         }
 
-        .contact-link:hover {
-            color: var(--accent-light);
-        }
+        .contact-link:hover { color: var(--accent-light); }
 
-        .contact-link:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-
-        /* Map placeholder */
         .map-container {
             background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
             border-radius: 16px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 320px;
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
         }
-
-        .map-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 L100 50 M50 0 L50 100' stroke='%230369a1' stroke-width='0.5' stroke-opacity='0.1'/%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
     </style>
 </head>
 <body>
-    <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <a href="#" class="font-display text-xl font-bold text-slate-800">
-                <span class="text-sky-600">Ibn</span> Tofail
+                <span class="text-sky-600">Hassan</span> Ier
             </a>
             <div class="hidden md:flex items-center gap-2">
                 <a href="#infos" class="nav-link">Infos</a>
                 <a href="#facultes" class="nav-link">Facultés</a>
                 <a href="#formations" class="nav-link">Formations</a>
-                <a href="#vie-etudiante" class="nav-link">Vie étudiante</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <a href="#avis" class="nav-link">Avis</a>
             </div>
@@ -430,13 +287,11 @@
                 </svg>
             </button>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-slate-200">
             <div class="px-6 py-4 space-y-2">
                 <a href="#infos" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Infos</a>
                 <a href="#facultes" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Facultés</a>
                 <a href="#formations" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Formations</a>
-                <a href="#vie-etudiante" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Vie étudiante</a>
                 <a href="#contact" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Contact</a>
                 <a href="#avis" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Avis</a>
             </div>
@@ -445,13 +300,11 @@
 
     <!-- Hero Section -->
     <section class="hero-bg hero-pattern min-h-screen pt-24 pb-16 relative overflow-hidden">
-        <!-- Decorative Elements -->
         <div class="absolute top-1/4 right-10 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl float-element"></div>
         <div class="absolute bottom-1/4 left-10 w-48 h-48 bg-sky-600/10 rounded-full blur-2xl float-element"></div>
         
         <div class="max-w-7xl mx-auto px-6 pt-12 md:pt-20">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Left Content -->
                 <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -461,41 +314,40 @@
                     </div>
                     <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-slate-800 leading-tight mb-6">
                         Université<br>
-                        <span class="text-sky-600">Ibn Tofaïl</span>
+                        <span class="text-sky-600">Hassan Ier</span>
                     </h1>
                     <p class="text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-xl">
-                        Une institution académique de premier plan à Kénitra, formant plus de 90 000 étudiants dans des domaines variés, du DUT au doctorat.
+                        Une institution académique majeure à Settat, offrant une formation de qualité dans les sciences, l'ingénierie, le commerce et les sciences humaines sur plusieurs campus.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#infos" class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-700 transition-all hover:shadow-lg hover:shadow-sky-600/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600">
+                        <a href="#infos" class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-700 transition-all hover:shadow-lg hover:shadow-sky-600/25">
                             Découvrir l'université
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </a>
-                        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-slate-300 text-slate-700 font-semibold rounded-xl hover:border-sky-600 hover:text-sky-600 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600">
+                        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-slate-300 text-slate-700 font-semibold rounded-xl hover:border-sky-600 hover:text-sky-600 transition-all">
                             Nous contacter
                         </a>
                     </div>
                 </div>
 
-                <!-- Right Content - Stats -->
                 <div class="grid grid-cols-2 gap-4 animate-scale-in" style="animation-delay: 0.3s;">
                     <div class="card p-6">
-                        <div class="stat-number" data-count="90000">0</div>
+                        <div class="stat-number" data-count="45000">0</div>
                         <p class="text-slate-600 mt-2">Étudiants</p>
                     </div>
                     <div class="card p-6">
-                        <div class="stat-number" data-count="620">0</div>
+                        <div class="stat-number" data-count="540">0</div>
                         <p class="text-slate-600 mt-2">Enseignants</p>
                     </div>
                     <div class="card p-6">
-                        <div class="stat-number" data-count="11">0</div>
+                        <div class="stat-number" data-count="9">0</div>
                         <p class="text-slate-600 mt-2">Établissements</p>
                     </div>
                     <div class="card p-6">
-                        <div class="stat-number" data-count="1989">0</div>
-                        <p class="text-slate-600 mt-2">Année de création</p>
+                        <div class="stat-number" data-count="1997">0</div>
+                        <p class="text-slate-600 mt-2">Année création</p>
                     </div>
                 </div>
             </div>
@@ -510,7 +362,7 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Informations générales</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    L'une des principales universités publiques de la région Rabat-Salé-Kénitra, participant activement au développement économique et scientifique.
+                    Une université publique clé de la région Casablanca-Settat, dédiée au développement régional et à l'excellence académique.
                 </p>
             </div>
 
@@ -523,8 +375,8 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-lg text-slate-800 mb-2">Localisation</h3>
-                    <p class="text-slate-600">Kénitra, Maroc</p>
-                    <p class="text-slate-500 text-sm mt-1">Région Rabat-Salé-Kénitra</p>
+                    <p class="text-slate-600">Settat, Maroc</p>
+                    <p class="text-slate-500 text-sm mt-1">Campus à Settat, Khouribga, Berrechid</p>
                 </div>
 
                 <div class="card p-6 group">
@@ -535,7 +387,7 @@
                     </div>
                     <h3 class="font-semibold text-lg text-slate-800 mb-2">Type</h3>
                     <p class="text-slate-600">Université publique</p>
-                    <p class="text-slate-500 text-sm mt-1">Accessible et ouverte à tous</p>
+                    <p class="text-slate-500 text-sm mt-1">Ministère de l'Enseignement supérieur</p>
                 </div>
 
                 <div class="card p-6 group">
@@ -545,8 +397,8 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-lg text-slate-800 mb-2">Fondation</h3>
-                    <p class="text-slate-600">1989</p>
-                    <p class="text-slate-500 text-sm mt-1">Plus de 35 ans d'excellence</p>
+                    <p class="text-slate-600">1997</p>
+                    <p class="text-slate-500 text-sm mt-1">+25 ans d'expérience</p>
                 </div>
 
                 <div class="card p-6 group">
@@ -556,8 +408,8 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-lg text-slate-800 mb-2">Communauté</h3>
-                    <p class="text-slate-600">+90 000 étudiants</p>
-                    <p class="text-slate-500 text-sm mt-1">Environ 620 enseignants</p>
+                    <p class="text-slate-600">35 000 à 50 000 étudiants</p>
+                    <p class="text-slate-500 text-sm mt-1">~540 enseignants permanents</p>
                 </div>
 
                 <div class="card p-6 group">
@@ -567,19 +419,19 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-lg text-slate-800 mb-2">Formations</h3>
-                    <p class="text-slate-600">+200 formations initiales</p>
-                    <p class="text-slate-500 text-sm mt-1">+150 formations continues</p>
+                    <p class="text-slate-600">+100 filières accréditées</p>
+                    <p class="text-slate-500 text-sm mt-1">Système LMD</p>
                 </div>
 
                 <div class="card p-6 group">
                     <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
                         <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-lg text-slate-800 mb-2">International</h3>
-                    <p class="text-slate-600">Partenariats mondiaux</p>
-                    <p class="text-slate-500 text-sm mt-1">Programmes de mobilité</p>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Entrepreneuriat</h3>
+                    <p class="text-slate-600">Incubateur universitaire</p>
+                    <p class="text-slate-500 text-sm mt-1">Soutien aux startups étudiantes</p>
                 </div>
             </div>
         </div>
@@ -592,12 +444,12 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Facultés et écoles</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    L'université regroupe plusieurs établissements couvrant tous les domaines académiques.
+                    Une structure académique diversifiée répartie sur plusieurs sites.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-4 reveal" id="facultiesAccordion">
-                <!-- Accordion items will be generated by JS -->
+                <!-- Generated by JS -->
             </div>
         </div>
     </section>
@@ -609,32 +461,37 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Filières et formations</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    Plus de 200 formations initiales et 150 formations continues dans tous les domaines.
+                    Plus de 100 filières accréditées allant du DUT au Doctorat.
                 </p>
             </div>
 
-            <!-- Tabs -->
             <div class="flex flex-wrap gap-2 mb-8 reveal" role="tablist">
-                <button class="tab-btn active" data-tab="all" role="tab" aria-selected="true">Tous les domaines</button>
-                <button class="tab-btn" data-tab="sciences" role="tab" aria-selected="false">Sciences</button>
-                <button class="tab-btn" data-tab="business" role="tab" aria-selected="false">Business</button>
-                <button class="tab-btn" data-tab="arts" role="tab" aria-selected="false">Arts et Lettres</button>
+                <button class="tab-btn active" data-tab="all" role="tab">Tous les domaines</button>
+                <button class="tab-btn" data-tab="sciences" role="tab">Sciences</button>
+                <button class="tab-btn" data-tab="business" role="tab">Business</button>
+                <button class="tab-btn" data-tab="arts" role="tab">Lettres & Sport</button>
             </div>
 
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 reveal" id="formationsGrid">
-                <!-- Formation cards will be generated by JS -->
+                <!-- Generated by JS -->
             </div>
 
             <div class="mt-8 p-6 bg-sky-50 rounded-2xl border border-sky-200 reveal">
                 <div class="flex items-start gap-4">
                     <div class="w-10 h-10 rounded-xl bg-sky-600 flex items-center justify-center flex-shrink-0">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                         </svg>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-slate-800 mb-1">À noter</h4>
-                        <p class="text-slate-600">Certaines filières sont sélectives (ENSA, ENCG, EST), tandis que les facultés classiques sont à accès ouvert pour les titulaires du baccalauréat.</p>
+                        <h4 class="font-semibold text-slate-800 mb-2">Diplômes proposés</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border">DUT / Licence</span>
+                            <span class="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border">Licence professionnelle</span>
+                            <span class="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border">Master</span>
+                            <span class="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border">Diplôme d'ingénieur</span>
+                            <span class="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border">Doctorat</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -642,13 +499,13 @@
     </section>
 
     <!-- Student Life Section -->
-    <section id="vie-etudiante" class="py-20 bg-slate-50">
+    <section class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="reveal">
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Vie étudiante</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    Une infrastructure complète pour accompagner les étudiants tout au long de leur parcours.
+                    Des services complets pour accompagner les étudiants.
                 </p>
             </div>
 
@@ -660,10 +517,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                             </svg>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-slate-800">Logement</h3>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Hébergement</h3>
                     </div>
                     <p class="text-slate-600 leading-relaxed">
-                        Cités universitaires et résidences étudiantes disponibles pour héberger les étudiants durant leurs années d'étude.
+                        Cités universitaires et résidences étudiantes disponibles sur les différents campus.
                     </p>
                 </div>
 
@@ -671,13 +528,13 @@
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center">
                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-slate-800">Clubs étudiants</h3>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Entrepreneuriat</h3>
                     </div>
                     <p class="text-slate-600 leading-relaxed">
-                        Vie associative riche avec des clubs culture, sport et entrepreneuriat pour développer vos compétences extrascolaires.
+                        Incubateur universitaire dédié à la création de startups et à l'innovation étudiante.
                     </p>
                 </div>
 
@@ -685,13 +542,13 @@
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center">
                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-slate-800">Centres de langues</h3>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Clubs & Associations</h3>
                     </div>
                     <p class="text-slate-600 leading-relaxed">
-                        Centres de langues pour perfectionner vos compétences linguistiques et améliorer votre employabilité à l'international.
+                        Vie associative dynamique avec des clubs culture, sport et entrepreneuriat.
                     </p>
                 </div>
 
@@ -699,13 +556,13 @@
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center">
                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                             </svg>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-slate-800">Carrière</h3>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">International</h3>
                     </div>
                     <p class="text-slate-600 leading-relaxed">
-                        Centre de développement de carrière pour vous aider à trouver un emploi ou créer votre entreprise après vos études.
+                        Accueil d'étudiants internationaux et partenariats académiques et scientifiques.
                     </p>
                 </div>
             </div>
@@ -719,12 +576,11 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Contact</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    Toutes les informations pour joindre l'université Ibn Tofaïl.
+                    Toutes les informations pour joindre l'Université Hassan Ier.
                 </p>
             </div>
 
             <div class="grid lg:grid-cols-5 gap-8 reveal">
-                <!-- Contact Info Cards -->
                 <div class="lg:col-span-3 space-y-4">
                     <div class="grid sm:grid-cols-2 gap-4">
                         <!-- Address -->
@@ -737,9 +593,9 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-slate-800 mb-1">Adresse du siège</h4>
-                                    <p class="text-slate-600 text-sm">BP 242, Kénitra 14000</p>
-                                    <p class="text-slate-600 text-sm">Maroc</p>
+                                    <h4 class="font-semibold text-slate-800 mb-1">Adresse principale</h4>
+                                    <p class="text-slate-600 text-sm">Route de Casablanca Km 3,5</p>
+                                    <p class="text-slate-600 text-sm">BP 539, Settat – Maroc</p>
                                 </div>
                             </div>
                         </div>
@@ -754,8 +610,8 @@
                                 </div>
                                 <div>
                                     <h4 class="font-semibold text-slate-800 mb-1">Site web</h4>
-                                    <a href="http://www.uit.ac.ma/" target="_blank" rel="noopener noreferrer" class="contact-link text-sm">
-                                        www.uit.ac.ma
+                                    <a href="http://www.uh1.ac.ma/" target="_blank" rel="noopener noreferrer" class="contact-link text-sm">
+                                        www.uh1.ac.ma
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                                         </svg>
@@ -774,8 +630,8 @@
                                 </div>
                                 <div>
                                     <h4 class="font-semibold text-slate-800 mb-1">Téléphone</h4>
-                                    <a href="tel:+212661403557" class="contact-link text-sm block">+212 6 61 40 35 57</a>
-                                    <a href="tel:+212537329200" class="contact-link text-sm block mt-1">+212 5 37 32 92 00</a>
+                                    <a href="tel:+212523721275" class="contact-link text-sm block">+212 05 23 72 12 75</a>
+                                    <a href="tel:+212523721276" class="contact-link text-sm block mt-1">+212 05 23 72 12 76</a>
                                 </div>
                             </div>
                         </div>
@@ -790,51 +646,29 @@
                                 </div>
                                 <div>
                                     <h4 class="font-semibold text-slate-800 mb-1">Fax</h4>
-                                    <p class="text-slate-600 text-sm">+212 5 37 37 40 52</p>
+                                    <p class="text-slate-600 text-sm">+212 05 23 72 12 74</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Email Cards -->
-                    <div class="grid sm:grid-cols-2 gap-4 mt-4">
-                        <!-- Presidency Email -->
-                        <div class="contact-card">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-slate-800 mb-1">Présidence</h4>
-                                    <a href="mailto:presidence@uit.ac.ma" class="contact-link text-sm">
-                                        presidence@uit.ac.ma
-                                    </a>
-                                </div>
+                    <!-- Email -->
+                    <div class="contact-card mt-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
                             </div>
-                        </div>
-
-                        <!-- International Office -->
-                        <div class="contact-card">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-slate-800 mb-1">International Office</h4>
-                                    <a href="mailto:iro@uit.ac.ma" class="contact-link text-sm">
-                                        iro@uit.ac.ma
-                                    </a>
-                                </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 mb-1">Email général</h4>
+                                <a href="mailto:contact@uhp.ac.ma" class="contact-link text-sm">contact@uhp.ac.ma</a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Working Hours -->
-                    <div class="contact-card mt-4">
+                    <div class="contact-card">
                         <div class="flex items-start gap-4">
                             <div class="w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -844,26 +678,35 @@
                             <div>
                                 <h4 class="font-semibold text-slate-800 mb-2">Heures d'ouverture</h4>
                                 <div class="flex flex-wrap gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-slate-600 text-sm">Du lundi au vendredi</span>
-                                    </div>
                                     <div class="flex items-center gap-3 text-sm">
                                         <span class="inline-flex items-center gap-1 px-3 py-1 bg-sky-100 text-sky-700 rounded-full">
-                                            <span class="font-medium">08:00</span> – <span class="font-medium">12:00</span>
+                                            <span class="font-medium">09:00</span> – <span class="font-medium">16:30</span>
                                         </span>
-                                        <span class="text-slate-400">&</span>
-                                        <span class="inline-flex items-center gap-1 px-3 py-1 bg-sky-100 text-sky-700 rounded-full">
-                                            <span class="font-medium">14:00</span> – <span class="font-medium">18:00</span>
-                                        </span>
+                                        <span class="text-slate-600">Jours ouvrés</span>
                                     </div>
                                 </div>
-                                <p class="text-slate-500 text-xs mt-2">* Horaires susceptibles de varier selon les périodes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternative Address -->
+                    <div class="contact-card bg-slate-50 border-dashed">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 mb-1">Adresse alternative</h4>
+                                <p class="text-slate-600 text-sm">50 Rue Ibnou Lhaytham, BP 577</p>
+                                <p class="text-slate-600 text-sm">Settat 26002 – Maroc</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Map / Location Card -->
+                <!-- Map Card -->
                 <div class="lg:col-span-2">
                     <div class="card p-6 h-full">
                         <h4 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
@@ -873,40 +716,36 @@
                             Localisation
                         </h4>
                         <div class="map-container mb-4">
-                            <div class="text-center relative z-10">
-                                <svg class="w-16 h-16 text-sky-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13192.392094218781!2d-6.60289754458007!3d34.2460423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda759f000000001%3A0xb0f2670fb7c990f7!2sUniversit%C3%A9%20Ibn%20Tofail_K%C3%A9nitra!5e0!3m2!1sfr!2sma!4v1773499690472!5m2!1sfr!2sma" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d426804.84329551697!2d-7.946676752563168!3d33.30802092684814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda61aab74421995%3A0xb95e75c8335bbc60!2sUniversit%C3%A9%20Hassan%20I_Settat!5e0!3m2!1sfr!2sma!4v1773500638952!5m2!1sfr!2sma" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Carte de l'Université Hassan Ier Settat">
+                            </iframe>
                         </div>
                         <div class="space-y-3">
                             <div class="flex items-center gap-3 text-sm text-slate-600">
                                 <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
                                 </svg>
-                                <span>À ~40 km de Rabat</span>
+                                <span>À ~60 km de Casablanca</span>
                             </div>
                             <div class="flex items-center gap-3 text-sm text-slate-600">
                                 <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 </svg>
-                                <span>À ~120 km de Casablanca</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-sm text-slate-600">
-                                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <span>Accès par train et route</span>
+                                <span>Campus multiples (Settat, Khouribga, Berrechid)</span>
                             </div>
                         </div>
-                        <link href="https://www.google.com/maps/search/Universite+Ibn+Tofail+Kenitra" target="_blank" rel="noopener noreferrer" class="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-700 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600">
+                        <a href="https://www.google.com/maps/search/Universite+Hassan+1+Settat" target="_blank" rel="noopener noreferrer" class="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-700 transition-all">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            Voir sur Google Maps
+                            Ouvrir dans Google Maps
                         </a>
                     </div>
                 </div>
@@ -921,7 +760,7 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Avantages et inconvénients</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    Un aperçu équilibré des points forts et des défis de l'université.
+                    Un aperçu équilibré basé sur les retours d'étudiants.
                 </p>
             </div>
 
@@ -936,9 +775,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-bold text-slate-800">Avantages</h3>
                     </div>
-                    <ul class="space-y-4" id="prosList">
-                        <!-- Pros will be generated by JS -->
-                    </ul>
+                    <ul class="space-y-4" id="prosList"></ul>
                 </div>
 
                 <!-- Disadvantages -->
@@ -951,9 +788,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-bold text-slate-800">Défauts</h3>
                     </div>
-                    <ul class="space-y-4" id="consList">
-                        <!-- Cons will be generated by JS -->
-                    </ul>
+                    <ul class="space-y-4" id="consList"></ul>
                 </div>
             </div>
         </div>
@@ -966,12 +801,11 @@
                 <div class="section-divider mb-4"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Avis d'étudiants</h2>
                 <p class="text-slate-600 text-lg max-w-2xl mb-12">
-                    Retours les plus fréquents des étudiants de l'université.
+                    Retours les plus fréquents des étudiants.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 reveal">
-                <!-- Positive Reviews -->
                 <div>
                     <h4 class="font-semibold text-emerald-700 mb-4 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -979,12 +813,9 @@
                         </svg>
                         Avis positifs
                     </h4>
-                    <div class="space-y-4" id="positiveReviews">
-                        <!-- Generated by JS -->
-                    </div>
+                    <div class="space-y-4" id="positiveReviews"></div>
                 </div>
 
-                <!-- Negative Reviews -->
                 <div>
                     <h4 class="font-semibold text-red-700 mb-4 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -992,9 +823,7 @@
                         </svg>
                         Avis négatifs
                     </h4>
-                    <div class="space-y-4" id="negativeReviews">
-                        <!-- Generated by JS -->
-                    </div>
+                    <div class="space-y-4" id="negativeReviews"></div>
                 </div>
             </div>
         </div>
@@ -1018,12 +847,11 @@
                 <div class="section-divider mb-4 bg-white/30"></div>
                 <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Pour quel type d'étudiant ?</h2>
                 <p class="text-sky-200 text-lg max-w-2xl mb-12">
-                    Découvrez si cette université correspond à votre profil et à vos objectifs.
+                    Découvrez si cette université correspond à votre profil.
                 </p>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-8 reveal">
-                <!-- Good fit -->
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center">
@@ -1033,12 +861,9 @@
                         </div>
                         <h3 class="font-display text-2xl font-bold">Adaptée pour</h3>
                     </div>
-                    <ul class="space-y-3" id="goodFitList">
-                        <!-- Generated by JS -->
-                    </ul>
+                    <ul class="space-y-3" id="goodFitList"></ul>
                 </div>
 
-                <!-- Not ideal -->
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
@@ -1048,9 +873,7 @@
                         </div>
                         <h3 class="font-display text-2xl font-bold">Moins adaptée pour</h3>
                     </div>
-                    <ul class="space-y-3" id="badFitList">
-                        <!-- Generated by JS -->
-                    </ul>
+                    <ul class="space-y-3" id="badFitList"></ul>
                 </div>
             </div>
         </div>
@@ -1062,10 +885,10 @@
             <div class="grid md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <div class="font-display text-xl font-bold text-white mb-4">
-                        <span class="text-sky-400">Ibn</span> Tofail Guide
+                        <span class="text-sky-400">Hassan</span> Ier Guide
                     </div>
                     <p class="text-sm text-slate-500">
-                        Guide informatif non officiel sur l'Université Ibn Tofaïl de Kénitra.
+                        Guide informatif non officiel sur l'Université Hassan Ier de Settat.
                     </p>
                 </div>
                 <div>
@@ -1080,9 +903,9 @@
                 <div>
                     <h4 class="font-semibold text-white mb-4">Contact officiel</h4>
                     <ul class="space-y-2 text-sm">
-                        <li>BP 242, Kénitra 14000</li>
-                        <li><a href="http://www.uit.ac.ma/" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors">www.uit.ac.ma</a></li>
-                        <li><a href="mailto:presidence@uit.ac.ma" class="hover:text-sky-400 transition-colors">presidence@uit.ac.ma</a></li>
+                        <li>BP 539, Settat</li>
+                        <li><a href="http://www.uh1.ac.ma/" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors">www.uh1.ac.ma</a></li>
+                        <li><a href="mailto:contact@uhp.ac.ma" class="hover:text-sky-400 transition-colors">contact@uhp.ac.ma</a></li>
                     </ul>
                 </div>
             </div>
@@ -1095,67 +918,66 @@
     <script>
         // Data
         const faculties = [
-            { name: "Faculté des Sciences", description: "Sciences fondamentales, mathématiques, physique, chimie, biologie" },
-            { name: "Faculté des Sciences Juridiques, Économiques et Sociales", description: "Droit, économie, sciences politiques et sociales" },
-            { name: "Faculté des Langues, Lettres et Arts", description: "Langues étrangères, littérature, arts et communication" },
-            { name: "Faculté des Sciences Humaines et Sociales", description: "Sociologie, psychologie, histoire, géographie" },
-            { name: "École Nationale de Commerce et de Gestion (ENCG)", description: "Commerce, management, finance et marketing - Admission sélective" },
-            { name: "École Nationale des Sciences Appliquées (ENSA)", description: "Ingénierie et technologies appliquées - Formation d'ingénieurs - Admission sélective" },
-            { name: "École Supérieure de Technologie (EST)", description: "Formations technologiques courtes (DUT) - Admission sélective" },
-            { name: "École Supérieure de l'Éducation et de la Formation", description: "Formation des enseignants et métiers de l'éducation" },
-            { name: "École Nationale Supérieure de Chimie", description: "Chimie appliquée et industries chimiques" },
-            { name: "Institut des Métiers du Sport", description: "Sciences du sport et métiers sportifs" }
+            { name: "Faculté des Sciences Juridiques, Économiques et Sociales (FSJES)", description: "Droit, économie, sciences sociales - Settat" },
+            { name: "Faculté des Sciences et Techniques (FST)", description: "Sciences fondamentales et appliquées - Settat" },
+            { name: "Faculté des Langues, Arts et Sciences Humaines", description: "Langues, littérature, arts et sciences humaines" },
+            { name: "Faculté Polydisciplinaire de Khouribga", description: "Formations multidisciplinaires - Khouribga" },
+            { name: "École Nationale de Commerce et de Gestion (ENCG Settat)", description: "Commerce et management - Formation sélective reconnue" },
+            { name: "École Nationale des Sciences Appliquées (ENSA Khouribga)", description: "Ingénierie et technologies - Formation d'ingénieurs - Admission sélective" },
+            { name: "École Supérieure de Technologie (EST Berrechid)", description: "Formations technologiques (DUT) - Berrechid" },
+            { name: "Institut Supérieur des Sciences de la Santé", description: "Formations dans le domaine de la santé" },
+            { name: "Institut des Sciences du Sport", description: "Sciences du sport et activités physiques" },
+            { name: "École Supérieure de l'Éducation et de la Formation", description: "Formation des enseignants" }
         ];
 
         const formations = [
-            { name: "Sciences et technologies", category: "sciences" },
             { name: "Informatique", category: "sciences" },
-            { name: "Mathématiques et physique", category: "sciences" },
-            { name: "Chimie", category: "sciences" },
-            { name: "Économie et gestion", category: "business" },
+            { name: "Mathématiques et sciences physiques", category: "sciences" },
+            { name: "Génie industriel", category: "sciences" },
+            { name: "Génie informatique", category: "sciences" },
             { name: "Commerce et management", category: "business" },
-            { name: "Droit et sciences politiques", category: "business" },
+            { name: "Économie et gestion", category: "business" },
+            { name: "Droit public et privé", category: "business" },
+            { name: "Sciences humaines", category: "arts" },
             { name: "Langues et littérature", category: "arts" },
-            { name: "Sciences humaines et sociales", category: "arts" },
-            { name: "Ingénierie", category: "sciences" },
-            { name: "Sport et éducation", category: "arts" }
+            { name: "Sport et santé", category: "arts" }
         ];
 
         const pros = [
-            "Grande diversité de filières : sciences, commerce, ingénierie, lettres",
-            "Université publique accessible aux titulaires du bac sans concours",
-            "Possibilités de poursuite d'études complètes (Licence → Master → Doctorat)",
-            "Écoles reconnues comme ENSA et ENCG avec bonne réputation",
-            "Partenariats internationaux pour la mobilité et la recherche"
+            "Université publique reconnue : diplômes reconnus par l'État marocain",
+            "Écoles sélectives de qualité : ENCG et ENSA très recherchées sur le marché du travail",
+            "Bon équilibre recherche-formation : structures de recherche et doctorat disponibles",
+            "Proximité de Casablanca : facilite stages et opportunités professionnelles",
+            "Incubateur entrepreneurial : soutien à la création de startups étudiantes"
         ];
 
         const cons = [
-            "Amphithéâtres très chargés avec plusieurs centaines d'étudiants",
-            "Encadrement limité : suivi individuel difficile",
+            "Classes très nombreuses dans les facultés à accès ouvert",
             "Organisation administrative parfois lente",
-            "Différence de qualité entre établissements sélectifs et facultés ouvertes"
+            "Ressources inégales entre établissements sélectifs et facultés ouvertes",
+            "Ville étudiante plus calme : moins d'activités qu'à Casablanca ou Rabat"
         ];
 
         const positiveReviews = [
-            "Bon choix pour étudier gratuitement au Maroc.",
-            "Les écoles comme ENSA ou ENCG offrent de bonnes opportunités.",
-            "La ville de Kénitra est proche de Rabat et Casablanca."
+            "Bonne université publique pour continuer ses études après le bac.",
+            "Les écoles comme ENCG et ENSA offrent de bonnes perspectives.",
+            "Les professeurs en FST sont bien qualifiés."
         ];
 
         const negativeReviews = [
-            "Trop d'étudiants dans certaines filières.",
+            "Beaucoup d'étudiants dans certaines filières.",
             "Il faut être autonome pour réussir."
         ];
 
         const goodFit = [
-            "Étudiants qui veulent une université publique accessible",
-            "Étudiants autonomes capables de travailler seuls",
-            "Étudiants cherchant une formation scientifique, commerciale ou juridique"
+            "Étudiants cherchant une université publique reconnue",
+            "Étudiants intéressés par commerce, ingénierie ou sciences",
+            "Étudiants prêts à travailler de manière autonome"
         ];
 
         const badFit = [
-            "Étudiants qui veulent des petites classes et un suivi individuel",
-            "Ceux qui préfèrent un encadrement personnalisé"
+            "Étudiants qui veulent des petites classes et un suivi personnalisé",
+            "Ceux qui préfèrent un encadrement très rapproché"
         ];
 
         // Initialize
@@ -1172,7 +994,6 @@
             animateCounters();
         });
 
-        // Render Faculties Accordion
         function renderFaculties() {
             const container = document.getElementById('facultiesAccordion');
             container.innerHTML = faculties.map((faculty, index) => `
@@ -1184,26 +1005,19 @@
                         </svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="p-6 pt-0 text-slate-600 bg-slate-50">
-                            ${faculty.description}
-                        </div>
+                        <div class="p-6 pt-0 text-slate-600 bg-slate-50">${faculty.description}</div>
                     </div>
                 </div>
             `).join('');
 
-            // Add click handlers
             container.querySelectorAll('.accordion-header').forEach(header => {
                 header.addEventListener('click', () => {
                     const item = header.parentElement;
                     const isOpen = item.classList.contains('open');
-                    
-                    // Close all others
                     container.querySelectorAll('.accordion-item').forEach(i => {
                         i.classList.remove('open');
                         i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
                     });
-                    
-                    // Toggle current
                     if (!isOpen) {
                         item.classList.add('open');
                         header.setAttribute('aria-expanded', 'true');
@@ -1212,13 +1026,9 @@
             });
         }
 
-        // Render Formations
         function renderFormations(filter) {
             const container = document.getElementById('formationsGrid');
-            const filtered = filter === 'all' 
-                ? formations 
-                : formations.filter(f => f.category === filter);
-
+            const filtered = filter === 'all' ? formations : formations.filter(f => f.category === filter);
             container.innerHTML = filtered.map(formation => `
                 <div class="card p-5 group cursor-default">
                     <div class="flex items-center gap-3">
@@ -1233,12 +1043,8 @@
             `).join('');
         }
 
-        // Render Pros and Cons
         function renderProsCons() {
-            const prosContainer = document.getElementById('prosList');
-            const consContainer = document.getElementById('consList');
-
-            prosContainer.innerHTML = pros.map(pro => `
+            document.getElementById('prosList').innerHTML = pros.map(pro => `
                 <li class="flex items-start gap-3">
                     <div class="icon-pro mt-0.5">
                         <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
@@ -1249,7 +1055,7 @@
                 </li>
             `).join('');
 
-            consContainer.innerHTML = cons.map(con => `
+            document.getElementById('consList').innerHTML = cons.map(con => `
                 <li class="flex items-start gap-3">
                     <div class="icon-con mt-0.5">
                         <svg class="w-3 h-3 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -1261,30 +1067,17 @@
             `).join('');
         }
 
-        // Render Reviews
         function renderReviews() {
-            const positiveContainer = document.getElementById('positiveReviews');
-            const negativeContainer = document.getElementById('negativeReviews');
-
-            positiveContainer.innerHTML = positiveReviews.map(review => `
-                <div class="review-card positive">
-                    <p class="text-slate-700 italic">"${review}"</p>
-                </div>
+            document.getElementById('positiveReviews').innerHTML = positiveReviews.map(review => `
+                <div class="review-card positive"><p class="text-slate-700 italic">"${review}"</p></div>
             `).join('');
-
-            negativeContainer.innerHTML = negativeReviews.map(review => `
-                <div class="review-card negative">
-                    <p class="text-slate-700 italic">"${review}"</p>
-                </div>
+            document.getElementById('negativeReviews').innerHTML = negativeReviews.map(review => `
+                <div class="review-card negative"><p class="text-slate-700 italic">"${review}"</p></div>
             `).join('');
         }
 
-        // Render Fit Lists
         function renderFitLists() {
-            const goodContainer = document.getElementById('goodFitList');
-            const badContainer = document.getElementById('badFitList');
-
-            goodContainer.innerHTML = goodFit.map(item => `
+            document.getElementById('goodFitList').innerHTML = goodFit.map(item => `
                 <li class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -1292,8 +1085,7 @@
                     <span class="text-white/90">${item}</span>
                 </li>
             `).join('');
-
-            badContainer.innerHTML = badFit.map(item => `
+            document.getElementById('badFitList').innerHTML = badFit.map(item => `
                 <li class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
@@ -1303,54 +1095,34 @@
             `).join('');
         }
 
-        // Scroll Reveal
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('active');
                 });
             }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
             reveals.forEach(reveal => observer.observe(reveal));
         }
 
-        // Tabs
         function initTabs() {
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    tabs.forEach(t => {
-                        t.classList.remove('active');
-                        t.setAttribute('aria-selected', 'false');
-                    });
+                    tabs.forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
-                    tab.setAttribute('aria-selected', 'true');
                     renderFormations(tab.dataset.tab);
                 });
             });
         }
 
-        // Mobile Menu
         function initMobileMenu() {
             const btn = document.getElementById('mobileMenuBtn');
             const menu = document.getElementById('mobileMenu');
-            
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
-
-            // Close menu when clicking links
-            menu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.add('hidden');
-                });
-            });
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+            menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
         }
 
-        // Scroll Progress
         function initScrollProgress() {
             const progress = document.getElementById('scrollProgress');
             window.addEventListener('scroll', () => {
@@ -1361,10 +1133,8 @@
             });
         }
 
-        // Animate Counters
         function animateCounters() {
             const counters = document.querySelectorAll('.stat-number');
-            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1375,32 +1145,21 @@
                     }
                 });
             }, { threshold: 0.5 });
-
             counters.forEach(counter => observer.observe(counter));
         }
 
         function animateNumber(element, target) {
             const duration = 2000;
-            const start = 0;
             const startTime = performance.now();
-            
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Easing
                 const easeOut = 1 - Math.pow(1 - progress, 3);
-                const current = Math.floor(start + (target - start) * easeOut);
-                
+                const current = Math.floor(target * easeOut);
                 element.textContent = current.toLocaleString('fr-FR');
-                
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                } else {
-                    element.textContent = target.toLocaleString('fr-FR') + '+';
-                }
+                if (progress < 1) requestAnimationFrame(update);
+                else element.textContent = target.toLocaleString('fr-FR') + '+';
             }
-            
             requestAnimationFrame(update);
         }
     </script>
