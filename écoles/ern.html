@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERN - École Royale Navale - Guide Complet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #0f172a;
+            --muted: #64748b;
+            --accent: #0369a1;
+            --accent-light: #0ea5e9;
+            --card: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+        }
+
+        .font-display { font-family: 'Playfair Display', serif; }
+
+        .hero-bg {
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(3, 105, 161, 0.15), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(14, 165, 233, 0.1), transparent),
+                linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230369a1' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(3, 105, 161, 0.1);
+            border-color: var(--accent);
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .accordion-item:hover { border-color: var(--accent); }
+
+        .accordion-header {
+            width: 100%;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover { background: rgba(3, 105, 161, 0.03); }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-item.open .accordion-icon { transform: rotate(180deg); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-item.open .accordion-content { max-height: 500px; }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.75rem;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .review-card {
+            padding: 24px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .review-card.positive {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.02));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .review-card.negative {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.02));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 16px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover { color: var(--accent); }
+        .nav-link:hover::after { width: 60%; }
+
+        .float-element { animation: float 6s ease-in-out infinite; }
+        .float-element:nth-child(2) { animation-delay: -2s; }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            z-index: 1000;
+            transform-origin: left;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
+        }
+
+        .icon-pro, .icon-con {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-pro { background: rgba(16, 185, 129, 0.1); }
+        .icon-con { background: rgba(239, 68, 68, 0.1); }
+
+        .contact-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(3, 105, 161, 0.1);
+            border-color: var(--accent);
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 500;
+            transition: all 0.2s ease;
+            word-break: break-all;
+        }
+
+        .contact-link:hover { color: var(--accent-light); }
+
+        .map-container {
+            background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+            border-radius: 16px;
+            height: 320px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="font-display text-xl font-bold text-slate-800">
+                <span class="text-sky-600">ER</span>N
+            </a>
+            <div class="hidden md:flex items-center gap-2">
+                <a href="#infos" class="nav-link">Infos</a>
+                <a href="#formation" class="nav-link">Formation</a>
+                <a href="#admission" class="nav-link">Admission</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#avis" class="nav-link">Avis</a>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-slate-200">
+            <div class="px-6 py-4 space-y-2">
+                <a href="#infos" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Infos</a>
+                <a href="#formation" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Formation</a>
+                <a href="#admission" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Admission</a>
+                <a href="#contact" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Contact</a>
+                <a href="#avis" class="block py-2 text-slate-600 hover:text-sky-600 transition-colors">Avis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg hero-pattern min-h-screen pt-24 pb-16 relative overflow-hidden">
+        <div class="absolute top-1/4 right-10 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl float-element"></div>
+        <div class="absolute bottom-1/4 left-10 w-48 h-48 bg-sky-600/10 rounded-full blur-2xl float-element"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 pt-12 md:pt-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        École Militaire - Marine Royale - Forces Armées
+                    </div>
+                    <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-slate-800 leading-tight mb-6">
+                        École Royale<br>
+                        <span class="text-sky-600">Navale</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-xl">
+                        L'institution d'élite formant les officiers de la Marine Royale. Navigation, stratégie et discipline maritime.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#infos" class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-700 transition-all hover:shadow-lg hover:shadow-sky-600/25">
+                            Découvrir
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </a>
+                        <a href="#admission" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-slate-300 text-slate-700 font-semibold rounded-xl hover:border-sky-600 hover:text-sky-600 transition-all">
+                            Admission
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 animate-scale-in" style="animation-delay: 0.3s;">
+                    <div class="card p-6">
+                        <div class="stat-number">Elite</div>
+                        <p class="text-slate-600 mt-2">Marine</p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="stat-number">5 ans</div>
+                        <p class="text-slate-600 mt-2">Formation</p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="stat-number">Casa</div>
+                        <p class="text-slate-600 mt-2">Base Navale</p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="stat-number">Officier</div>
+                        <p class="text-slate-600 mt-2">Diplôme</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navy Highlight Section -->
+    <section class="py-16 bg-gradient-to-br from-sky-600 to-slate-800 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid-hl" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid-hl)"/>
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="md:w-2/3">
+                    <h3 class="font-display text-3xl md:text-4xl font-bold mb-4">Force Navale & Stratégie Maritime</h3>
+                    <p class="text-white/90 text-lg">
+                        Former des cadres capables de commander, naviguer et gérer des opérations maritimes militaires.
+                    </p>
+                </div>
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-4 border-white/30">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section id="infos" class="py-20 bg-white relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-50 to-white"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Informations générales</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Institution militaire sous tutelle de la Marine Royale.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Localisation</h3>
+                    <p class="text-slate-600">Casablanca</p>
+                    <p class="text-slate-500 text-sm mt-1">Base Navale</p>
+                </div>
+
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Type</h3>
+                    <p class="text-slate-600">École Militaire</p>
+                    <p class="text-slate-500 text-sm mt-1">Marine Royale</p>
+                </div>
+
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Diplôme</h3>
+                    <p class="text-slate-600">Officier (Bac+5)</p>
+                    <p class="text-slate-500 text-sm mt-1">Marine Royale</p>
+                </div>
+
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Coût</h3>
+                    <p class="text-slate-600">Gratuit + Rémunéré</p>
+                    <p class="text-slate-500 text-sm mt-1">Pris en charge totale</p>
+                </div>
+
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Sélectivité</h3>
+                    <p class="text-slate-600">Concours</p>
+                    <p class="text-slate-500 text-sm mt-1">Compétitive</p>
+                </div>
+
+                <div class="card p-6 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center mb-4 group-hover:bg-sky-600 transition-colors">
+                        <svg class="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-2">Durée</h3>
+                    <p class="text-slate-600">5 ans</p>
+                    <p class="text-slate-500 text-sm mt-1">Internat obligatoire</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formation Section -->
+    <section id="formation" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Formations</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Cycles spécialisés pour officiers de marine.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 reveal" id="filiereAccordion">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Section -->
+    <section id="admission" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Admission</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Sélection compétitive sur critères physiques et académiques.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 reveal">
+                <div class="card p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Conditions</h3>
+                    </div>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <span class="text-sky-600 font-bold">-</span>
+                            <span>Bac scientifique recommandé</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-sky-600 font-bold">-</span>
+                            <span>Nationalité marocaine (18-22 ans)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-sky-600 font-bold">-</span>
+                            <span>Bonne condition physique (Natation)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card p-8 border-red-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Réalités</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        Discipline stricte, vie en mer difficile, éloignement familial fréquent.
+                    </p>
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                        <p class="text-sm text-red-700">
+                            <span class="font-semibold">Attention :</span> Engagement militaire long et conditions de travail exigeantes en mer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Localisation</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Base Navale à Casablanca. Accès restreint.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-8 reveal">
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <!-- Address -->
+                        <div class="contact-card">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 mb-1">Adresse</h4>
+                                    <p class="text-slate-600 text-sm">École Royale Navale</p>
+                                    <p class="text-slate-600 text-sm">Casablanca, Maroc</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Type -->
+                        <div class="contact-card">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 mb-1">Statut</h4>
+                                    <p class="text-slate-600 text-sm">Zone Militaire</p>
+                                    <p class="text-slate-600 text-sm">Accès restreint</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Card -->
+                <div class="lg:col-span-2">
+                    <div class="card p-6 h-full">
+                        <h4 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                            </svg>
+                            Localisation
+                        </h4>
+                        <div class="map-container mb-4">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0081660036785!2d-7.627114275266588!3d33.60509259121043!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d288312ffd71%3A0x286bed8a391556!2s%C3%89cole%20Royale%20Navale%2C%20Casablanca%2020250!5e0!3m2!1sfr!2sma!4v1774633398846!5m2!1sfr!2sma" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Carte ERN">
+                            </iframe>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-sm text-slate-600">
+                                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                <span>Casablanca, Maroc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pros and Cons Section -->
+    <section id="avis" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Avantages et inconvénients</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Un aperçu équilibré de la formation.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 reveal">
+                <!-- Advantages -->
+                <div class="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-2xl border border-emerald-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Avantages</h3>
+                    </div>
+                    <ul class="space-y-4" id="prosList"></ul>
+                </div>
+
+                <!-- Disadvantages -->
+                <div class="bg-gradient-to-br from-red-50 to-white p-8 rounded-2xl border border-red-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-slate-800">Inconvénients</h3>
+                    </div>
+                    <ul class="space-y-4" id="consList"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Reviews Section -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal">
+                <div class="section-divider mb-4"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-slate-800 mb-4">Avis d'élèves</h2>
+                <p class="text-slate-600 text-lg max-w-2xl mb-12">
+                    Tendances réelles (peu d'avis publics).
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 reveal">
+                <div>
+                    <h4 class="font-semibold text-emerald-700 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Avis positifs
+                    </h4>
+                    <div class="space-y-4" id="positiveReviews"></div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-red-700 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                        Avis critiques
+                    </h4>
+                    <div class="space-y-4" id="negativeReviews"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Section -->
+    <section class="py-20 bg-gradient-to-br from-sky-900 to-slate-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid)"/>
+            </svg>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="reveal">
+                <div class="section-divider mb-4 bg-white/30"></div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Pour quel profil ?</h2>
+                <p class="text-sky-200 text-lg max-w-2xl mb-12">
+                    Passion pour la mer et résistance physique sont indispensables.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 reveal">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">Idéal pour</h3>
+                    </div>
+                    <ul class="space-y-3" id="goodFitList"></ul>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">Moins adapté pour</h3>
+                    </div>
+                    <ul class="space-y-3" id="badFitList"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-slate-900 text-slate-400">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="font-display text-xl font-bold text-white mb-4">
+                        <span class="text-sky-400">ER</span>N Guide
+                    </div>
+                    <p class="text-sm text-slate-500">
+                        Guide informatif non officiel sur l'ERN.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Liens rapides</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#infos" class="hover:text-sky-400 transition-colors">Informations</a></li>
+                        <li><a href="#formation" class="hover:text-sky-400 transition-colors">Formation</a></li>
+                        <li><a href="#admission" class="hover:text-sky-400 transition-colors">Admission</a></li>
+                        <li><a href="#contact" class="hover:text-sky-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Localisation</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li>Base Navale, Casablanca</li>
+                        <li>Marine Royale</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-sm">
+                <p>Les données proviennent de sources publiques. Dernière mise à jour : 2024</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const filieres = [
+            { name: "Navigation Maritime", description: "Commandement, opérations maritimes, stratégie navale." },
+            { name: "Génie Maritime", description: "Systèmes navals, mécanique, ingénierie." },
+            { name: "Formation Opérationnelle", description: "Sécurité maritime, entraînement intensif, natation." }
+        ];
+
+        const pros = [
+            "Formation gratuite + salaire",
+            "Carrière stable (Marine)",
+            "Spécialisation rare",
+            "Prestige militaire",
+            "Formation technique solide"
+        ];
+
+        const cons = [
+            "Mode de vie strict",
+            "Conditions difficiles (mer)",
+            "Éloignement familial",
+            "Engagement obligatoire",
+            "Sélection difficile"
+        ];
+
+        const positiveReviews = [
+            "Carrière stable dans la marine.",
+            "Formation technique solide.",
+            "Prestige et discipline."
+        ];
+
+        const negativeReviews = [
+            "Discipline très stricte.",
+            "Vie en mer difficile.",
+            "Éloignement familial fréquent."
+        ];
+
+        const goodFit = [
+            "Aime la mer",
+            "Sportif (Natation)",
+            "Discipliné"
+        ];
+
+        const badFit = [
+            "N'aime pas l'isolement",
+            "Veut vie flexible",
+            "Pas à l'aise physiquement"
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFilieres();
+            renderProsCons();
+            renderReviews();
+            renderFitLists();
+            initScrollReveal();
+            initMobileMenu();
+            initScrollProgress();
+            animateCounters();
+        });
+
+        function renderFilieres() {
+            const container = document.getElementById('filiereAccordion');
+            container.innerHTML = filieres.map((filiere, index) => `
+                <div class="accordion-item" data-index="${index}">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span class="text-left font-medium text-slate-800">${filiere.name}</span>
+                        <svg class="accordion-icon w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 pt-0 text-slate-600 bg-slate-50">${filiere.description}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const item = header.parentElement;
+                    const isOpen = item.classList.contains('open');
+                    container.querySelectorAll('.accordion-item').forEach(i => {
+                        i.classList.remove('open');
+                        i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+                    });
+                    if (!isOpen) {
+                        item.classList.add('open');
+                        header.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+        }
+
+        function renderProsCons() {
+            document.getElementById('prosList').innerHTML = pros.map(pro => `
+                <li class="flex items-start gap-3">
+                    <div class="icon-pro mt-0.5">
+                        <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <span class="text-slate-700">${pro}</span>
+                </li>
+            `).join('');
+
+            document.getElementById('consList').innerHTML = cons.map(con => `
+                <li class="flex items-start gap-3">
+                    <div class="icon-con mt-0.5">
+                        <svg class="w-3 h-3 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <span class="text-slate-700">${con}</span>
+                </li>
+            `).join('');
+        }
+
+        function renderReviews() {
+            document.getElementById('positiveReviews').innerHTML = positiveReviews.map(review => `
+                <div class="review-card positive"><p class="text-slate-700 italic">"${review}"</p></div>
+            `).join('');
+            document.getElementById('negativeReviews').innerHTML = negativeReviews.map(review => `
+                <div class="review-card negative"><p class="text-slate-700 italic">"${review}"</p></div>
+            `).join('');
+        }
+
+        function renderFitLists() {
+            document.getElementById('goodFitList').innerHTML = goodFit.map(item => `
+                <li class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-white/90">${item}</span>
+                </li>
+            `).join('');
+            document.getElementById('badFitList').innerHTML = badFit.map(item => `
+                <li class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-white/90">${item}</span>
+                </li>
+            `).join('');
+        }
+
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+            reveals.forEach(reveal => observer.observe(reveal));
+        }
+
+        function initMobileMenu() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+            menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+        }
+
+        function initScrollProgress() {
+            const progress = document.getElementById('scrollProgress');
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = Math.min(scrollTop / docHeight, 1);
+                progress.style.transform = `scaleX(${scrollPercent})`;
+            });
+        }
+
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number[data-count]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.dataset.count);
+                        animateNumber(counter, target);
+                        observer.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        function animateNumber(element, target) {
+            const duration = 2000;
+            const startTime = performance.now();
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(target * easeOut);
+                element.textContent = current.toLocaleString('fr-FR');
+                if (progress < 1) requestAnimationFrame(update);
+                else element.textContent = target.toLocaleString('fr-FR');
+            }
+            requestAnimationFrame(update);
+        }
+    </script>
+</body>
+</html>
