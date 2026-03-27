@@ -1,154 +1,1234 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bilan d'Orientation Complet</title>
-    <link rel="stylesheet" href="css.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test RIASEC - Découvrez votre profil professionnel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a1628;
+      --bg-secondary: #0f2847;
+      --bg-card: #ffffff;
+      --accent-blue: #2563eb;
+      --accent-light: #3b82f6;
+      --accent-glow: #60a5fa;
+      --text-dark: #1e3a5f;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --success: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0d1f3c 100%);
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Background Pattern */
+    .bg-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .bg-pattern::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+      animation: floatGlow 20s ease-in-out infinite;
+    }
+
+    .bg-pattern::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -20%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      animation: floatGlow 25s ease-in-out infinite reverse;
+    }
+
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -20px) scale(1.1); }
+    }
+
+    /* Grid Pattern Overlay */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main Container */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 40px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent-glow);
+      transform: translateX(-4px);
+    }
+
+    .back-btn svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover svg {
+      transform: translateX(-4px);
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 40px 0;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      color: var(--accent-glow);
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Progress Section */
+    .progress-section {
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .progress-count {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--accent-glow);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-glow));
+      border-radius: 100px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Category Badge */
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-glow);
+      margin-bottom: 20px;
+    }
+
+    .category-letter {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-blue);
+      border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: white;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-glow), var(--accent-blue));
+    }
+
+    .question-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    /* Likert Scale */
+    .likert-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .likert-option {
+      position: relative;
+    }
+
+    .likert-option input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .likert-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border: 2px solid var(--border-light);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .likert-label:hover {
+      background: #f1f5f9;
+      border-color: var(--accent-light);
+    }
+
+    .likert-option input:checked + .likert-label {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-color: var(--accent-blue);
+    }
+
+    .likert-option input:focus + .likert-label {
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .likert-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .likert-option input:checked + .likert-label .likert-circle {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .likert-circle::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+      transform: scale(0);
+      transition: transform 0.2s ease;
+    }
+
+    .likert-option input:checked + .likert-label .likert-circle::after {
+      transform: scale(1);
+    }
+
+    .likert-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-dark);
+      min-width: 24px;
+    }
+
+    .likert-text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-dark);
+      border: 2px solid var(--border-light);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e2e8f0;
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-light) 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Intro Screen */
+    .intro-screen {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .intro-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-light) 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+    }
+
+    .intro-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    .intro-screen h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .intro-screen p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .intro-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .intro-feature {
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .intro-feature-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .intro-feature-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Results Section */
+    .results-section {
+      display: none;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .results-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .results-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .results-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-radius: 100px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--accent-blue);
+      letter-spacing: 4px;
+    }
+
+    .scores-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .score-card {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .score-card.dominant {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%);
+      border: 2px solid var(--accent-blue);
+    }
+
+    .score-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .score-letter {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-blue);
+      border-radius: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+    }
+
+    .score-card.dominant .score-letter {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-light));
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .score-title {
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .score-bar-container {
+      height: 8px;
+      background: var(--border-light);
+      border-radius: 100px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-glow));
+      border-radius: 100px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .score-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .profile-section {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .profile-section h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-section p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .careers-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .career-tag {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    /* Animations */
+    .slide-out-left {
+      animation: slideOutLeft 0.3s ease forwards;
+    }
+
+    .slide-in-right {
+      animation: slideInRight 0.3s ease forwards;
+    }
+
+    .slide-out-right {
+      animation: slideOutRight 0.3s ease forwards;
+    }
+
+    .slide-in-left {
+      animation: slideInLeft 0.3s ease forwards;
+    }
+
+    @keyframes slideOutLeft {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(-30px); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideOutRight {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(30px); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .main-container {
+        padding: 16px;
+      }
+
+      .header {
+        padding: 16px 0 24px;
+      }
+
+      .back-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      .logo-text {
+        font-size: 20px;
+      }
+
+      .hero {
+        padding: 24px 0;
+      }
+
+      .question-card {
+        padding: 24px;
+        border-radius: 20px;
+      }
+
+      .question-text {
+        font-size: 18px;
+      }
+
+      .likert-label {
+        padding: 14px 16px;
+      }
+
+      .intro-features {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .intro-feature {
+        padding: 12px 8px;
+      }
+
+      .intro-feature-value {
+        font-size: 22px;
+      }
+
+      .scores-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="bg-pattern"></div>
+  <div class="grid-overlay"></div>
 
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">Orient<span>IA</span> <small style="font-size: 0.8rem; font-weight: normal; color: #777;">v2</small></div>
-                <div class="nav-links">
-                    <button onclick="resetApp()" class="no-print">🔄 Recommencer</button>
-                </div>
-            </nav>
-        </div>
+  <div class="main-container">
+    <!-- Header -->
+    <header class="header">
+      <a href="../index.html" class="back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Retour
+      </a>
+      <div class="logo-text">RIASEC</div>
     </header>
 
-    <main class="container">
-        
-        <!-- Section 1: Introduction -->
-        <section id="intro" class="active">
-            <div class="card" style="text-align: center; padding: 40px;">
-                <h1 style="margin-bottom: 20px; color: var(--primary);">Votre Parcours d'Orientation</h1>
-                <p style="margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6;">
-                    Analyse complète basée sur Holland, Super et Deci & Ryan.
-                    <br><small>Vos réponses sont sauvegardées automatiquement.</small>
-                </p>
-                <button class="btn btn-primary" onclick="startQuiz()">Commencer l'entretien</button>
-                <p id="savedMsg" style="margin-top:15px; color: var(--secondary); display:none;">Une session précédente a été trouvée.</p>
-            </div>
-        </section>
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Test de <span>Personnalite</span> Professionnelle</h1>
+      <p>Decouvrez votre profil RIASEC et identifiez les carrieres qui vous correspondent le mieux.</p>
+    </section>
 
-        <!-- Section 2: Quiz -->
-        <section id="quiz">
-            <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <button id="prevBtn" class="btn btn-outline" style="display:none; font-size:0.9rem; padding: 8px 16px;" onclick="prevStep()">← Précédent</button>
-                    <span style="color:#999; font-size:0.9rem;">Étape <span id="stepCount">1</span>/9</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <h2 id="questionTitle" style="margin-bottom: 20px;">Question</h2>
-                <div id="optionsContainer" class="options-grid">
-                    <!-- Options JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Sous-écran Blocage -->
-        <section id="q1-subscreen">
-            <div class="card">
-                <h2 style="margin-bottom: 15px; color: var(--accent-path);">Comprendre le blocage</h2>
-                <p style="margin-bottom: 20px;">Qu'est-ce qui te penses être la cause principale de ce sentiment ?</p>
-                <div class="options-grid">
-                    <button class="option-btn" onclick="handleSubAnswer('peur')"><span>La peur de l'échec ou du choix</span></button>
-                    <button class="option-btn" onclick="handleSubAnswer('pression')"><span>La pression familiale ou sociale</span></button>
-                    <button class="option-btn" onclick="handleSubAnswer('info')"><span>Le manque d'information sur les métiers</span></button>
-                </div>
-                <div style="margin-top: 15px; text-align: center;">
-                    <small style="cursor:pointer; color: var(--primary); text-decoration: underline;" onclick="prevStep()">Revenir à la question précédente</small>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Résultats -->
-        <section id="results">
-            <div class="card no-print" style="text-align: center; margin-bottom: 20px;">
-                <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimer mon bilan</button>
-            </div>
-
-            <div class="card">
-                <h2 style="text-align: center; color: var(--primary);">Votre Profil</h2>
-                
-                <!-- Graphique Radar -->
-                <div class="chart-container">
-                    <canvas id="radarChart"></canvas>
-                </div>
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div id="riasecResult" style="font-size: 1.5rem; font-weight: bold; color: var(--secondary);">--</div>
-                </div>
-
-                <div class="stat-grid">
-                    <div class="stat-box">
-                        <div class="stat-val" id="learningResult">--</div>
-                        <div class="stat-label">Apprentissage</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="motivationResult">--</div>
-                        <div class="stat-label">Motivation</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="frameworkResult">--</div>
-                        <div class="stat-label">Cadre</div>
-                    </div>
-                </div>
-
-                <div id="finalRecommendation" class="recommendation-box">
-                    <div class="recommendation-title">💡 Recommandation</div>
-                    <p id="recommendationText">...</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="filter-container">
-                    <label style="margin-bottom:0;">🔍 Explorer les métiers :</label>
-                    <input type="text" id="searchInput" placeholder="Rechercher un métier (ex: Boulanger, Informatique...)">
-                </div>
-                <h3 style="margin-bottom: 15px; color: var(--primary);">Métiers Compatibles</h3>
-                <div id="jobContainer" class="job-grid">
-                    <!-- JS -->
-                </div>
-            </div>
-            
-            <div class="disclaimer" style="text-align: center; font-size: 0.8rem; color: #888; margin-top: 30px;">
-                Ces résultats indiquent des environnements professionnels compatibles. Ils ne constituent pas un choix définitif.
-            </div>
-        </section>
-
-    </main>
-
-    <!-- MODAL DETAILS -->
-    <div id="jobModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" style="color: var(--primary); margin-bottom: 5px;">Titre</h2>
-            <div id="modalCategory" style="color: var(--secondary); font-weight: bold; text-transform: uppercase; margin-bottom: 15px; font-size: 0.8rem;">Catégorie</div>
-            
-            <p id="modalDesc" style="line-height: 1.6; margin-bottom: 20px;">Description...</p>
-            
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
-                <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #555;">Points de compatibilité avec vous :</h4>
-                <div id="modalTags" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <!-- Tags -->
-                </div>
-            </div>
-
-            <div style="margin-top: 20px; text-align: right;">
-                <button class="btn btn-primary" onclick="closeModal()">Fermer</button>
-            </div>
-        </div>
+    <!-- Progress -->
+    <div class="progress-section" id="progress-section" style="display: none;">
+      <div class="progress-info">
+        <span class="progress-label">Progression</span>
+        <span class="progress-count" id="progress-count">0 / 60</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
     </div>
 
-    <script src="js.js"></script>
-        <!-- CHATBOT INTEGRATION -->
-    <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
-    <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cml6yl3ga000ciem38z0cx24k'></zapier-interfaces-chatbot-embed>
+    <!-- Question Container -->
+    <div id="question-container"></div>
 
+    <!-- Results Section -->
+    <div id="results-section" class="results-section"></div>
+  </div>
+
+  <script>
+    // RIASEC Questions Data
+    const riasecQuestions = {
+      realistic: {
+        label: "Realiste",
+        questions: [
+          "J'aime bricoler ou reparer des objets.",
+          "J'aime utiliser des outils ou machines.",
+          "J'aime construire ou creer quelque chose de concret.",
+          "J'aime travailler en exterieur.",
+          "J'aime les activites physiques et pratiques.",
+          "J'aime comprendre comment fonctionnent les choses.",
+          "J'aime faire des experiences pratiques.",
+          "Je prefere les taches concretes aux idees abstraites.",
+          "J'aime manipuler du materiel technique.",
+          "J'aime les metiers manuels ou techniques."
+        ]
+      },
+      investigative: {
+        label: "Investigateur",
+        questions: [
+          "J'aime reflechir et resoudre des problemes complexes.",
+          "J'aime les sciences et les experiences scientifiques.",
+          "J'aime analyser des donnees ou informations.",
+          "J'aime comprendre comment les choses fonctionnent.",
+          "J'aime travailler avec des idees abstraites.",
+          "J'aime faire des recherches.",
+          "J'aime la logique et les calculs.",
+          "J'aime experimenter et trouver des solutions nouvelles.",
+          "J'aime apprendre par moi-meme.",
+          "J'aime les enigmes et defis intellectuels."
+        ]
+      },
+      artistic: {
+        label: "Artistique",
+        questions: [
+          "J'aime creer ou inventer des choses nouvelles.",
+          "J'aime m'exprimer par le dessin, la musique, ou le theatre.",
+          "J'aime imaginer et proposer des idees originales.",
+          "J'aime l'art sous toutes ses formes.",
+          "J'aime travailler dans un cadre non structure.",
+          "J'aime composer, ecrire ou concevoir des projets creatifs.",
+          "J'aime improviser et etre spontane.",
+          "J'aime que mon travail reflete ma personnalite.",
+          "J'aime experimenter avec des formes et les couleurs.",
+          "J'aime penser differemment des autres."
+        ]
+      },
+      social: {
+        label: "Social",
+        questions: [
+          "J'aime aider ou soutenir les autres.",
+          "J'aime travailler en equipe.",
+          "J'aime ecouter et comprendre les problemes des autres.",
+          "J'aime enseigner ou guider quelqu'un.",
+          "J'aime faire du benevolat ou aider la communaute.",
+          "J'aime resoudre des conflits ou negocier.",
+          "J'aime prendre soin des autres.",
+          "J'aime travailler dans des metiers lies a la sante ou l'education.",
+          "J'aime motiver et encourager les gens.",
+          "J'aime partager mes connaissances avec les autres."
+        ]
+      },
+      enterprising: {
+        label: "Entreprenant",
+        questions: [
+          "J'aime diriger et prendre des decisions.",
+          "J'aime convaincre ou persuader les autres.",
+          "J'aime relever des defis ambitieux.",
+          "J'aime gerer des projets ou des equipes.",
+          "J'aime prendre des initiatives.",
+          "J'aime assumer des responsabilites importantes.",
+          "J'aime les metiers ou je peux influencer.",
+          "J'aime entreprendre des activites nouvelles.",
+          "J'aime etre reconnu pour mon leadership.",
+          "J'aime les carrieres liees aux affaires ou au commerce."
+        ]
+      },
+      conventional: {
+        label: "Conventionnel",
+        questions: [
+          "J'aime organiser et classer les informations.",
+          "J'aime travailler selon des regles ou procedures.",
+          "J'aime gerer des documents ou des donnees.",
+          "J'aime la precision et l'ordre dans le travail.",
+          "J'aime faire des taches repetitives correctement.",
+          "J'aime travailler dans un cadre structure.",
+          "J'aime suivre des instructions claires.",
+          "J'aime compter et verifier les chiffres.",
+          "J'aime les metiers administratifs ou financiers.",
+          "J'aime planifier et organiser mon travail."
+        ]
+      }
+    };
+
+    // Profile Descriptions
+    const profileDescriptions = {
+      realistic: {
+        name: "Profil Realiste",
+        description: "Vous etes quelqu'un de pratique et manuel. Vous apppreciez les taches concretes, le travail en exterieur, et l'utilisation d'outils ou de machines. Vous etes probablement attire par les metiers techniques, l'agriculture, la construction, ou les sports.",
+        careers: ["Ingenieur", "Mecanicien", "Architecte", "Agriculteur", "Technicien", "Infirmier"]
+      },
+      investigative: {
+        name: "Profil Investigateur",
+        description: "Vous etes analytique et curieux. Vous aimez resoudre des problemes complexes, faire des recherches, et travailler avec des idees abstraites. Vous etes probablement attire par les metiers scientifiques, informatiques, ou academiques.",
+        careers: ["Chercheur", "Programmeur", "Docteur", "Professeur", "Analyste", "Mathematicien"]
+      },
+      artistic: {
+        name: "Profil Artistique",
+        description: "Vous etes creatif et expressif. Vous apppreciez l'originalite, l'imagination, et vous preferez les environnements de travail flexibles. Vous etes probablement attire par les metiers artistiques, creatifs, ou de design.",
+        careers: ["Artiste", "Designer", "Ecrivain", "Musicien", "Architecte interieur", "Photographe"]
+      },
+      social: {
+        name: "Profil Social",
+        description: "Vous etes empathique et altruiste. Vous aimez aider les autres, travailler en equipe, et contribuer a votre communaute. Vous etes probablement attire par les metiers de la sante, de l'education, ou du social.",
+        careers: ["Infirmier", "Professeur", "Psychologue", "Assistant social", "Therapeute", "Conseiller"]
+      },
+      enterprising: {
+        name: "Profil Entreprenant",
+        description: "Vous etes ambitieux et persuasif. Vous aimez prendre des decisions, diriger des projets, et influencer les autres. Vous etes probablement attire par les metiers du commerce, du management, ou de l'entrepreneuriat.",
+        careers: ["Manager", "Entrepreneur", "Avocat", "Directeur commercial", "Consultant", "Politique"]
+      },
+      conventional: {
+        name: "Profil Conventionnel",
+        description: "Vous etes organise et methodique. Vous apppreciez l'ordre, la precision, et le travail selon des procedures etablies. Vous etes probablement attire par les metiers administratifs, financiers, ou de gestion de donnees.",
+        careers: ["Comptable", "Administrateur", "Secretaire", "Analyste financier", "Juriste", "Gestionnaire"]
+      }
+    };
+
+    // Likert Labels
+    const likertLabels = ['Pas du tout', 'Un peu', 'Moyennement', 'Beaucoup', 'Enormement'];
+
+    // State
+    let allQuestions = [];
+    let currentQuestionIndex = 0;
+    let answers = {};
+    let testStarted = false;
+
+    // Initialize questions array
+    function initializeQuestions() {
+      allQuestions = [];
+      let index = 0;
+      for (const [category, data] of Object.entries(riasecQuestions)) {
+        data.questions.forEach(question => {
+          allQuestions.push({
+            id: index,
+            category: category,
+            categoryLabel: data.label,
+            text: question
+          });
+          index++;
+        });
+      }
+    }
+
+    // Render intro screen
+    function renderIntro() {
+      const container = document.getElementById('question-container');
+      container.innerHTML = `
+        <div class="question-card">
+          <div class="intro-screen">
+            <div class="intro-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <h2>Decouvrez votre profil professionnel</h2>
+            <p>Ce test vous aidera a identifier vos interets professionnels selon le modele RIASEC. Repondez honnetement a chaque question pour obtenir les meilleurs resultats.</p>
+            <div class="intro-features">
+              <div class="intro-feature">
+                <div class="intro-feature-value">60</div>
+                <div class="intro-feature-label">Questions</div>
+              </div>
+              <div class="intro-feature">
+                <div class="intro-feature-value">6</div>
+                <div class="intro-feature-label">Profils</div>
+              </div>
+              <div class="intro-feature">
+                <div class="intro-feature-value">5min</div>
+                <div class="intro-feature-label">Duration</div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="startTest()" style="max-width: 280px; margin: 0 auto;">
+              Commencer le test
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Start test
+    function startTest() {
+      testStarted = true;
+      document.getElementById('progress-section').style.display = 'block';
+      renderQuestion();
+    }
+
+    // Render current question
+    function renderQuestion(direction = 'next') {
+      const container = document.getElementById('question-container');
+      const question = allQuestions[currentQuestionIndex];
+      const savedAnswer = answers[question.id];
+
+      const animationOut = direction === 'next' ? 'slide-out-left' : 'slide-out-right';
+      const animationIn = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
+
+      container.innerHTML = `
+        <div class="question-card ${animationIn}">
+          <div class="category-badge">
+            <span class="category-letter">${question.category.charAt(0).toUpperCase()}</span>
+            ${question.categoryLabel}
+          </div>
+          <div class="question-number">Question ${currentQuestionIndex + 1} sur ${allQuestions.length}</div>
+          <div class="question-text">${question.text}</div>
+          <div class="likert-scale">
+            ${likertLabels.map((label, i) => `
+              <div class="likert-option">
+                <input type="radio" 
+                       id="q${question.id}_${i}" 
+                       name="q${question.id}" 
+                       value="${i + 1}"
+                       ${savedAnswer === (i + 1) ? 'checked' : ''}
+                       onchange="saveAnswer(${i + 1})">
+                <label class="likert-label" for="q${question.id}_${i}">
+                  <span class="likert-circle"></span>
+                  <span class="likert-value">${i + 1}</span>
+                  <span class="likert-text">${label}</span>
+                </label>
+              </div>
+            `).join('')}
+          </div>
+          <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Precedent
+            </button>
+            <button class="btn btn-primary" onclick="nextQuestion()" id="next-btn" ${!savedAnswer ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+              ${currentQuestionIndex === allQuestions.length - 1 ? 'Voir les resultats' : 'Suivant'}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+
+      updateProgress();
+    }
+
+    // Save answer
+    function saveAnswer(value) {
+      const question = allQuestions[currentQuestionIndex];
+      answers[question.id] = value;
+      
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.disabled = false;
+      nextBtn.style.opacity = '1';
+      nextBtn.style.cursor = 'pointer';
+    }
+
+    // Next question
+    function nextQuestion() {
+      const question = allQuestions[currentQuestionIndex];
+      if (!answers[question.id]) return;
+
+      if (currentQuestionIndex < allQuestions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion('next');
+      } else {
+        showResults();
+      }
+    }
+
+    // Previous question
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion('prev');
+      }
+    }
+
+    // Update progress
+    function updateProgress() {
+      const progressCount = document.getElementById('progress-count');
+      const progressFill = document.getElementById('progress-fill');
+      
+      progressCount.textContent = `${currentQuestionIndex + 1} / ${allQuestions.length}`;
+      const percentage = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
+      progressFill.style.width = `${percentage}%`;
+    }
+
+    // Calculate scores
+    function calculateScores() {
+      const scores = {
+        realistic: 0,
+        investigative: 0,
+        artistic: 0,
+        social: 0,
+        enterprising: 0,
+        conventional: 0
+      };
+
+      for (const question of allQuestions) {
+        if (answers[question.id]) {
+          scores[question.category] += answers[question.id];
+        }
+      }
+
+      return scores;
+    }
+
+    // Show results
+    function showResults() {
+      document.getElementById('progress-section').style.display = 'none';
+      document.getElementById('question-container').style.display = 'none';
+      
+      const scores = calculateScores();
+      const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const topCategory = sortedScores[0][0];
+      const topThree = sortedScores.slice(0, 3).map(item => item[0].charAt(0).toUpperCase()).join('');
+      const profile = profileDescriptions[topCategory];
+
+      const resultsSection = document.getElementById('results-section');
+      resultsSection.style.display = 'block';
+      
+      resultsSection.innerHTML = `
+        <div class="question-card">
+          <div class="results-header">
+            <h2>Votre Profil RIASEC</h2>
+            <div class="results-code">${topThree}</div>
+          </div>
+          
+          <div class="scores-grid">
+            ${sortedScores.map(([category, score], index) => `
+              <div class="score-card ${index === 0 ? 'dominant' : ''}">
+                <div class="score-card-header">
+                  <div class="score-letter">${category.charAt(0).toUpperCase()}</div>
+                  <div class="score-title">${riasecQuestions[category].label}</div>
+                </div>
+                <div class="score-bar-container">
+                  <div class="score-bar-fill" style="width: ${(score / 50) * 100}%"></div>
+                </div>
+                <div class="score-value">${score} / 50 points</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="profile-section">
+            <h3>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-blue);">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              Profil dominant: ${profile.name}
+            </h3>
+            <p>${profile.description}</p>
+            <p style="font-weight: 600; color: var(--text-dark);">Metiers suggères:</p>
+            <div class="careers-list">
+              ${profile.careers.map(career => `<span class="career-tag">${career}</span>`).join('')}
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 24px;">
+            <button class="btn btn-primary" onclick="resetTest()" style="max-width: 280px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 4v6h-6M1 20v-6h6"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              Refaire le test
+            </button>
+          </div>
+        </div>
+      `;
+
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Reset test
+    function resetTest() {
+      currentQuestionIndex = 0;
+      answers = {};
+      testStarted = false;
+      
+      document.getElementById('results-section').style.display = 'none';
+      document.getElementById('question-container').style.display = 'block';
+      document.getElementById('progress-section').style.display = 'none';
+      
+      renderIntro();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeQuestions();
+      renderIntro();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!testStarted) return;
+      
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        const question = allQuestions[currentQuestionIndex];
+        if (answers[question.id]) {
+          nextQuestion();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        prevQuestion();
+      } else if (e.key >= '1' && e.key <= '5') {
+        const value = parseInt(e.key);
+        saveAnswer(value);
+        document.querySelector(`input[value="${value}"]`).checked = true;
+      }
+    });
+  </script>
 </body>
 </html>
