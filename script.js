@@ -44,12 +44,19 @@
             scores: {},       // Analyse des résultats (Profil RIASEC, etc).
 
             // === GESTION DU THÈME (MODE CLAIR / MODE SOMBRE) ===
-            // Cette fonction inverse l'apparence visuelle du site.
+            // Cette fonction inverse l'apparence visuelle du site et la sauvegarde.
             toggleTheme: function() {
                 // On passe de "vrai" à "faux" (ou inversement) pour savoir si le mode sombre est actif.
                 this.isDarkMode = !this.isDarkMode;
+                const newTheme = this.isDarkMode ? 'dark' : 'light';
+                
                 // On force la page web entière (documentElement) à appliquer le thème choisi.
-                document.documentElement.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', newTheme);
+                
+                // On sauvegarde ce choix dans la mémoire du navigateur pour les autres pages
+                try {
+                    localStorage.setItem('orienta_theme', newTheme);
+                } catch(e) {}
             },
 
             // === NAVIGATION MOBILE ===
@@ -73,6 +80,12 @@
             // === INITIALIZATION (DÉMARRAGE DU SITE) ===
             // C'est la première chose que fait l'application quand la page web finit de charger.
             init: function() {
+                // On synchronise l'état interne avec le mode potentiellement choisi précédemment
+                try {
+                    const savedTheme = localStorage.getItem('orienta_theme');
+                    this.isDarkMode = (savedTheme === 'dark');
+                } catch(e) {}
+
                 this.processData();    // 1. On organise les données des métiers (venant du fichier data.js).
                 this.loadUser();       // 2. On vérifie si l'étudiant s'était déjà inscrit avant.
                 this.renderFilters();  // 3. On prépare la liste déroulante des catégories pour la recherche.

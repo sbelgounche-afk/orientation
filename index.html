@@ -9,6 +9,14 @@
     <meta property="og:title" content="Ittijah - Guide des Métiers et Orientation">
     <meta property="og:description" content="Ton guide personnel pour construire ton avenir au Maroc.">
     <meta property="og:image" content="URL_TO_YOUR_LOGO.jpg">
+    <script>
+        // Anti-flicker script : Applique le thème avant de charger la page pour éviter les flashs blancs
+        try {
+            if (localStorage.getItem('orienta_theme') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        } catch(e) {}
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

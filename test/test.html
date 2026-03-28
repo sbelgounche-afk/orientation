@@ -13,16 +13,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a1628;
-      --bg-secondary: #0f2847;
-      --bg-card: #ffffff;
-      --accent-blue: #2563eb;
-      --accent-light: #3b82f6;
-      --accent-glow: #60a5fa;
-      --text-dark: #1e3a5f;
-      --text-muted: #64748b;
-      --border-light: #e2e8f0;
+      /* Mode Clair (Variables alignées sur style.css) */
+      --bg-primary: var(--bg-body, #F8F9FA);
+      --bg-secondary: #E5E7EB;
+      --bg-card: var(--bg-surface, #ffffff);
+      --accent-blue: var(--primary, #006064);
+      --accent-light: var(--primary-light, #4DD0E1);
+      --accent-glow: var(--secondary, #009688);
+      --text-dark: var(--text-main, #1F2937);
+      --text-muted: var(--text-muted, #6B7280);
+      --border-light: var(--border-color, #E5E7EB);
       --success: #10b981;
+    }
+
+    /* Mode Sombre (Hérite du data-theme="dark") */
+    [data-theme="dark"] {
+      --bg-secondary: #0F172A;
+      /* Les autres variables héritent automatiquement des valeurs inversées de style.css ! */
     }
 
     * {
@@ -33,9 +40,9 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0d1f3c 100%);
+      background: var(--bg-primary);
       min-height: 100vh;
-      color: white;
+      color: var(--text-dark);
       overflow-x: hidden;
     }
 
@@ -123,9 +130,7 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
+      color: inherit; text-decoration: none; font-weight: 500;
       font-size: 14px;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
@@ -338,7 +343,7 @@
       align-items: center;
       gap: 16px;
       padding: 16px 20px;
-      background: #f8fafc;
+      background: var(--bg-card);
       border: 2px solid var(--border-light);
       border-radius: 12px;
       cursor: pointer;
@@ -346,7 +351,7 @@
     }
 
     .likert-label:hover {
-      background: #f1f5f9;
+      background: var(--bg-secondary);
       border-color: var(--accent-light);
     }
 
@@ -427,7 +432,7 @@
     }
 
     .btn-secondary {
-      background: #f1f5f9;
+      background: var(--bg-secondary);
       color: var(--text-dark);
       border: 2px solid var(--border-light);
     }
@@ -508,7 +513,7 @@
 
     .intro-feature {
       padding: 20px;
-      background: #f8fafc;
+      background: var(--bg-card);
       border-radius: 12px;
       text-align: center;
     }
@@ -566,7 +571,7 @@
     }
 
     .score-card {
-      background: #f8fafc;
+      background: var(--bg-card);
       border-radius: 16px;
       padding: 20px;
       position: relative;
@@ -771,22 +776,114 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.app = {
+            toggleTheme: function() {
+                this.isDarkMode = !this.isDarkMode;
+                const newTheme = this.isDarkMode ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                try { localStorage.setItem('orienta_theme', newTheme); } catch(e) {}
+            },
+            toggleMenu: function() {
+                const nav = document.getElementById('mobileNav');
+                if(nav) nav.classList.toggle('open');
+            },
+            logout: function() {
+                try { localStorage.removeItem('user_profile'); } catch(e) {}
+                window.location.href = '../index.html';
+            }
+        };
+        // Initialize state
+        try {
+            if (localStorage.getItem('orienta_theme') === 'dark') {
+                window.app.isDarkMode = true;
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        } catch(e) {}
+    </script>
+
 </head>
 <body>
   <div class="bg-pattern"></div>
   <div class="grid-overlay"></div>
 
-  <div class="main-container">
-    <!-- Header -->
-    <header class="header">
-      <a href="../index.html" class="back-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-        Retour
-      </a>
-      <div class="logo-text">RIASEC</div>
+  
+<header>
+        <div class="container">
+            <nav>
+                <div class="logo">Ittijah<span>Maroc</span></div>
+                
+                <!-- Desktop Links -->
+                <div class="nav-links" id="navLinks">
+                    <button onclick="window.location.href='../index.html'">Accueil</button>
+                    <button onclick="window.location.href='../index.html#jobs'">Métiers</button>
+                    <button onclick="window.location.href='../index.html#comparator'">Comparateur</button>
+                    <!-- Added Button -->
+                    <button onclick="window.location.href='../index.html#reservation'" style="color: var(--secondary); font-weight:700;">Réserver</button>
+                    
+                    <button onclick="window.location.href='../métiers.html'">Par Branche</button>
+                    <button onclick="window.location.href='../écoles/premier.html'">Écoles</button>
+                    <button onclick="window.app.logout()">Quitter</button>
+                    
+                    <!-- BOUTON THÈME DESKTOP MODERNE -->
+                    <div class="theme-toggle-wrapper">
+                        <button id="themeBtn" class="theme-toggle-btn" onclick="window.app.toggleTheme()" aria-label="Changer le thème">
+                            <!-- Moon Icon (Default) -->
+                            <svg class="icon-moon" viewBox="0 0 24 24">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <!-- Sun Icon (Dark Mode) -->
+                            <svg class="icon-sun" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Burger -->
+                <button class="menu-toggle" onclick="window.app.toggleMenu()">
+                    <span></span><span></span><span></span>
+                </button>
+            </nav>
+        </div>
     </header>
+<div class="mobile-nav" id="mobileNav">
+        <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:1.2rem; color:var(--primary);">Menu</strong>
+            
+            <!-- BOUTON THÈME MOBILE MODERNE -->
+            <div class="theme-toggle-wrapper">
+                <button id="themeBtnMobile" class="theme-toggle-btn" onclick="window.app.toggleTheme()" aria-label="Changer le thème" style="border:none; background:none;">
+                    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+            </div>
+        </div>
+        <button onclick="window.location.href='../index.html'; window.app.toggleMenu()">🏠 Accueil</button>
+        <button onclick="window.location.href='../index.html#jobs'; window.app.toggleMenu()">💼 Métiers</button>
+        <button onclick="window.location.href='../index.html#comparator'; window.app.toggleMenu()">⚖️ Comparateur</button>
+        <!-- Added Button -->
+        <button onclick="window.location.href='../index.html#reservation'; window.app.toggleMenu()">📅 Réserver / Contact</button>
+
+        <button onclick="window.location.href='../métiers.html'; window.app.toggleMenu()">📂 Par Branche</button>
+        <button onclick="window.location.href='../écoles/premier.html'; window.app.toggleMenu()">🎓 Écoles</button>
+        <div style="flex:1"></div>
+        <button onclick="window.app.logout(); window.app.toggleMenu()" style="color:var(--danger)">🚪 Quitter</button>
+    </div>
+</div>
+<div class="main-container">
+    <!-- Header -->
+    
 
     <!-- Hero -->
     <section class="hero">
