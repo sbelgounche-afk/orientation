@@ -2,287 +2,148 @@
         // ORIENT'MAROC - SYSTÈME D'ORIENTATION INTELLIGENT (Refactorisé & Optimisé)
         // =========================================================================
 
-        // --- 1. DONNÉES BRUTES ---
-        const RAW_DATA = {
-            "Achat": ["Acheteur", "Acheteur industriel", "Acheteur informatique", "Agent de soin", "Assistant achat", "Assistant chef de produit tourisme", "Conducteur de travaux agencement", "Directeur achat", "Ingénieur achat", "Ingénieur d'études", "Peintre aéronautique", "Photographe assistant", "Professeur fitness", "Responsable achats", "Responsable approvisionnement", "Responsable crédit", "Technicien d'achats", "Téléopérateur"],
-            "Administratif": ["Adjoint des cadres hospitaliers", "Agent administratif", "Agent distribution courrier", "Agent services généraux", "Assistant administratif", "Assistant de direction", "Assistant polyvalent", "Assistant technique", "Chargé de mission handicap", "Collaborateur administrateur judiciaire", "Dactylo", "Directeur administratif financier", "Directeur associé", "Directeur des services techniques", "Directeur général", "Employé administratif", "Gestionnaire administratif", "Greffier", "Responsable administratif", "Responsable des services généraux", "Rédacteur des débats", "Secrétaire général", "Standardiste", "Traducteur"],
-            "Agricole": ["Agent d'élevage", "Agent viticole", "Agriculteur", "Apiculteur", "Bûcheron", "Chauffeur agricole", "Conseiller foncier", "Cueilleur", "Eleveur", "Horticulteur", "Ingénieur agricole", "Ingénieur agronome", "Magasinier agricole", "Maraîcher", "Mécanicien agricole", "Ouvrier agricole", "Palefrenier", "Pépiniériste", "Vendangeur"],
-            "Alimentation": ["Boucher", "Boulanger", "Caviste", "Charcutier", "Charcutier-traiteur", "Chef boucher", "Chocolatier", "Cuisinier traiteur", "Désosseur", "Fromager", "Glacier", "Pizzaiolo", "Pâtissier chocolatier", "Responsable qualité agroalimentaire"],
-            "Aménagement": ["Géographe", "Urbaniste"],
-            "Architecture": ["Architecte", "Architecte d'intérieur", "Assistant architecte", "BIM Manager", "Cartographe", "Collaborateur d'architecte", "Décorateur", "Paysagiste"],
-            "Artisanat": ["Bijoutier", "Carreleur", "Charpentier", "Charpentier couvreur", "Chaudronnier", "Cordonnier", "Couturier", "Ebéniste", "Ferronnier", "Fleuriste", "Forgeron", "Gemmologue", "Graveur", "Horloger", "Imprimeur", "Maroquinier", "Maréchal ferrant", "Menuisier", "Menuisier poseur aluminium", "Menuisier-agenceur", "Métallier serrurier", "Ouvrier boulanger", "Poseur cuisine", "Poseur menuiserie PVC", "Pâtissier tourier", "Pêcheur", "Relieur", "Serrurier", "Styliste", "Tailleur", "Tailleur de pierre", "Tapissier", "Technicien chaudronnier"],
-            "Assurance": ["Actuaire", "Collaborateur agence assurances", "Comptable assurance", "Conseiller commercial assurance", "Conseiller mutualiste", "Courtier", "Courtier en assurances", "Expert en assurances", "Expert en sinistres", "Gestionnaire contrats", "Gestionnaire d'assurances", "Gestionnaire frais de santé", "Gestionnaire middle office", "Souscripteur", "Tarificateur assurance"],
-            "Banque": ["Analyste crédit", "Chargé de clientèle", "Chargé de conformité", "Conseiller accueil banque", "Conseiller clientèle", "Dabiste", "Directeur d'agence", "Gestionnaire back office", "Guichetier", "Responsable recouvrement"],
-            "Btp": ["Aide-maçon", "Assistant travaux", "Bancheur", "Bardeur", "Calorifugeur", "Canalisateur", "Chargé d'affaires btp", "Chauffagiste", "Chauffeur tp", "Chef d'équipe TP", "Chef d'équipe vrd", "Chef de chantier", "Coffreur", "Coffreur bancheur", "Coffreur boiseur", "Conducteur de grue mobile", "Conducteur de nacelle", "Conducteur de pelle", "Conducteur de travaux", "Conducteur engins", "Contremaitre", "Coordinateur technique", "Cordiste", "Courtier travaux", "Couvreur", "Couvreur zingueur", "Cuisiniste", "Câbleur", "Dessinateur projeteur électricité", "Dessinateur-projeteur bâtiment", "Deviseur", "Diagnostiqueur immobilier", "Directeur travaux", "Désamianteur", "Echafaudeur", "Economiste de la construction", "Electricien", "Electricien du bâtiment", "Etancheur", "Façadier", "Ferrailleur", "Finisseur", "Foreur", "Formateur CACES", "Frigoriste", "Grutier", "Grutier mobile", "Géomètre topographe", "Ingénieur BTP", "Ingénieur construction", "Ingénieur efficacité énergétique", "Ingénieur géotechnicien", "Ingénieur structures", "Ingénieur travaux", "Ingénieur études de prix", "Manoeuvre", "Maçon", "Menuisier aluminium", "Menuisier poseur", "Miroitier", "Métreur", "Ouvrier qualifié", "Ouvrier vrd", "Peintre en bâtiment", "Pilote OPC", "Plaquiste", "Plaquiste enduiseur", "Plombier", "Plâtrier", "Polisseur", "Pontier", "Projeteur béton armé", "Ramoneur", "Responsable maintenance travaux neufs", "Responsable travaux", "Sableur", "Solier moquettiste", "Technicien acoustique", "Technicien bâtiment", "Technicien génie civil", "Technicien géomètre"],
-            "Chimie": ["Aromaticien", "Biochimiste", "Ingénieur chimiste", "Ingénieur formulation", "Ingénieur génie chimique", "Laborantin", "Responsable de laboratoire", "Responsable laboratoire chimie", "Responsable scientifique", "Technicien biochimiste", "Technicien chimiste", "Technicien de laboratoire", "Technicien de laboratoire biologie", "Technicien génie chimique"],
-            "Commerce": ["Agent commercial", "Assistant administratif commercial", "Assistant commercial", "Assistant export", "Buraliste", "Business developer", "Chargé d'affaires", "Chargé de développement commercial", "Chef de projet CRM", "Chef de projet e-commerce", "Chef de secteur commerce", "Chef de zone export", "Chef des ventes", "Client mystère", "Commercial", "Commercial B to C", "Commercial CHR", "Commercial GMS", "Commercial automobile", "Commercial b to b", "Commercial export", "Commercial sédentaire", "Commerçant", "Conseiller commercial", "Contract manager", "Directeur business unit", "Directeur commercial", "Directeur commercial export", "Directeur de comptes", "Directeur des opérations", "Directeur des ventes", "Directeur du développement", "Directeur régional", "Délégué commercial", "Délégué vétérinaire", "Employé de pharmacie", "Ingénieur avant-vente", "Ingénieur commercial", "Ingénieur d'affaires", "Ingénieur technico-commercial", "Opticien", "Poissonnier", "Promoteur des ventes", "Responsable commercial France", "Responsable commercial export", "Responsable commercial sport", "Responsable commercial sédentaire", "Responsable commercial transport", "Responsable d'affaires", "Responsable développement commercial", "Responsable e-commerce", "Responsable grands comptes", "Skiman", "Technico-commercial", "Téléconseiller", "VRP"],
-            "Communication": ["Assistant chef de projet", "Assistant de communication", "Attaché de presse", "Chargé de communication", "Chargé de communication événementielle", "Chargé de relations publiques", "Chef de projet communication", "Chef de publicité", "Conseiller en image", "Directeur de la communication", "Documentaliste ged", "Graphiste", "Infographiste", "Recruteur de donateurs", "Responsable communication", "Responsable partenariats", "Responsable éditorial"],
-            "Comptabilité": ["Agent de facturation", "Agent de recouvrement", "Assistant administratif et comptable", "Assistant comptable", "Assistant facturation", "Auditeur", "Chargé de recouvrement", "Chef de mission comptable", "Collaborateur comptable", "Commissaire aux comptes", "Comptable", "Comptable Fournisseur", "Comptable auxiliaire", "Comptable client", "Comptable clients recouvrement", "Comptable copropriété", "Comptable gestion locative", "Comptable général", "Comptable paie", "Comptable trésorerie", "Directeur comptable", "Expert-comptable", "Responsable administratif comptable", "Responsable audit", "Responsable comptabilité analytique", "Responsable comptabilité clients", "Responsable comptabilité fournisseurs", "Responsable comptable", "Responsable facturation", "Responsable trésorerie", "Secrétaire comptable", "Technicien comptable", "Trésorier"],
-            "Culture": ["Accessoiriste", "Animateur cirque", "Animateur sportif", "Archiviste", "Archiviste documentaliste", "Auteur", "Bibliothécaire", "Caméraman", "Chanteur", "Chef de projet évènementiel", "Chorégraphe", "Compositeur", "Comédien", "DJ", "Danseur", "Dessinateur", "Documentaliste", "Figurant", "Game designer", "Illustrateur", "Ingénieur du son", "Interprète", "Libraire", "Linguiste", "Machiniste", "Mannequin", "Metteur en scène", "Modéliste", "Monteur de stands", "Musicien", "Médiateur culturel", "Photographe", "Professeur de danse", "Professeur de zumba", "Professeur guitare", "Responsable événementiel", "Réalisateur", "Régisseur", "Régisseur lumière", "Sculpteur", "Tatoueur", "Technicien audiovisuel", "Technicien du spectacle", "Technicien son"],
-            "Digital": ["Chargé de communication digitale", "Chef de projet digital", "Chef de projet internet", "Community manager", "Designer 3d", "Développeur iPhone", "Développeur mobile", "Développeur web", "Graphiste 2d", "Graphiste 3d", "Graphiste web", "Responsable digital", "Rédacteur web", "Référenceur web", "Webmaster"],
-            "Droit": ["Assistant juridique", "Avocat", "Clerc de notaire", "Directeur juridique", "Huissier", "Juriste", "Juriste assurance", "Juriste construction", "Juriste contentieux", "Juriste d'entreprise", "Juriste droit de la concurrence", "Juriste droit des affaires", "Juriste en droit public", "Juriste en droit social", "Juriste immobilier", "Juriste international", "Juriste propriété intellectuelle", "Notaire", "Rédacteur juridique"],
-            "Economie": ["Statisticien", "Économiste"],
-            "Edition": ["Conducteur offset", "Iconographe"],
-            "Emploi public": ["ASVP", "Administratif de la fonction publique", "Agent d'entretien en collectivité", "Agent de service", "Agent de tri courrier", "Agent de voirie", "Animateur du patrimoine", "Chargé de recherche", "Facteur", "Ingénieur VRD", "Militaire", "Policier", "Postier", "Rédacteur territorial", "Surveillant de baignade", "Technicien de recherche", "Technicien environnement"],
-            "Enseignement": ["Animateur BAFA", "Assistant pédagogique", "Auxiliaire de vie scolaire", "Chef de projet formation", "Chef de service éducatif", "Coach sportif", "Conseiller d'orientation", "Conseiller pédagogique", "Directeur de centre de formation", "Educateur technique", "Enseignant", "Enseignant chercheur", "Formateur", "Formateur FLE", "Formateur bâtiment", "Formateur en bureautique", "Formateur gestion du stress", "Formateur insertion", "Formateur vacataire", "Ingénieur pédagogique", "Maître-nageur sauveteur", "Moniteur", "Moniteur auto-école", "Professeur allemand", "Professeur d'anglais", "Professeur de SVT", "Professeur de français", "Professeur des écoles", "Professeur histoire géographie", "Professeur mathématiques", "Professeur musique", "Professeur philosophie", "Professeur physique", "Professeur économie", "Responsable pédagogique", "Surveillant examens", "Éducateur sportif"],
-            "Environnement": ["Agent d'entretien des espaces verts", "Agent de tri", "Animateur sécurité environnement", "Assistant développement durable", "Biologiste", "Botaniste", "Chargé de mission RSE", "Coordinateur qhse", "Ecologue", "Elagueur", "Garde forestier", "Géologue", "Hydrogéologue", "Ingénieur environnement", "Ingénieur photovoltaique", "Ingénieur thermicien", "Installateur thermique", "Jardinier", "Jardinier paysagiste", "Monteur en climatisation", "Météorologue", "Naturaliste", "Océanographe", "Ouvrier paysagiste", "Releveur de compteur", "Responsable HSE", "Responsable QSE", "Responsable développement durable", "Ripeur", "Technicien HVAC", "Technicien de maintenance génie climatique", "Technicien en froid et climatisation", "Technicien en électricité", "Technicien forestier", "Technicien gaz", "Technicien génie climatique"],
-            "Finance": ["Analyste financier", "Asset manager", "Auditeur financier", "Chargé de reporting", "Chef de mission audit", "Conseiller Fiscal", "Conseiller financier", "Consolideur", "Contrôleur financier", "Credit manager", "Directeur financier", "Fiscaliste", "Gestionnaire financier", "Ingénieur financier", "Opérateur de marché", "Responsable administratif financier", "Responsable financier", "Trader"],
-            "Gestion": ["Assistant de gestion", "Assistant de gestion PME/PMI", "Business analyst", "Chargé de contentieux", "Consultant gestion", "Contrôleur de gestion", "Delivery manager", "Directeur technique", "Gestionnaire de patrimoine", "Risk manager"],
-            "Grande distribution": ["Animateur commercial", "Animateur réseau", "Attaché commercial GMS", "Chef de caisse", "Chef de rayon", "Chef de secteur", "Chef de secteur GMS", "Chef rayon bazar", "Chef rayon boucherie", "Chef rayon boulangerie pâtisserie", "Chef rayon charcuterie traiteur", "Chef rayon poissonnerie", "Conseiller de vente", "Directeur de magasin", "Employé libre-service", "Employé point chaud", "Merchandiseur", "Responsable adjoint magasin", "Responsable commercial GMS", "Responsable drive", "Responsable produits frais", "Responsable rayon", "Responsable rayon poissonnerie"],
-            "Hôtellerie": ["Chef de réception", "Directeur hôtel", "Femme de chambre", "Gouvernant", "Majordome", "Réceptionniste", "Valet de chambre", "Veilleur de nuit"],
-            "Immobilier": ["Administrateur de biens", "Agent commercial immobilier", "Agent immobilier", "Assistant gestion locative", "Chasseur immobilier", "Commercial immobilier", "Conseiller commercial immobilier", "Directeur de copropriété", "Développeur foncier", "Gestionnaire de copropriété", "Gestionnaire immobilier", "Gestionnaire locatif", "Home stager", "Mandataire immobilier", "Négociateur immobilier", "Négociateur location", "Promoteur", "Prospecteur foncier", "Responsable commercial immobilier", "Responsable contentieux locatif", "Responsable développement foncier", "Responsable immobilier", "Technicien diagnostic immobilier"],
-            "Industrie": ["Affûteur", "Agent de conditionnement", "Agent de fabrication", "Agent de finition", "Agent de production", "Agent technique", "Agent technique polyvalent", "Ajusteur", "Ajusteur aéronautique", "Ajusteur mouliste", "Assembleur monteur", "Assistant qualité", "Auditeur qualité", "Bobinier", "Calculateur", "Cariste", "Carrossier", "Chargé de mission qualité", "Chef d'atelier", "Chef d'équipe maintenance", "Chef de projet industriel", "Chef de projet production", "Conditionneur", "Conducteur de four", "Conducteur de ligne", "Conducteur de ligne industrie pharmaceutique", "Conducteur de machine", "Dessinateur industriel", "Dessinateur projeteur cao", "Dessinateur-projeteur", "Directeur R&D", "Directeur de production", "Directeur de site", "Directeur industriel", "Directeur qualité", "Directeur usine", "Drapeur", "Décolleteur", "Ebarbeur", "Electricien industriel", "Electrotechnicien", "Erodeur", "Fraiseur", "Ingénieur calcul de structures", "Ingénieur de production", "Ingénieur de projet", "Ingénieur industrialisation", "Ingénieur maintenance", "Ingénieur métallurgiste", "Ingénieur métrologue", "Ingénieur planning", "Ingénieur pétrolier", "Ingénieur qse", "Ingénieur qualité", "Ingénieur soudage", "Inspecteur qualité", "Metteur au point", "Monteur de meubles", "Monteur-câbleur", "Mouleur", "Mécanicien de maintenance", "Métallier", "Métrologue", "Opérateur de production", "Opérateur salle blanche", "Ordonnanceur", "Outilleur", "Outilleur mouliste", "Ouvrier abattoir", "Ouvrier de production", "Oxycoupeur", "Peintre automobile", "Peintre industriel", "Planificateur", "Plasturgiste", "Plieur cn", "Programmeur CFAO", "Qualiticien", "Rectifieur", "Responsable atelier", "Responsable bureau d'études", "Responsable contrôle qualité", "Responsable de maintenance", "Responsable de production", "Responsable de site", "Responsable fonderie", "Responsable méthodes", "Responsable planification", "Responsable qualité", "Responsable uap", "Régleur", "Soudeur", "Soudeur aluminium", "Stratifieur", "Superviseur de maintenance", "Technicien assurance qualité", "Technicien automaticien", "Technicien bureau d'études", "Technicien controle qualité", "Technicien d'études", "Technicien de fabrication", "Technicien de maintenance", "Technicien de maintenance industrielle", "Technicien de maintenance itinérant", "Technicien essai", "Technicien fonderie", "Technicien industrialisation", "Technicien instrumentation", "Technicien qualité", "Technicien électronicien", "Technicien électrotechnique", "Tourneur", "Usineur"],
-            "Informatique": ["Administrateur Linux", "Administrateur SAP", "Administrateur Sharepoint", "Administrateur Windows", "Administrateur base de données", "Administrateur systèmes", "Administrateur unix", "Analyste d'exploitation", "Analyste developpeur", "Analyste-programmeur", "Architecte Java", "Architecte SI", "Architecte informatique", "Architecte logiciel", "Architecte réseau", "Architecte technique", "Chef de projet .NET", "Chef de projet AMOA", "Chef de projet Java", "Chef de projet MOA", "Chef de projet MOE", "Chef de projet décisionnel", "Chef de projet erp", "Chef de projet fonctionnel", "Chef de projet informatique", "Chef de projet infrastructure", "Chef de projet mobile", "Chef de projet technique", "Chef de projet web", "Concepteur designer", "Consultant AMOA", "Consultant SAP", "Consultant SEO", "Consultant SIRH", "Consultant Sécurité", "Consultant fonctionnel", "Consultant informatique", "Coordinateur informatique", "Data Scientist", "Developpeur full stack", "Directeur informatique", "Développeur .NET", "Développeur Android", "Développeur C", "Développeur C++", "Développeur Flash", "Développeur Java", "Développeur PHP", "Développeur Python", "Développeur SQL", "Développeur VBA", "Développeur back end", "Développeur front end", "Développeur informatique", "Développeur logiciel", "Electronicien", "Expert sécurité", "Formateur informatique", "Géomaticien", "IT manager", "Informaticien", "Ingenieur devops", "Ingénieur Unix", "Ingénieur commercial informatique", "Ingénieur décisionnel", "Ingénieur développeur", "Ingénieur informatique", "Ingénieur logiciel", "Ingénieur poste de travail", "Ingénieur support", "Ingénieur système", "Ingénieur sécurité", "Ingénieur traitement du signal", "Intégrateur web", "Motion designer", "Programmeur informatique", "Pupitreur", "Scrum master", "Technicien de maintenance informatique", "Technicien de support", "Technicien exploitation informatique", "Technicien helpdesk", "Technicien support informatique", "Webdesigner"],
-            "Ingénierie": ["Acousticien", "Automaticien", "Chargé d'affaires cvc", "Chaudronnier naval", "Dessinateur cvc", "Hydraulicien", "Ingénieur Génie des procédés", "Ingénieur R&D", "Ingénieur acoustique", "Ingénieur automaticien", "Ingénieur automobile", "Ingénieur aéronautique", "Ingénieur calcul", "Ingénieur contrôle commande", "Ingénieur de recherche", "Ingénieur eau", "Ingénieur en optique", "Ingénieur génie civil", "Ingénieur laser", "Ingénieur mathématiques appliquées", "Ingénieur matériaux", "Ingénieur micro électronique", "Ingénieur modélisation", "Ingénieur mécanique des fluides", "Ingénieur mécatronique", "Ingénieur méthodes", "Ingénieur nucléaire", "Ingénieur procédés", "Ingénieur robotique", "Ingénieur simulation numérique", "Ingénieur sûreté", "Ingénieur électricité", "Ingénieur électronique", "Metteur au point climatisation", "Projeteur vrd", "Roboticien", "Technicien aéronautique", "Technicien courant faible", "Technicien cvc", "Technicien domotique"],
-            "Logistique": ["Affréteur", "Agent de logistique", "Agent de quai", "Agent de transit", "Analyste logistique", "Approvisionneur", "Assistant approvisionnement", "Assistant d'exploitation", "Assistant import export", "Assistant logistique", "Chef de dépôt", "Chef de projet logistique", "Conducteur routier", "Conducteur routier pl", "Conducteur routier spl", "Consultant supply chain", "Coordinateur logistique", "Coursier", "Directeur logistique", "Directeur supply chain", "Dispatcheur", "Gestionnaire de parc automobile", "Gestionnaire de stocks", "Ingénieur logistique", "Inventoriste", "Logisticien", "Magasinier", "Manutentionnaire", "Opérateur logistique", "Pilote de flux", "Préparateur de commande", "Responsable de quai", "Responsable exploitation", "Responsable export", "Responsable expéditions", "Responsable logistique", "Responsable magasinier", "Responsable transit", "Réceptionnaire", "Technicien logistique", "gestionnaire de flux"],
-            "Marketing": ["Analyste de données", "Assistant chef de produit marketing", "Assistant chef de projet marketing", "Assistant marketing", "Bid manager", "Brand manager", "Category manager", "Chargé d'études marketing", "Chargé d'études statistiques", "Chargé de marketing", "Chef de produit", "Chef de projet marketing", "Chef de projet web marketing", "Concepteur rédacteur", "Coordinateur Marketing", "Designer", "Directeur artistique", "Directeur de clientèle", "Directeur marketing", "Distributeur", "Enquêteur sondage", "Enquêteur terrain", "Panéliste", "Responsable marketing", "Responsable marketing opérationnel", "Responsable trade marketing", "Responsable web marketing", "Traffic manager"],
-            "Mécanique": ["Aide mécanicien", "Ascensoriste", "Chef atelier automobile", "Chef mécanicien", "Contrôleur technique automobile", "Dessinateur mécanique", "Dépanneur remorqueur", "Electricien automobile", "Electromécanicien", "Ingenieur conception mecanique", "Ingénieur en génie mécanique", "Ingénieur mécanique", "Monteur mécanique", "Mécanicien automobile", "Mécanicien monteur", "Mécanicien moto", "Mécanicien motoculture", "Mécanicien outilleur", "Mécanicien poids lourds", "Projeteur mécanique", "Préparateur automobile", "Responsable carrosserie", "Technicien automobile", "Technicien d'atelier"],
-            "Médias": ["Cadreur monteur", "Chef de rubrique", "Graphiste PAO", "Graphiste designer", "Graphiste multimédias", "Infographiste multimédias", "Journaliste", "Maquettiste", "Massicotier", "Monteur vidéo", "Relecteur-correcteur", "Reporter", "Rédacteur en chef", "Rédacteur pigiste", "Rédacteur scientifique", "Secrétaire de rédaction", "Sérigraphe"],
-            "Petite enfance": ["ATSEM", "Agent service crèche", "Aide-éducateur", "Animateur centre loisirs", "Animateur enfants", "Animateur périscolaire", "Assistante maternelle", "Auxiliaire crèche", "Auxiliaire petite enfance", "Directeur de centre de loisirs", "Directeur de crèche", "Infirmier crèche", "Puériculteur"],
-            "Physique": ["Animateur tennis", "Physicien"],
-            "Propreté": ["Agent de nettoyage", "Agent de propreté", "Agent maintenance bâtiment", "Employé de nettoyage", "Laveur de vitres", "Ouvrier d'entretien"],
-            "Ressources humaines": ["Assistant recrutement", "Assistant ressources humaines", "Chargé de mission RH", "Chargé de recrutement", "Chargé de ressources humaines", "Chef de projet Ressources Humaines", "Chef de projet SIRH", "Chef du personnel", "Chief happiness officer", "Collaborateur social", "Conseiller formation", "Consultant en recrutement", "Consultant en ressources humaines", "Consultant management", "Contrôleur de gestion sociale", "Directeur des ressources humaines", "Ergonome", "Gestionnaire RH", "Gestionnaire de paie", "Gestionnaire du personnel", "Knowledge manager", "Lean manager", "Project management officer", "Responsable Administration Du Personnel", "Responsable des ressources humaines", "Responsable formation", "Responsable paie", "Responsable relations sociales", "Team leader"],
-            "Restauration": ["Agent de restauration", "Aide-cuisinier", "Barman", "Chef cuisinier", "Chef de partie", "Chef de rang", "Chef de secteur CHR", "Chef gérant", "Chef pâtissier", "Commis de cuisine", "Commis de salle", "Crêpier", "Cuisinier", "Cuisinier de collectivité", "Directeur de restaurant", "Employé polyvalent de restauration", "Grillardin", "Livreur de pizzas", "Manager en restauration", "Maître d'hôtel", "Oenologue", "Plongeur", "Pâtissier", "Responsable de cuisine", "Responsable de salle", "Responsable en restauration", "Second de cuisine", "Serveur", "Serveur barman", "Serveur extra", "Sommelier"],
-            "Santé": ["ASH - Agent de services hospitaliers", "Agent de service maison de retraite", "Agent de stérilisation", "Aide-soignant", "Ambulancier", "Anesthésiste", "Assistant dentaire", "Assistant médical", "Assistant vétérinaire", "Attaché de recherche clinique", "Audioprothésiste", "Auxiliaire ambulancier", "Auxiliaire de puériculture", "Biostatisticien", "Brancardier", "Cadre de santé", "Cadre infirmier", "Cadre supérieur de santé", "Cardiologue", "Chef de bloc", "Chef de service", "Chirurgien", "Chirurgien orthopédique", "Dentiste", "Dermatologue", "Directeur d'EHPAD", "Directeur d'établissement de santé", "Directeur des soins", "Directeur médico-social", "Diététicien", "Endocrinologue", "Ergothérapeute", "Gastro-entérologue", "Gynécologue", "Infirmier", "Infirmier anesthésiste", "Infirmier auxiliaire", "Infirmier bloc opératoire", "Infirmier coordinateur", "Infirmier dialyse", "Infirmier du secteur psychiatrique", "Infirmier ehpad", "Infirmier médecine du travail", "Infirmier urgences", "Infirmière en entreprise", "Infirmière libérale", "Kinésithérapeute", "Manipulateur en radiologie", "Masseur kinésithérapeute", "Médecin coordinateur", "Médecin du travail", "Médecin généraliste", "Médecin gériatre", "Médecin urgentiste", "Neurochirurgien", "Neurologue", "Neuropsychologue", "Nutritionniste", "Néphrologue", "Oncologue", "Ophtalmologue", "Optométriste", "Orthophoniste", "Ostéopathe", "Pharmacien", "Pharmacien affaires réglementaires", "Pharmacien biologiste", "Pharmacien hospitalier", "Pharmacien qualité", "Pneumologue", "Podologue", "Professeur de yoga", "Préparateur en pharmacie", "Psychiatre", "Psychologue", "Psychologue clinicien", "Psychologue du travail", "Psychomotricien", "Pédiatre", "Radiologue", "Sage-femme", "Secrétaire dentaire", "Sophrologue", "Technicien biomédical", "Urologue", "Visiteur médical", "Vétérinaire"],
-            "Secrétariat": ["Assistant secrétaire", "Secrétaire", "Secrétaire administratif", "Secrétaire bilingue", "Secrétaire commercial", "Secrétaire de direction", "Secrétaire médicale", "Télésecrétaire"],
-            "Sécurité": ["Agent cynophile sécurité", "Agent de surveillance", "Agent de sécurité", "Agent de sécurité incendie", "Animateur sécurité", "Convoyeur de fonds", "Détective", "Garde du corps", "Gardien", "Gardien de la paix", "Gendarme", "Opérateur télésurveillance", "Pilote de drones", "Responsable sécurité", "Sapeur-Pompier", "Secouriste"],
-            "Service clientèle": ["Agent d'accueil", "Assistant personnel", "Etalagiste", "Hotliner", "Père Noël", "Rédacteur technique", "Technicien SAV", "Technicien électroménager", "Toiletteur"],
-            "Services à la personne": ["Aide ménagère à domicile", "Aide à domicile", "Baby sitter", "Chef d'équipe propreté", "Coach professionnel", "Coiffeur", "Concierge", "Déménageur", "Employé familial", "Employé pressing", "Esthéticien", "Femme de ménage", "Garde d'animaux", "Gardien d'immeuble", "Maquilleur", "Repasseur", "Thanatopracteur"],
-            "Social": ["Aide médico-psychologique", "Animateur maison retraite", "Assistant de service social", "Auxiliaire de vie sociale - AVS", "Conseiller en insertion professionnelle", "Conseiller en économie sociale et familiale", "Conseiller social", "Coordinateur social", "Directeur ESAT", "Directeur adjoint ESAT", "Educateur", "Intervenant action sociale", "Moniteur d'atelier", "Moniteur éducateur", "Éducateur spécialisé"],
-            "Télécommunications": ["Administrateur réseau", "Ingénieur radio", "Ingénieur réseau", "Ingénieur télécom", "Piqueteur", "Technicien fibre optique", "Technicien réseau", "ingénieur hyperfréquences"],
-            "Tourisme": ["Accompagnateur montagne", "Accompagnateur tourisme équestre", "Agent de comptoir", "Agent de développement touristique", "Agent de réservation", "Agent de voyage", "Animateur tourisme", "Animateur village vacances", "Billettiste", "Conseiller voyages", "Directeur centre de vacances", "Forfaitiste", "Guide touristique", "Moniteur de ski", "Responsable animation", "Spa manager"],
-            "Transport": ["Agent aéroportuaire", "Agent d'escale", "Agent d'exploitation transport et logistique", "Agent de piste", "Agent de trafic aérien", "Agent sûreté aéroportuaire", "Architecte naval", "Bagagiste", "Chauffeur VTC", "Chauffeur d'autocar", "Chauffeur de bus", "Chauffeur de direction", "Chauffeur de taxi", "Chauffeur livreur", "Chauffeur privé", "Chauffeur routier", "Chef de quart", "Contrôleur aérien", "Convoyeur de véhicules", "Directeur transport", "Docker", "Déclarant en douanes", "Formateur conduite", "Hôtesse de l'air", "Ingénieur aérodynamique", "Ingénieur signalisation ferroviaire", "Magasinier aéronautique", "Monteur de pneus", "Mécanicien aéronautique", "Pilote d'avion", "Pilote d'hélicoptère", "Responsable transport"],
-            "Vente": ["Assistant administration des ventes", "Caissier", "Chef des ventes régional", "Concepteur vendeur", "Conseiller beauté", "Coordinateur des ventes", "Directeur de filiale", "Délégué pharmaceutique", "Formateur vente", "Gestionnaire administration des ventes", "Manager des ventes", "Product owner", "Prévisionniste des ventes", "Responsable administration des ventes", "Responsable boutique", "Responsable commercial automobile", "Responsable de caisse", "Responsable de magasin", "Responsable de secteur", "Responsable parapharmacie", "Responsable télévente", "Télé prospecteur", "Télévendeur", "Vendeur", "Vendeur animalerie", "Vendeur automobile", "Vendeur jeux video", "Vendeur moto", "Vendeur multimédia"]
-        };
-
-        // --- 2. MAP DES FILIÈRES ---
-        const STREAM_MAP = {
-            "SC_Maths": ["Ingénierie", "Informatique", "Physique", "Chimie", "Architecture", "Industrie", "Mathématiques"],
-            "SC_Exp": ["Santé", "Environnement", "Agricole", "Chimie"],
-            "STEG": ["Btp", "Mécanique", "Industrie", "Ingénierie"],
-            "EG": ["Commerce", "Vente", "Banque", "Finance", "Comptabilité", "Gestion", "Marketing", "Digital", "Administration"],
-            "SH": ["Enseignement", "Social", "Ressources humaines", "Sécurité", "Administration", "Services à la personne"],
-            "LP": ["Enseignement", "Droit", "Culture", "Médias", "Communication", "Hôtellerie", "Tourisme", "Artisanat"]
-        };
-
-        // --- 3. TAGS MAP ---
-        const TAG_MAP = {
-            "Santé": ["bio", "social", "soin"],
-            "Btp": ["manuel", "technique", "logique"],
-            "Informatique": ["tech", "logique", "code"],
-            "Industrie": ["technique", "manuel", "usine"],
-            "Mécanique": ["technique", "manuel", "logique"],
-            "Ingénierie": ["science", "logique", "maths"],
-            "Commerce": ["vente", "contact", "eco"],
-            "Vente": ["vente", "contact", "commerce"],
-            "Banque": ["finance", "eco", "maths"],
-            "Finance": ["finance", "eco", "maths"],
-            "Comptabilité": ["admin", "maths", "eco"],
-            "Gestion": ["admin", "eco", "management"],
-            "Droit": ["lettre", "droit", "justice"],
-            "Architecture": ["arts", "logique", "design"],
-            "Artisanat": ["manuel", "arts", "creation"],
-            "Culture": ["arts", "creation", "lettre"],
-            "Enseignement": ["social", "lettre", "science"],
-            "Social": ["social", "soin", "humain"],
-            "Ressources humaines": ["social", "admin", "droit"],
-            "Transport": ["manuel", "logistique", "conducteur"],
-            "Logistique": ["manuel", "organisation", "logistique"],
-            "Hôtellerie": ["contact", "service", "social"],
-            "Restauration": ["manuel", "service", "creation"],
-            "Environnement": ["bio", "nature", "science"],
-            "Agricole": ["bio", "nature", "manuel"],
-            "Sécurité": ["manuel", "social", "ordre"],
-            "Marketing": ["creation", "commerce", "eco"],
-            "Communication": ["creation", "media", "lettre"],
-            "Médias": ["creation", "media", "lettre"],
-            "Digital": ["tech", "creation", "code"],
-            "Immobilier": ["commerce", "logique", "patrimoine"],
-            "Administration": ["admin", "secretariat", "org"],
-            "Secrétariat": ["admin", "secretariat", "org"],
-            "Services à la personne": ["social", "manuel", "service"],
-            "Propreté": ["manuel", "service", "hygiene"],
-            "Achat": ["commerce", "organisation", "négociation"],
-            "Grande distribution": ["commerce", "service", "stock"],
-            "Tourisme": ["contact", "service", "culture"],
-            "Alimentation": ["manuel", "creation", "hygiene"],
-            "Chimie": ["science", "labo", "bio"],
-            "Physique": ["science", "maths", "recherche"],
-            "Economie": ["eco", "maths", "analyse"],
-            "Aménagement": ["urbanisme", "nature", "design"],
-            "Emploi public": ["admin", "social", "service"],
-            "Petite enfance": ["social", "soin", "education"]
-        };
-
-        // --- 4. DESCRIPTIONS SPÉCIFIQUES ---
-        const CUSTOM_DESC = {
-            "Médecin": "Médecin généraliste ou spécialiste qui diagnostique et traite les maladies.",
-            "Infirmier": "Personnel soignant qui réalise les soins médicaux et assure le confort des patients.",
-            "Avocat": "Juriste qui conseille et défend ses clients devant les tribunaux.",
-            "Architecte": "Professionnel qui conçoit la structure et l'esthétique des bâtiments.",
-            "Développeur web": "Ingénieur logiciel qui crée des sites internet et des applications web.",
-            "Ingénieur": "Professionnel hautement qualifié qui conçoit des solutions techniques.",
-            "Comptable": "Spécialiste de la gestion financière qui enregistre les flux et assure la fiscalité.",
-            "Maçon": "Ouvrier du BTP spécialisé dans la construction de murs et structures.",
-            "Plombier": "Technicien qui installe et répare les réseaux d'eau.",
-            "Électricien": "Technicien qui réalise l'installation des circuits électriques.",
-            "Professeur": "Enseignant qui transmet des connaissances dans un établissement scolaire.",
-            "Policier": "Agent de l'État chargé de maintenir l'ordre public.",
-            "Pilote d'avion": "Professionnel chargé de piloter un aéronef.",
-            "Chef de projet": "Responsable qui coordonne les ressources d'un projet pour atteindre les objectifs.",
-            "Journaliste": "Professionnel de l'information qui rédige des articles sur l'actualité."
-        };
-
-        // --- 5. LEVEL MAP ---
-        const LEVEL_MAP = {
-            "3AC": ["3ème Année Collège"],
-            "TC": ["Tronc Commun"],
-            "1BAC": ["1ère Bac"],
-            "2BAC": ["2ème Bac"],
-        };
-
-        // --- 6. DONNÉES PARCOURS TIMELINE ---
-        const PATHS_DATA = {
-            "Médecin": {
-                main: [
-                    { year: "Baccalauréat", target: "FMP (1ère Année Commune)", desc: "Obtenir le Bac Scientifique avec bonne moyenne." },
-                    { year: "FMP", target: "CNA (Concours National d'Accès)", desc: "1 année universitaire commune (SVT/BCP)." },
-                    { year: "1er Cycle (2 ans)", target: "Externat ou Internat", desc: "Formation sciences fondamentales (anatomie, physiologie, biochimie)." },
-                    { year: "2ème Cycle (3 ans)", target: "Stages cliniques", desc: "Enseignements théoriques avancés et stages cliniques externes." },
-                    { year: "3ème cycle (1 ans)", target: "Thèse de Médecine", desc: "Stages cliniques à plein temps et soutenance de thèse." }
-                ],
-                alternatives: [
-                    { condition: "Si échec au CNA", path: ["Option: Répéter l'année suivante.", "Option: Médecine à l'étranger.", "Option: Pharmacie ou Dentaire si rang suffisant."] }
-                ]
-            },
-            "Ingénieur": {
-                main: [
-                    { year: "Baccalauréat", target: "CPGE (Classes Préparatoires)", desc: "Bac Sciences Maths." },
-                    { year: "CPGE (2 ans)", target: "CNC (Concours National Commun)", desc: "MPSI, PTSI, ou TSI." },
-                    { year: "Grande École", target: "Cycle Ingénieur (3 ans)", desc: "ENSA, ENSEM, ENIM, ENA..." }
-                ],
-                alternatives: [
-                    { condition: "Si échec au BAC", path: ["Option: Redoubler.", "Option: OFPPT (TS Mécanique/Électricité)."] }
-                ]
-            },
-            "Avocat": {
-                main: [
-                    { year: "Baccalauréat", target: "Faculté de Droit", desc: "Licence de Droit Privé ou Public." },
-                    { year: "Licence (3 ans)", target: "Master (2 ans)", desc: "Spécialisation en Droit des Affaires, Fiscalité ou Justice." },
-                    { year: "Master", target: "IEA (Institut d'Études Judiciaires)", desc: "Stage de 18 mois obligatoire." },
-                    { year: "Serment", target: "Avocat au Barreau", desc: "Prestation de serment et début de carrière." }
-                ],
-                alternatives: []
-            },
-            "default": {
-                main: [
-                    { year: "Baccalauréat", target: "Enseignement Supérieur", desc: "Choisir une formation adaptée à la filière." }
-                ],
-                alternatives: []
-            }
-        };
-
         // --- 7. NOTIFICATIONS (TOASTS) ---
+        // Cette fonction crée une petite boîte de notification (un "toast") qui 
+        // apparaît en bas de l'écran pendant quelques secondes pour donner un message à l'utilisateur.
         const showToast = (message, type = 'success') => {
+            // On cherche s'il y a déjà une zone prévue pour afficher ces notifications sur la page.
             let container = document.querySelector('.toast-container');
+            
+            // Si la zone n'existe pas encore, on la crée et on l'ajoute au document HTML (la page web).
             if(!container) {
                 container = document.createElement('div');
                 container.className = 'toast-container';
-                document.body.appendChild(container);
+                document.body.appendChild(container); // Ajout physique à la page
             }
+            
+            // On crée le message lui-même (la petite boîte qui va s'afficher).
             const toast = document.createElement('div');
+            // On lui donne une classe CSS pour son style (couleur verte si succès, rouge si erreur).
             toast.className = `toast ${type}`;
             toast.innerHTML = `<span>${message}</span>`;
+            
+            // On glisse ce nouveau message dans la zone des notifications.
             container.appendChild(toast);
+            
+            // On programme la disparition du message :
+            // Au bout de 3 secondes (3000 ms), le message devient transparent (il s'estompe).
             setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)'; }, 3000);
+            // Au bout de 3.5 secondes (3500 ms), on le supprime totalement de la page pour ne pas encombrer la mémoire.
             setTimeout(() => { toast.remove(); }, 3500);
         };
 
-        // --- 8. APPLICATION CORE ---
+        // --- 8. APPLICATION CORE (COEUR DE L'APPLICATION) ---
+        // "app" est comme le cerveau de l'application. C'est un grand "objet" qui contient 
+        // toutes les données en cours d'utilisation et les actions possibles du site.
         const app = {
-            jobs: [],
-            user: null,
-            quizScores: {},
-            questions: [],
-            currentQ: 0,
-            scores: {},
+            jobs: [],         // La liste où on va ranger tous les métiers disponibles (formatés).
+            user: null,       // Va contenir les infos de l'étudiant (nom, niveau scolaire, etc).
+            quizScores: {},   // Les scores obtenus par l'étudiant lorsqu'il passe un test.
+            questions: [],    // La liste des questions du quiz de personnalité.
+            currentQ: 0,      // Le numéro de la question à laquelle l'utilisateur est rendu.
+            scores: {},       // Analyse des résultats (Profil RIASEC, etc).
 
-            // === GESTION DU THÈME ===
+            // === GESTION DU THÈME (MODE CLAIR / MODE SOMBRE) ===
+            // Cette fonction inverse l'apparence visuelle du site.
             toggleTheme: function() {
+                // On passe de "vrai" à "faux" (ou inversement) pour savoir si le mode sombre est actif.
                 this.isDarkMode = !this.isDarkMode;
+                // On force la page web entière (documentElement) à appliquer le thème choisi.
                 document.documentElement.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');
-                // Le CSS gère désormais l'animation et l'affichage des icônes
-                // Pas besoin de modifier innerText ici
             },
 
             // === NAVIGATION MOBILE ===
+            // Action déclenchée quand on clique sur le menu "hamburger" (les 3 traits) sur un téléphone.
             toggleMenu: function() {
+                // On récupère le menu latéral caché (mobileNav) et le filtre noir de fond (mobileOverlay).
                 const nav = document.getElementById('mobileNav');
                 const overlay = document.getElementById('mobileOverlay');
+                
+                // Si le menu est déjà ouvert (il contient la classe "open"), on le ferme.
                 if(nav.classList.contains('open')) {
                     nav.classList.remove('open');
                     overlay.classList.remove('open');
                 } else {
+                    // Sinon, c'est qu'il est fermé, donc on l'ouvre en lui ajoutant la classe "open".
                     nav.classList.add('open');
                     overlay.classList.add('open');
                 }
             },
 
-            // === INITIALIZATION ===
+            // === INITIALIZATION (DÉMARRAGE DU SITE) ===
+            // C'est la première chose que fait l'application quand la page web finit de charger.
             init: function() {
-                this.processData();
-                this.loadUser();
-                this.renderFilters();
+                this.processData();    // 1. On organise les données des métiers (venant du fichier data.js).
+                this.loadUser();       // 2. On vérifie si l'étudiant s'était déjà inscrit avant.
+                this.renderFilters();  // 3. On prépare la liste déroulante des catégories pour la recherche.
+                
+                // Si l'étudiant est connu (son prénom existe), on l'envoie sur le Dashboard (le tableau de bord).
+                // S'il est inconnu, on l'envoie sur la page d'Oboarding (page de bienvenue/inscription).
                 if(this.user && this.user.name) this.navigate('dashboard');
                 else this.navigate('onboarding');
                 
-                // Attach AJAX handler for Formspree
+                // On s'assure que si l'utilisateur envoie le formulaire de contact, 
+                // c'est notre fonction 'handleFormSubmit' qui gère la tâche et non un rechargement de page basique.
                 const form = document.getElementById("fs-form");
                 if(form) {
                     form.addEventListener("submit", this.handleFormSubmit);
                 }
             },
 
+            // === PRÉPARATION DES DONNÉES (PROCESS DATA) ===
+            // Transforme notre "dictionnaire" brutal de métiers complexes (dans data.js) 
+            // en une vraie liste exploitable et propre pour l'application.
             processData: function() {
-                let idCounter = 1;
-                this.jobs = [];
+                let idCounter = 1; // Un compteur pour donner un numéro d'identité unique (ID) à chaque métier.
+                this.jobs = [];    // On vide la liste des métiers pour repartir de zéro.
+                
+                // Pour chaque catégorie et sa liste de métiers dans les RAW_DATA...
                 for (const [category, jobList] of Object.entries(RAW_DATA)) {
                     jobList.forEach(jobTitle => {
+                        // On trouve quels mots-clés ("tags") correspondent à ce métier.
                         const tags = TAG_MAP[category] || ["general"];
+                        // On trouve sa description personnalisée ou on génère une phrase par défaut.
                         const description = CUSTOM_DESC[jobTitle] || `Professionnel dans le secteur ${category}. Ce métier nécessite des compétences variées.`;
+                        
+                        // On ajoute le métier (tout beau tout propre) dans la boîte "this.jobs".
                         this.jobs.push({ id: idCounter++, title: jobTitle, category: category, description: description, tags: tags });
                     });
                 }
+                
+                // Enfin, on affiche sur la page web le nombre total de métiers trouvés et de secteurs.
                 const totalJobsEl = document.getElementById('totalJobsCount');
                 const totalCatsEl = document.getElementById('totalCatsCount');
                 if(totalJobsEl) totalJobsEl.textContent = this.jobs.length;
                 if(totalCatsEl) totalCatsEl.textContent = Object.keys(RAW_DATA).length;
             },
 
-            // === FORMSPREE AJAX HANDLER ===
+            // === GESTION DE L'ENVOI DU FORMULAIRE DE CONTACT (FORMSPREE AJAX) ===
+            // Quand l'utilisateur clique sur "Envoyer ma demande"...
             handleFormSubmit: async function(event) {
-                event.preventDefault();
+                event.preventDefault(); // On empêche la page web de recharger tout de suite.
                 const form = event.target;
-                const data = new FormData(form);
-                const btn = document.getElementById("submit-btn");
-                const originalBtnText = btn.textContent;
+                const data = new FormData(form); // On "aspire" toutes les réponses entrées par l'utilisateur.
+                
+                const btn = document.getElementById("submit-btn"); // On cible le bouton d'envoi.
+                const originalBtnText = btn.textContent;           // On garde en mémoire le vieux texte ("Envoyer").
 
-                // UI Feedback: Loading
+                // On montre visuellement à l'utilisateur que le site "réfléchit" (en cours d'envoi).
                 btn.textContent = "Envoi en cours...";
-                btn.disabled = true;
+                btn.disabled = true; // On bloque le bouton pour éviter de cliquer 10 fois par accident.
 
+                // On contacte silencieusement le service en ligne Formspree pour lui donner les données.
                 fetch(form.action, {
                     method: form.method,
                     body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' }
                 }).then(response => {
+                    // Si le message a bien été ditribué par les tuyaux internet :
                     if (response.ok) {
                         showToast("✅ Message envoyé avec succès !", "success");
-                        form.reset();
-                        window.app.navigate('dashboard'); // Redirect to dashboard after success
+                        form.reset();                     // On vide les cases du formulaire avec 'reset'.
+                        window.app.navigate('dashboard'); // On ramène l'utilisateur à l'accueil.
                     } else {
+                        // S'il y a un souci spécifique de validation par Formspree (exemple: mauvais email).
                         response.json().then(data => {
                             if (Object.hasOwn(data, 'errors')) {
                                 showToast(data["errors"].map(error => error["message"]).join(", "), "error");
@@ -292,14 +153,17 @@
                         })
                     }
                 }).catch(error => {
+                    // S'il n'y a pas d'internet et qu'on ne peut pas joindre le serveur.
                     showToast("❌ Erreur de connexion.", "error");
                 }).finally(() => {
-                    // Reset Button
+                    // Dans tous les cas (réussite ou échec), on remet le bouton à son état normal.
                     btn.textContent = originalBtnText;
                     btn.disabled = false;
                 });
             },
 
+            // === CRÉATION DES QUESTIONS DU TEST DE PERSONNALITÉ (HOLLAND) ===
+            // Retourne une liste de questions que l'on voudra poser à l'élève.
             getHollandQuestions: function() {
                 return [
                     { text: "Aimes-tu travailler avec des outils et des machines ?", type: "R" },
@@ -315,7 +179,10 @@
                 ];
             },
 
+            // === SYSTÈME DE COMPARAISON DE FILIÈRES ===
+            // Un mini-outil à l'intérieur de "app" pour comparer deux branches / deux choix scolaires.
             comparator: {
+                // Les données brutes contenant les critères (difficulté brute sur 5, Maths sur 5, durée d'études...).
                 data: {
                     "sc_maths": { label: "Sciences Maths", difficulty:5, math: 5, load: 5, duration: "5 à 7 ans", jobs: ["Ingénieur", "Architecte", "Chercheur", "Data Scientist"], market: "Très porteur", profile: "Logique développée, excellence en maths." },
                     "sc_exp": { label: "Sciences Expérimentales", difficulty: 3, math: 3, load: 4, duration: "6 à 8 ans", jobs: ["Médecin", "Pharmacien", "Biologiste"], market: "Santé stable", profile: "Intérêt pour les sciences de la vie." },
@@ -325,18 +192,31 @@
                     "ecoles": { label: "Écoles Supérieures", difficulty: 5, math: 5, load: 5, duration: "5 ans", jobs: ["Ingénieur d'État", "Chef de projet"], market: "Rémunération élevée", profile: "Bon niveau général, ambition." },
                     "ofppt": { label: "OFPPT (Formation Pro)", difficulty: 2, math: 2, load: 4, duration: "2 à 3 ans", jobs: ["Technicien", "Ouvrier qualifié"], market: "Besoins forts", profile: "Goût pour la pratique." }
                 },
+                
+                // Action déclenchée quand l'utilisateur clique sur le bouton "Comparer".
                 runComparison: function () {
+                    // On vérifie ce que l'utilisateur a choisi dans les deux menus déroulants.
                     const s1 = document.getElementById('streamSelect1').value;
                     const s2 = document.getElementById('streamSelect2').value;
                     const container = document.getElementById('compareResults');
-                    container.innerHTML = '';
+                    
+                    container.innerHTML = ''; // On efface l'ancienne comparaison s'il y en avait une.
+                    
+                    // On empêche la comparaison s'il a oublié de faire des choix.
                     if (!s1 || !s2) { showToast("Veuillez sélectionner au moins deux options.", "error"); return; }
+                    
+                    // Pour chaque sélection faite par l'utilisateur (s1 et s2)...
                     const selections = [s1, s2].filter(Boolean);
                     selections.forEach(key => {
                         const data = this.data[key];
                         if (!data) return;
+                        
+                        // Condition bonus : si la filière regardée correspond EXACTEMENT à la filière actuelle de l'élève.
                         const isMatch = window.app.user && window.app.user.stream === key;
+                        // On crée un petit badge "✓ Pour toi" qui flottera sur la carte si c'est un match.
                         const matchBadge = isMatch ? `<div style="position:absolute; top:10px; right:10px; background:var(--accent); color:var(--accent-text); padding:4px 8px; border-radius:4px; font-size:0.75rem; font-weight:bold;">✓ Pour toi</div>` : '';
+                        
+                        // On "dessine" la boîte (carte) qui contient les visuels et jauges de progression.
                         const html = `
                             <div class="card" style="position:relative; border-top: 4px solid ${isMatch ? 'var(--accent)' : 'var(--primary)'};">
                                 ${matchBadge}
@@ -355,96 +235,135 @@
                                 </div>
                             </div>
                         `;
+                        // On injecte ce dessin (HTML) dans la page web.
                         container.innerHTML += html;
                     });
                 }
             },
 
+            // === SYSTÈME DE ROUTING (CHANGER DE PAGE) ===
+            // Comme le site est un "Single Page Application", ne on charge pas de nouvelles pages.
+            // On cache les "sections" dont on a pas besoin, et on montre celle demandée (ex: "dashboard").
             navigate: function (pageId) {
-                // Gestion de l'affichage du header
                 const header = document.querySelector('header');
+                
+                // Si l'utilisateur est sur l'écran d'accueil/inscription, on cache la barre de menu d'en-tête.
                 if (pageId === 'onboarding') {
                     header.classList.add('hidden');
                 } else {
+                    // Sur toutes les autres pages, le menu doit exister et s'afficher.
                     header.classList.remove('hidden');
                 }
 
+                // 1. On donne l'ordre de cacher absolument toutes les sections de la page Web.
                 document.querySelectorAll('section').forEach(el => el.classList.remove('active'));
+                
+                // 2. On cible la section précise qu'on veut montrer (via son pageId, ex "jobs" ou "quiz").
                 const page = document.getElementById(pageId);
                 if (page) {
-                    page.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    page.classList.add('active'); // On rend visible cette section spécifique.
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // On remonte doucement tout en haut de l'écran.
+                    
+                    // Si on vient de s'afficher sur le Tableau de bord (Dashboard), on demande à charger les recommandations métiées.
                     if (pageId === 'dashboard' && this.user) this.renderDashboard();
+                    
+                    // Si on visite l'annuaire de métiers, on veut s'assurer que tout soit visible sans filtres pré-remplis.
                     if (pageId === 'jobs') this.filterJobs('all');
                 }
             },
 
+            // === GESTION FORMULAIRE ONBOARDING ===
+            // Lors de l'inscription à la page 1 : on vérifie si l'étudiant est au lycée.
+            // Si oui, on affiche une nouvelle question pour qu'il choisisse sa série du BAC (Filière).
             toggleStream: function () {
-                const lvl = document.getElementById('level').value;
-                const grp = document.getElementById('streamGroup');
+                const lvl = document.getElementById('level').value; // Lycée ou Collège ?
+                const grp = document.getElementById('streamGroup'); // La boîte contenant le choix des filières
+                // '1BAC' = Première, '2BAC' = Terminale. Si c'est l'un des deux, on l'affiche 'block', sinon on cache ('none').
                 grp.style.display = (lvl === '1BAC' || lvl === '2BAC') ? 'block' : 'none';
             },
 
+            // === SAUVEGARDE DU PROFIL ===
+            // Déclenché quand l'élève clique sur "Commencer mon aventure".
             saveProfile: function (e) {
-                e.preventDefault();
+                e.preventDefault(); // Stop au rechargement de page
                 const name = document.getElementById('name').value;
                 let level = document.getElementById('level').value;
                 const stream = document.getElementById('stream').value || '';
+                
+                // Si l'élève a oublié de mettre son nom, on bloque l'action et on met un message.
                 if (!name || !level) { showToast("Veuillez remplir tous les champs !", "error"); return; }
+                
                 try {
+                    // On cache les infos dans le "localStorage" de son navigateur internet pour qu'il ne soit pas
+                    // obligé de les re-taper demain quand il rouvrira le site.
                     localStorage.setItem('user_profile', JSON.stringify({ name, level, stream }));
-                    this.user = { name, level, stream };
-                    document.getElementById('uName').textContent = name;
-                    showToast(`Bienvenue ${name} !`);
-                    this.navigate('dashboard');
+                    this.user = { name, level, stream }; // Les données mémorisées dans le "cerveau" app.
+                    
+                    document.getElementById('uName').textContent = name; // On met à jour "Salut, [Prénom] !" sur le Dashboard.
+                    showToast(`Bienvenue ${name} !`); // Message vert.
+                    this.navigate('dashboard'); // On le propulse sur le Dashboard.
                 } catch (error) {
-                    showToast("Erreur sauvegarde.", "error");
+                    showToast("Erreur sauvegarde.", "error"); // Problème technique du navigateur (mémoire pleine).
                 }
             },
 
+            // === RESTITUTION DU PROFIL ===
+            // Si l'élève revient demain, le site s'en souvient et va "piocher" ses réponses de la veille en mémoire.
             loadUser: function () {
                 try {
                     const stored = localStorage.getItem('user_profile');
                     this.user = stored ? JSON.parse(stored) : null;
-                } catch (e) { this.user = null; }
+                } catch (e) { this.user = null; } // Échec, l'élève restera "inconnu" comme un nouveau visiteur.
             },
 
+            // === DÉCONNEXION ===
+            // Si l'utilisateur a cliqué sur le bouton "Quitter" pour nettoyer ses données sur l'ordinateur.
             logout: function () {
-                localStorage.removeItem('user_profile');
-                this.user = null;
+                localStorage.removeItem('user_profile'); // Destruction de la mémoire du navigateur.
+                this.user = null;                        // Le site oublie qui il est.
+                
+                // On vide le texte qu'il avait mis dans le formulaire de connexion.
                 document.getElementById('name').value = '';
                 document.getElementById('level').value = '';
                 document.getElementById('stream').value = '';
-                this.navigate('onboarding');
+                
+                this.navigate('onboarding');             // On le renvoie à la case de départ (inscription).
                 showToast("Vous avez été déconnecté.");
             },
 
+            // === AFFICHAGE DU TABLEAU DE BORD (Suggestions de métiers) ===
             renderDashboard: function () {
                 let suggestions = [];
 
-                // Si l'utilisateur a une filière, on filtre les métiers par catégories liées à cette filière
+                // 1. On regarde la filière de l'utilisateur (exemple: BAC SC_MATHS).
+                // "Si c'est rempli, donne-moi tous les métiers qui matchent avec cette filière."
                 if (this.user && this.user.stream && STREAM_MAP[this.user.stream]) {
-                    const allowedCats = STREAM_MAP[this.user.stream];
-                    // On récupère tous les métiers qui correspondent aux catégories autorisées
+                    const allowedCats = STREAM_MAP[this.user.stream]; // Liste des grandes catégories matchant
                     suggestions = this.jobs.filter(j => allowedCats.includes(j.category));
                 }
 
-                // Si aucune suggestion n'a été trouvée (ou pas de filière), on montre un mélange aléatoire
+                // 2. Si jamais il ne trouve aucune suggestion ou que l'élève est au collège (et n'a pas de filière).
                 if (suggestions.length === 0) {
-                    suggestions = [...this.jobs];
+                    suggestions = [...this.jobs]; // La liste de recommandation comportera tous les métiers existants sans discriminer.
                 }
 
-                // Mélange (shuffle) pour avoir de nouvelles suggestions à chaque fois
+                // 3. Petite fonction de "mélange de cartes" mathématique (shuffle).
+                // Pour que les suggestions soient surprenantes et nouvelles chaque jour (car sinon ça montre toujours "Achat, Administrateur" par ordre alphabétique).
                 suggestions.sort(() => 0.5 - Math.random());
 
+                // On sélectionne seulement les 3 premiers résultats après le mélange et on dessine leurs boîtes HTML.
                 const container = document.getElementById('featuredJobs');
                 if (container) container.innerHTML = suggestions.slice(0, 3).map(j => this.createJobCard(j)).join('');
             },
 
+            // === OPTIONS DU FILTRE DE RECHERCHE ===
+            // Prépare le menu déroulant sur la page de l'annuaire "Métiers" où l'on trouve toutes les catégories.
             renderFilters: function () {
                 const select = document.getElementById('categoryFilter');
                 if (!select) return;
+                
                 select.innerHTML = '<option value="all">Toutes les catégories</option>';
+                // On récupère toutes les catégories de data.js, on les trie alphabétiquement (A-Z) et on les ajoute au petit menu.
                 Object.keys(RAW_DATA).sort().forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c;
@@ -453,19 +372,31 @@
                 });
             },
 
+            // === FILTRAGE ACTIF (Moteur de recherche des métiers) ===
             filterJobs: function (category) {
                 const container = document.getElementById('jobsList');
                 if (!container) return;
+                
+                // On récupère ce que la personne a tapé dans la barre de recherche (en mettant tout en minuscules pour ne pas déranger avec les Majuscules).
                 const searchValue = document.getElementById('jobSearch') ? document.getElementById('jobSearch').value.toLowerCase() : "";
-                let filtered = this.jobs;
-                if (category !== 'all') filtered = filtered.filter(j => j.category === category);
+                let filtered = this.jobs; // Par défaut, on filtre sur notre base de données entière.
+                
+                if (category !== 'all') filtered = filtered.filter(j => j.category === category); // Étape 1 : Si on clique sur une catégorie précise.
+                
+                // Étape 2 : Si du texte a été tapé, on garde seulement les métiers dont le titre ou la catégorie ressemble à la recherche tapée !
                 if (searchValue.length > 0) filtered = filtered.filter(j => j.title.toLowerCase().includes(searchValue) || j.category.toLowerCase().includes(searchValue));
                 
+                // On dessine le rendu sur l'écran
                 container.innerHTML = filtered.map(j => this.createJobCard(j)).join('');
+                
+                // On met à jour le petit chiffre affichant "X métiers trouvés".
                 const countSpan = document.getElementById('currentCount');
                 if (countSpan) countSpan.textContent = filtered.length;
             },
 
+            // === CRÉATION DU VISUEL D'UN MÉTIER ===
+            // C'est juste le bloc dessin (le carré blanc du métier avec la catégorie).
+            // Le clic est branché sur `showJob()` !
             createJobCard: function (job) {
                 return `
                     <div class="job-card" onclick="window.app.showJob(${job.id})">
@@ -474,26 +405,36 @@
                             <span class="job-category">${job.category}</span>
                         </div>
                         <div class="job-body">
-                            ${job.description.substring(0, 80)}...
+                            ${job.description.substring(0, 80)}... 
                         </div>
                     </div>
-                `;
+                `; // 'substring(0, 80)' sert à couper la phrase à 80 lettres maxi et rajouter ...
             },
 
+            // === VUE DÉTAILLÉE D'UN MÉTIER ("MODAL" OU FENÊTRE FLOTTANTE) ===
+            // Quand l'élève clique sur une "job-card", ça ouvre une grande page qui détaille tout.
             showJob: function (id) {
+                // On essaie de retrouver le métier spécifique avec ce numéro ID.
                 const job = this.jobs.find(j => j.id === id);
                 if (!job) return;
 
+                // On regarde dans "data.js" s'il y a un chemin scolaire spécial prévu (PATHS_DATA). Sinon on lui donne le chemin par défaut.
                 const pathData = PATHS_DATA[job.title] || PATHS_DATA.default;
                 const userLevel = this.user ? this.user.level : null;
 
+                // Construction visuelle d'une frise chronologique ("TIMELINE") pour savoir par quelles années scolaires passer.
                 let timelineHTML = `<div class="timeline">`;
                 pathData.main.forEach((step) => {
                     let isCurrent = false;
+                    
+                    // Si le niveau scolaire actuel de l'étudiant ressemble à l'étape du cursus affiché, 
+                    // on colorera fortement ce point en jaune ou vert pour indiquer : "Tu es ICI actuellement !"
                     if (userLevel && LEVEL_MAP[userLevel]) {
                         if (LEVEL_MAP[userLevel][0].includes(step.year) || step.year.includes(LEVEL_MAP[userLevel][0])) isCurrent = true;
                     }
                     const activeClass = isCurrent ? 'is-current' : '';
+                    
+                    // On fabrique l'étape d'un parcours, par exemple "Baccalauréat -> Cursus prépa".
                     timelineHTML += `
                         <div class="timeline-item ${activeClass}">
                             <div class="timeline-dot"></div>
@@ -505,8 +446,9 @@
                         </div>
                     `;
                 });
-                timelineHTML += `</div>`;
+                timelineHTML += `</div>`; // Fin de la frise
 
+                // Des parcours bis / Plan B s'il échoue.
                 let altsHTML = '';
                 if (pathData.alternatives && pathData.alternatives.length > 0) {
                     altsHTML = `<div style="margin-top:20px; background:rgba(255, 193, 7, 0.1); padding:15px; border-radius:var(--radius-sm); border-left:4px solid var(--accent);">
@@ -517,6 +459,7 @@
                     altsHTML += `</div>`;
                 }
 
+                // On ouvre la fenêtre modale (Pop-up sur l'écran).
                 const modalBody = document.getElementById('modalBody');
                 if (modalBody) {
                     modalBody.innerHTML = `
@@ -547,46 +490,85 @@
                 document.getElementById('jobModal').classList.add('open');
             },
 
+            // Pour fermer la grande popup détaillée.
             closeModal: function () {
                 document.getElementById('jobModal').classList.remove('open');
             },
 
+            // === TEST : DÉBUT DU QUIZ (LANCEMENT) ===
             startQuiz: function () {
+                // On récupère tout l'inventaire des questions (la liste 1 à 10 par exemple).
                 this.questions = this.getHollandQuestions();
+                
+                // On met tous les compteurs de points à un score 0.
                 this.scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0, concret: 0, abstrait: 0, autonomie: 0, encadrement: 0, manuel: 0 };
-                this.currentQ = 0;
+                this.currentQ = 0; // "Je suis actuellement sur la question numéro X"
+                
+                // On emmène l'utilisateur visuellement à la page Quiz et on y affiche sa propre question numéro 0.
                 this.navigate('quiz');
                 this.renderQuestion();
             },
 
+            // === TEST : MISE EN PAGE DE LA QUESTION ACTUELLE ===
             renderQuestion: function () {
+                // S'il n'y a plus de questions où qu'on a dépassé le chiffre maximum, on s'arrête de lire.
                 if (!this.questions || this.currentQ >= this.questions.length) return;
+                
+                // La "question en cours de lecture" est extraite.
                 const q = this.questions[this.currentQ];
+                
+                // Petit calcul mathématique du pourcentage d'avancement (pour la jauge verte), ex : 1/10 = 10%.
                 const progress = Math.round(((this.currentQ) / this.questions.length) * 100);
+                
+                // On gère l'affichage du texte et de la grosse jauge de chargement.
                 document.getElementById('qText').textContent = `${this.currentQ + 1}. ${q.text}`;
                 document.getElementById('quizProgress').style.width = progress + '%';
                 document.getElementById('quizProgressText').textContent = `${progress}%`;
 
+                // On construit deux gros boutons Oui et Non en dessous.
+                // Note : le paramètre True = l'utilisateur a répondu Oui.
                 document.getElementById('qOptions').innerHTML = `
                     <button class="option-btn" onclick="window.app.answerQuiz(true)">✓ Oui, tout à fait</button>
                     <button class="option-btn" onclick="window.app.answerQuiz(false)">✗ Non, pas du tout</button>
                 `;
             },
 
+            // === TEST : RÉPONDRE A LA QUESTION ===
             answerQuiz: function (answer) {
                 if (!this.questions || this.currentQ >= this.questions.length) return;
                 const q = this.questions[this.currentQ];
+                
+                // Si la personne a dit "Oui" (c'est true), on augmente le pot de points pour ce type (ex: +1 point en Art, ou +1 en Santé).
                 if (answer) { if(this.scores[q.type] !== undefined) this.scores[q.type]++; }
                 
+                // On passe mathématiquement à la question suivante (ex: on passe du N°0 au N°1).
                 this.currentQ++;
-                if (this.currentQ < this.questions.length) { this.renderQuestion(); } else { this.showQuizResults(); }
+                
+                // Est-ce fini ? Si la prochaine question a un numéro inférieur à la limite totale, on pose cette question. 
+                // Sinon, c'est totalement terminé, on révèle les résultats !
+                if (this.currentQ < this.questions.length) { 
+                    this.renderQuestion(); 
+                } else { 
+                    this.showQuizResults(); 
+                }
             },
 
+            // === TEST : AFFICHER LES RÉSULTATS MÉTaphysiques DU QUIZ ===
             showQuizResults: function () {
+                // On sépare la partie RIASEC (modèle des 6 lettres de Holland).
                 const riasecScores = { R: this.scores.R, I: this.scores.I, A: this.scores.A, S: this.scores.S, E: this.scores.E, C: this.scores.C };
+                
+                // Petit code avancé : On va ordonner nos variables de Holland, voir celles pour qui j'ai le plus gros chiffre, 
+                // j'isole le "Top 3", et je garde leur première lettre ("ASE" par exemple ou "ICE").
                 const riasecCode = Object.entries(riasecScores).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([letter]) => letter).join("");
-                const profiles = { cognitif: this.scores.concret > this.scores.abstrait ? "Concret" : "Abstrait", autonomie: this.scores.autonomie > this.scores.encadrement ? "Autonome" : "Encadré" };
+                
+                // Traitement d'un point bonus : plus Autonome que supervisé ? Plus Concret ou Abstrait ?
+                const profiles = { 
+                    cognitif: this.scores.concret > this.scores.abstrait ? "Concret" : "Abstrait", 
+                    autonomie: this.scores.autonomie > this.scores.encadrement ? "Autonome" : "Encadré" 
+                };
 
+                // On affiche ça sur la page aux yeux de l'étudiant.
                 document.getElementById('resProfile').textContent = `Code RIASEC : ${riasecCode}`;
                 document.getElementById('resStream').textContent = this.user?.stream || "À déterminer";
                 document.getElementById('resTags').innerHTML = `
@@ -594,16 +576,25 @@
                     <span style="background:var(--bg-body); padding:6px 12px; border-radius:20px; border:1px solid var(--secondary); color:var(--primary); font-weight:600;">${profiles.autonomie}</span>
                 `;
 
+                // 2ème étape, quels métiers lui proposer en fonction de sa série de Bac ?
                 let candidateJobs = this.jobs;
                 if (this.user?.stream && STREAM_MAP[this.user.stream]) {
                     const allowedCats = STREAM_MAP[this.user.stream];
+                    // Si son orientation scolaire matchait notre plan, on lui sort la liste compatible.
                     candidateJobs = this.jobs.filter(j => allowedCats.includes(j.category));
                 }
+                
+                // On affiche les 8 super classements (la crème de la crème des métiers pour ce jeune).
                 const matches = candidateJobs.slice(0, 8);
                 document.getElementById('resJobs').innerHTML = matches.map(j => this.createJobCard(j)).join('');
-                this.navigate('results');
+                
+                this.navigate('results'); // Enclenche le changement visuel de page pour monter "Résultats".
             }
         };
 
+        // On assigne ce cerveau "app" à la fenêtre principale (window) pour pouvoir s'y servir partout dans l'HTML.
         window.app = app;
+        
+        // Un "vigile de porte" qui attend : dès que le site (la page Web) est terminée de charger sans beuge ('DOMContentLoaded')...
+        // ... Il appelle 'window.app.init()' pour déclencher le tout début.
         document.addEventListener('DOMContentLoaded', () => { window.app.init(); });
